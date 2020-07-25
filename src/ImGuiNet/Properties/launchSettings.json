@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ImGuiNET": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}

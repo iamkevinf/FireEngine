@@ -1,0 +1,16 @@
+[submodule "3rdparty/bx"]
+	path = 3rdparty/bx
+	url = https://github.com/bkaradzic/bx.git
+[submodule "3rdparty/bimg"]
+	path = 3rdparty/bimg
+	url = https://github.com/bkaradzic/bimg.git
+[submodule "3rdparty/imgui_docking"]
+	path = 3rdparty/imgui_docking
+	url = https://github.com/ocornut/imgui.git
+	branch = docking
+[submodule "3rdparty/bgfx"]
+	path = 3rdparty/bgfx
+	url = https://github.com/bkaradzic/bgfx.git
+[submodule "3rdparty/DotNetCorePlugins"]
+	path = 3rdparty/DotNetCorePlugins
+	url = https://github.com/natemcmaster/DotNetCorePlugins.git

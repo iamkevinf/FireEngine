@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <OutputPath>$(SolutionDir)bin\$(Configuration)</OutputPath>
+    <StartupObject></StartupObject>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\3rdparty\DotNetCorePlugins\src\Plugins\McMaster.NETCore.Plugins.csproj" />
+    <ProjectReference Include="..\ImGuiNet\ImGuiNET.csproj" />
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="COPY &quot;$(SolutionDir)bin\$(ConfigurationName)\FireWrapper.dll&quot; &quot;$(OutDir)FireWrapper.dll&quot;&#xD;&#xA;COPY &quot;$(SolutionDir)bin\$(ConfigurationName)\FireWrapper.pdb&quot; &quot;$(OutDir)FireWrapper.pdb&quot;" />
+  </Target>
+</Project>

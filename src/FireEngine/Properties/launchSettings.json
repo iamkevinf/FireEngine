@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "FireEngine": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}

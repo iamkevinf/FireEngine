@@ -1,0 +1,14 @@
+D:\project\FireEngine2\ImGuiNet\obj\Debug\netcoreapp3.0\ImGuiNET.csproj.CoreCompileInputs.cache
+D:\project\FireEngine2\ImGuiNet\obj\Debug\netcoreapp3.0\ImGuiNET.AssemblyInfoInputs.cache
+D:\project\FireEngine2\ImGuiNet\obj\Debug\netcoreapp3.0\ImGuiNET.AssemblyInfo.cs
+D:\project\FireEngine2\ImGuiNet\obj\Debug\netcoreapp3.0\ImGuiNET.dll
+D:\project\FireEngine2\ImGuiNet\obj\Debug\netcoreapp3.0\ImGuiNET.pdb
+D:\project\FireEngine2\bin\Debug\netcoreapp3.0\ImGuiNet.deps.json
+D:\project\FireEngine2\bin\Debug\netcoreapp3.0\ImGuiNet.dll
+D:\project\FireEngine2\bin\Debug\netcoreapp3.0\ImGuiNet.pdb
+D:\project\FireEngine2\src\ImGuiNet\obj\Debug\netcoreapp3.0\ImGuiNet.csprojAssemblyReference.cache
+D:\project\FireEngine2\src\ImGuiNet\obj\Debug\netcoreapp3.0\ImGuiNet.csproj.CoreCompileInputs.cache
+D:\project\FireEngine2\src\ImGuiNet\obj\Debug\netcoreapp3.0\ImGuiNet.AssemblyInfoInputs.cache
+D:\project\FireEngine2\src\ImGuiNet\obj\Debug\netcoreapp3.0\ImGuiNet.AssemblyInfo.cs
+D:\project\FireEngine2\src\ImGuiNet\obj\Debug\netcoreapp3.0\ImGuiNet.dll
+D:\project\FireEngine2\src\ImGuiNet\obj\Debug\netcoreapp3.0\ImGuiNet.pdb
