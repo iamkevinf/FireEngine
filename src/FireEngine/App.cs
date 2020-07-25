@@ -1,4 +1,5 @@
 ﻿using ImGuiNET;
+using RenderCoreNet;
 using System;
 using System.Numerics;
 
@@ -7,9 +8,8 @@ namespace FireEngine
     class App
     {
         MainMenuBar mainMenuBar = new MainMenuBar();
-        IntPtr m_texture_id = IntPtr.Zero;
-        IntPtr m_texture_id2 = IntPtr.Zero;
         Vector2 m_texture_size;
+        TextureHandle textureHandle1;
 
         bool v1 = false, v2 = false;
         int radio_index = 0;
@@ -29,9 +29,7 @@ namespace FireEngine
 
         void OnInit()
         {
-            m_texture_id = ImGui.LoadTexture("test_texture.png", out m_texture_size);
-            m_texture_id2 = ImGui.LoadTexture("test_texture2.png", out m_texture_size);
-
+            textureHandle1 = RC.LoadTexture("test_texture.png", out m_texture_size);
             mainMenuBar.OnInit();
             InitHeader();
         }
@@ -42,26 +40,29 @@ namespace FireEngine
 
             DrawHeader();
 
-            ImGui.Image(m_texture_id, m_texture_size);
-            ImGui.ImageButton(m_texture_id2, m_texture_size);
-            ImGui.PushID(1);
-            ImGui.ImageAnimButton(m_texture_id, m_texture_id2, m_texture_size);
-            ImGui.PopID();
+            IntPtr intPtr = (IntPtr)textureHandle1.idx;
 
-            ImGui.PushID(2);
-            ImGui.ToggleButton(m_texture_id, m_texture_id2, m_texture_size, ref v2);
-            ImGui.PopID();
-            ImGui.ToggleButton("1", ref v1);
+            ImGui.Image(intPtr, m_texture_size);
 
-            ImGui.PushID(3);
-            ImGui.ImageRadioButtonIntPtr(m_texture_id, m_texture_id2, m_texture_size, ref radio_index, 0); ImGui.SameLine();
-            ImGui.PopID();
-            ImGui.PushID(4);
-            ImGui.ImageRadioButtonIntPtr(m_texture_id, m_texture_id2, m_texture_size, ref radio_index, 1); ImGui.SameLine();
-            ImGui.PopID();
-            ImGui.PushID(5);
-            ImGui.ImageRadioButtonIntPtr(m_texture_id, m_texture_id2, m_texture_size, ref radio_index, 2);
-            ImGui.PopID();
+            //ImGui.ImageButton(m_texture_id2, m_texture_size);
+            //ImGui.PushID(1);
+            //ImGui.ImageAnimButton(m_texture_id, m_texture_id2, m_texture_size);
+            //ImGui.PopID();
+
+            //ImGui.PushID(2);
+            //ImGui.ToggleButton(m_texture_id, m_texture_id2, m_texture_size, ref v2);
+            //ImGui.PopID();
+            //ImGui.ToggleButton("1", ref v1);
+
+            //ImGui.PushID(3);
+            //ImGui.ImageRadioButtonIntPtr(m_texture_id, m_texture_id2, m_texture_size, ref radio_index, 0); ImGui.SameLine();
+            //ImGui.PopID();
+            //ImGui.PushID(4);
+            //ImGui.ImageRadioButtonIntPtr(m_texture_id, m_texture_id2, m_texture_size, ref radio_index, 1); ImGui.SameLine();
+            //ImGui.PopID();
+            //ImGui.PushID(5);
+            //ImGui.ImageRadioButtonIntPtr(m_texture_id, m_texture_id2, m_texture_size, ref radio_index, 2);
+            //ImGui.PopID();
 
             ImGui.ShowDemoWindow();
         }

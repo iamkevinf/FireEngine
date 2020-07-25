@@ -37,3 +37,4 @@ Debug/
 Release/
 obj/
 x64/
+/libs/RenderCore.pdb

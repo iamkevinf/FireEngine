@@ -112,8 +112,8 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <AdditionalLibraryDirectories>..\..\libs\glfw\lib-vc2019-64;..\..\3rdparty\bgfx\.build\win64_vs2019\bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib;bgfxDebug.lib;bimgDebug.lib;bimg_decodeDebug.lib;bxDebug.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\libs\glfw\lib-vc2019-64;..\..\3rdparty\bgfx\.build\win64_vs2019\bin;..\..\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3.lib;bgfxDebug.lib;bimgDebug.lib;bimg_decodeDebug.lib;bxDebug.lib;opengl32.lib;RenderCore.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
@@ -169,7 +169,13 @@
     <ClCompile Include="imgui_impl_bgfx.cpp" />
     <ClCompile Include="imgui_utils.cpp" />
     <ClCompile Include="main_shared.cpp" />
+    <ClCompile Include="RC_utils.cpp" />
+    <ClCompile Include="RC_wrapper.cpp" />
     <ClCompile Include="wrapper.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="RC_utils.h" />
+    <ClInclude Include="RC_wrapper.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

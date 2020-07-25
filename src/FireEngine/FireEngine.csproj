@@ -14,7 +14,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\3rdparty\DotNetCorePlugins\src\Plugins\McMaster.NETCore.Plugins.csproj" />
+    <ProjectReference Include="..\FireWrapper\FireWrapper.vcxproj" />
     <ProjectReference Include="..\ImGuiNet\ImGuiNET.csproj" />
+    <ProjectReference Include="..\RenderCoreNet\RenderCoreNet.csproj" />
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
