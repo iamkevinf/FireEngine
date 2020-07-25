@@ -1,3 +1,0 @@
-D:\project\FireEngine2\RenderCore\x64\Debug\RenderCore.pdb
-D:\project\FireEngine2\bin\Debug\RenderCore.pdb
-D:\project\FireEngine2\src\RenderCore\x64\Debug\RenderCore.pdb

@@ -31,5 +31,9 @@
 *.out
 *.app
 
-/.vs/
+.vs/
 /bin/
+Debug/
+Release/
+obj/
+x64/
