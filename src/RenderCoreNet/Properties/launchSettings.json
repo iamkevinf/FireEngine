@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "RenderCoreNet": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}
