@@ -38,3 +38,4 @@ Release/
 obj/
 x64/
 /libs/RenderCore.pdb
+/runtime/images/imgui.ini
