@@ -29,7 +29,7 @@ namespace FireEngine
 
         void OnInit()
         {
-            textureHandle1 = RC.LoadTexture("test_texture.png", out m_texture_size);
+            textureHandle1 = RC.LoadTexture("images/test_texture.png", out m_texture_size);
             mainMenuBar.OnInit();
             InitHeader();
         }
