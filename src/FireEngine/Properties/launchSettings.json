@@ -2,6 +2,7 @@
   "profiles": {
     "FireEngine": {
       "commandName": "Project",
+      "workingDirectory": "..\\..\\runtime",
       "nativeDebugging": true
     }
   }
