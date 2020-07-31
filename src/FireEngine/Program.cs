@@ -10,7 +10,6 @@ namespace FireEngine
         {
             App app = new App();
             app.Run();
-            //ImGuiNative.App_MainLoop("FakeUnity NetCore", OnInit, OnGui, OnExit);
         }
 
         //static void OnInit()

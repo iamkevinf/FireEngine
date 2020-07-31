@@ -857,6 +857,7 @@ static void ImGui_ImplWin32_ShutdownPlatformInterface()
 
 //---------------------------------------------------------------------------------------------------------
 LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+HWND gHwnd = nullptr;
 int WindowMain(LPCSTR title, void(*OnInit)(), void(*OnGUI)(), void(*OnExit)())
 {
     ImGui_ImplWin32_EnableDpiAwareness();
@@ -865,6 +866,7 @@ int WindowMain(LPCSTR title, void(*OnInit)(), void(*OnGUI)(), void(*OnExit)())
     WNDCLASSEX wc = { sizeof(WNDCLASSEX), CS_CLASSDC, WndProc, 0L, 0L, GetModuleHandle(NULL), NULL, NULL, NULL, NULL, _T("GemoniWndClass"), NULL };
     ::RegisterClassEx(&wc);
     HWND hwnd = ::CreateWindow(wc.lpszClassName, title, WS_OVERLAPPEDWINDOW, 100, 100, 1280, 800, NULL, NULL, wc.hInstance, NULL);
+    gHwnd = hwnd;
 
     PlatformInit(hwnd);
     OnInit();
@@ -901,6 +903,14 @@ int WindowMain(LPCSTR title, void(*OnInit)(), void(*OnGUI)(), void(*OnExit)())
     ::UnregisterClass(wc.lpszClassName, wc.hInstance);
 
     return 0;
+}
+
+bool SetWindowTitle(LPCSTR title)
+{
+    if (gHwnd)
+        return ::SetWindowText(gHwnd, title);
+
+    return false;
 }
 
 #ifndef WM_DPICHANGED

@@ -40,6 +40,9 @@
     <ClCompile Include="RC_wrapper.cpp">
       <Filter>RC</Filter>
     </ClCompile>
+    <ClCompile Include="app_wrapper.cpp">
+      <Filter>app</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="app">
@@ -61,6 +64,19 @@
     </ClInclude>
     <ClInclude Include="RC_wrapper.h">
       <Filter>RC</Filter>
+    </ClInclude>
+    <ClInclude Include="FW.h" />
+    <ClInclude Include="app_wrapper.h">
+      <Filter>app</Filter>
+    </ClInclude>
+    <ClInclude Include="main_shared.h">
+      <Filter>app</Filter>
+    </ClInclude>
+    <ClInclude Include="app.h">
+      <Filter>app</Filter>
+    </ClInclude>
+    <ClInclude Include="app_utils.h">
+      <Filter>app</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

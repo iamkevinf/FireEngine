@@ -4180,21 +4180,6 @@ CIMGUI_API void igImFontAtlasBuildMultiplyRectAlpha8(const unsigned char table[2
 {
 	return ImFontAtlasBuildMultiplyRectAlpha8(table, pixels, x, y, w, h, stride);
 }
-CIMGUI_API int igApp_MainLoop(const char* title, void(*OnInit)(), void(*OnGUI)(), void(*OnExit)())
-{
-	return ImGui::App_MainLoop(title, OnInit, OnGUI, OnExit);
-}
-
-CIMGUI_API void igSetWindowTitle(ImGuiViewport* viewport, const char* title)
-{
-	return ImGui::SetWindowTitle(viewport, title);
-}
-
-CIMGUI_API bool igLoadTexture(const char* filename, unsigned int* texture_id, int* out_width, int* out_height)
-{
-	return ImGui::LoadTexture(filename, texture_id, out_width, out_height);
-}
-
 CIMGUI_API bool igImageAnimButton(ImTextureID user_texture_id, ImTextureID user_texture_id2, const ImVec2 size, const ImVec2 uv0, const ImVec2 uv1, const ImVec2 uv2, const ImVec2 uv3, int frame_padding, const ImVec4 bg_col, const ImVec4 tint_col)
 {
 	return ImGui::ImageAnimButton(user_texture_id, user_texture_id2, size, uv0, uv1, uv2, uv3, frame_padding, bg_col, tint_col);
@@ -4216,39 +4201,6 @@ CIMGUI_API bool igImageRadioButtonBool(ImTextureID tid_active, ImTextureID tid_d
 CIMGUI_API bool igImageRadioButtonIntPtr(ImTextureID tid_active, ImTextureID tid_deactivate, const ImVec2 size, int* v, int v_button)
 {
 	return ImGui::RadioButton(tid_active, tid_deactivate, size, v, v_button);
-}
-CIMGUI_API void igTestInitDrawInCPP(int viewportWidth, int viewportHeight)
-{
-	return ImGui::TestInitDrawInCPP(viewportWidth, viewportHeight);
-}
-CIMGUI_API void igTestRenderInCPP(int viewportWidth, int viewportHeight)
-{
-	return ImGui::TestRenderInCPP(viewportWidth, viewportHeight);
-}
-CIMGUI_API void igTestFiniDrawInCPP()
-{
-	return ImGui::TestFiniDrawInCPP();
-}
-CIMGUI_API ImTextureID igGetTestRenderInCPPFBO()
-{
-	return ImGui::GetTestRenderInCPPFBO();
-}
-
-CIMGUI_API void igbgfxInit(int viewportWidth, int viewportHeight)
-{
-	return ImGui::bgfxInit(viewportWidth, viewportHeight);
-}
-CIMGUI_API void igbgfxTick()
-{
-	return ImGui::bgfxTick();
-}
-CIMGUI_API void igbgfxFini()
-{
-	return ImGui::bgfxFini();
-}
-CIMGUI_API ImTextureID iggetbgfxfbo()
-{
-	return ImGui::getbgfxfob();
 }
 
 /////////////////////////////manual written functions

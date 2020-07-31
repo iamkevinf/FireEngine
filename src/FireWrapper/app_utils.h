@@ -1,12 +1,12 @@
 #ifndef __APP_UTILS_H__
 #define __APP_UTILS_H__
 
-#include "imgui.h"
+#include "FW.h"
 
-namespace ImGui
+namespace App
 {
-	IMGUI_API int App_MainLoop(const char* title, void(*OnInit)(), void(*OnGUI)(), void(*OnExit)());
-
+	FW_API int App_MainLoop(const char* title, void(*OnInit)(), void(*OnGUI)(), void(*OnExit)());
+	FW_API bool App_SetWindowTitle(const char* title);
 }
 
 #endif // __APP_UTILS_H__

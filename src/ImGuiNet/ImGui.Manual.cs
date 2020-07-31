@@ -357,14 +357,13 @@ namespace ImGuiNET
             else { native_label = null; }
             return ImGuiNative.igApp_MainLoop(native_label, OnInit, OnGUI, OnExit);
         }
-
-        public static IntPtr LoadTexture(string filename, out Vector2 texture_size)
+        public static bool SetWindowTitle(string title)
         {
             byte* native_label;
             int label_byteCount = 0;
-            if (filename != null)
+            if (title != null)
             {
-                label_byteCount = System.Text.Encoding.UTF8.GetByteCount(filename);
+                label_byteCount = System.Text.Encoding.UTF8.GetByteCount(title);
                 if (label_byteCount > Util.StackAllocationSizeLimit)
                 {
                     native_label = Util.Allocate(label_byteCount + 1);
@@ -374,27 +373,13 @@ namespace ImGuiNET
                     byte* native_label_stackBytes = stackalloc byte[label_byteCount + 1];
                     native_label = native_label_stackBytes;
                 }
-                int native_label_offset = Util.GetUtf8(filename, native_label, label_byteCount);
+                int native_label_offset = Util.GetUtf8(title, native_label, label_byteCount);
                 native_label[native_label_offset] = 0;
             }
             else { native_label = null; }
 
-
-            uint texture_id;
-            int texture_width;
-            int texture_height;
-            uint* native_texture_id = &texture_id;
-            int* native_texture_width = &texture_width;
-            int* native_texture_height = &texture_height;
-            //ImGuiNative.igLoadTexture(native_label, native_texture_id, native_texture_width, native_texture_height);
-
-            texture_size.X = *native_texture_width;
-            texture_size.Y = *native_texture_height;
-
-            //return (IntPtr)texture_id;
-            return IntPtr.Zero;
+            return ImGuiNative.igSetWindowTitle(native_label);
         }
-
         public static bool ImageAnimButton(IntPtr user_texture_id, IntPtr user_texture_id2, Vector2 size)
         {
             Vector2 uv0 = new Vector2();
@@ -449,55 +434,15 @@ namespace ImGuiNET
                 ImGuiNative.igToggleButtonStr(native_label, native_v);
             }
         }
-
-
         public static bool ImageRadioButtonBool(IntPtr tid_active, IntPtr tid_deactivate, Vector2 size, bool active)
         {
             return ImGuiNative.igImageRadioButtonBool(tid_active, tid_deactivate, size, active);
         }
-
         public static bool ImageRadioButtonIntPtr(IntPtr tid_active, IntPtr tid_deactivate, Vector2 size, ref int v, int v_button)
         {
             fixed(int* native_v = &v)
                 return ImGuiNative.igImageRadioButtonIntPtr(tid_active, tid_deactivate, size, native_v, v_button);
         }
 
-        public static void TestInitDrawInCPP(Vector2 viewport)
-        {
-            return;
-            ImGuiNative.igTestInitDrawInCPP((int)viewport.X, (int)viewport.Y);
-        }
-        public static void TestRenderInCPP(Vector2 viewport)
-        {
-            return;
-            ImGuiNative.igTestRenderInCPP((int)viewport.X, (int)viewport.Y);
-        }
-        public static void TestFiniDrawInCPP()
-        {
-            return;
-            ImGuiNative.igTestFiniDrawInCPP();
-        }
-        public static IntPtr GetTestRenderInCPPFBO()
-        {
-            return IntPtr.Zero;
-            return ImGuiNative.igGetTestRenderInCPPFBO();
-        }
-
-        public static void bgfxInit(Vector2 viewport)
-        {
-            ImGuiNative.igbgfxInit((int)viewport.X, (int)viewport.Y);
-        }
-        public static void bgfxTick()
-        {
-            ImGuiNative.igbgfxTick();
-        }
-        public static void bgfxFini()
-        {
-             ImGuiNative.igbgfxFini();
-        }
-        public static IntPtr getbgfxfbo()
-        {
-            return ImGuiNative.iggetbgfxfbo();
-        }
     }
 }

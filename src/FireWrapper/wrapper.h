@@ -3121,9 +3121,6 @@ CIMGUI_API void igImFontAtlasBuildFinish(ImFontAtlas* atlas);
 CIMGUI_API void igImFontAtlasBuildMultiplyCalcLookupTable(unsigned char out_table[256], float in_multiply_factor);
 CIMGUI_API void igImFontAtlasBuildMultiplyRectAlpha8(const unsigned char table[256], unsigned char* pixels, int x, int y, int w, int h, int stride);
 
-CIMGUI_API int igApp_MainLoop(const char* title, void(*OnInit)(), void(*OnGUI)(), void(*OnExit)());
-CIMGUI_API void igSetWindowTitle(ImGuiViewport* viewport, const char* title);
-CIMGUI_API bool igLoadTexture(const char* filename, unsigned int* texture_id, int* out_width, int* out_height);
 CIMGUI_API bool igImageAnimButton(ImTextureID user_texture_id, ImTextureID user_texture_id2, const ImVec2 size, const ImVec2 uv0, const ImVec2 uv1, const ImVec2 uv2, const ImVec2 uv3, int frame_padding, const ImVec4 bg_col, const ImVec4 tint_col);
 CIMGUI_API bool igToggleButton(ImTextureID user_texture_id, ImTextureID user_texture_id2, bool* v, const ImVec2 size, const ImVec2 uv0, const ImVec2 uv1, const ImVec2 uv2, const ImVec2 uv3, int frame_padding, const ImVec4 bg_col, const ImVec4 tint_col);
 CIMGUI_API void igToggleButtonStr(const char* str_id, bool* v);

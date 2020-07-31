@@ -13,4 +13,5 @@ void ImGui_ImplWin32_EnableDpiAwareness();
 
 float ImGui_ImplWin32_GetDpiScaleForHwnd(void* hwnd);
 int WindowMain(LPCSTR title, void(*OnInit)(), void(*OnGUI)(), void(*OnExit)());
+bool SetWindowTitle(LPCSTR title);
 

@@ -57,12 +57,19 @@ namespace RenderCoreNet
             return handle;
         }
 
-        public enum TestEnum
-        { }
-
-        static void TestRefEnum(ref TestEnum aa)
+        public static int CreateCube()
         {
+            return rcCreateCube();
+        }
 
+        public static void DestroyCube(int handle)
+        {
+            rcDestroyCube(handle);
+        }
+
+        public static void DrawCube(Byte viewId, int handle)
+        {
+            rcDrawCube(viewId, handle);
         }
     }
 }
