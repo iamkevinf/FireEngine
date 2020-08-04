@@ -11,8 +11,4 @@
     <WarningLevel>0</WarningLevel>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\ImGuiNet\ImGuiNet.csproj" />
-  </ItemGroup>
-
 </Project>

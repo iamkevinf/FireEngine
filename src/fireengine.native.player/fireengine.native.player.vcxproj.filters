@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="app">
+      <UniqueIdentifier>{5c074b13-212e-41d0-8e67-00162a454d87}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="glfw">
+      <UniqueIdentifier>{cf8c0286-eff9-4f8a-8fe5-14cdf5ca9512}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="imgui">
+      <UniqueIdentifier>{70db9e45-aab7-4228-acb0-80306320f07a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="filesystem">
+      <UniqueIdentifier>{d937509e-15aa-4de3-b39a-3ca8e3380524}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="loader">
+      <UniqueIdentifier>{99eb85c3-dbeb-44a5-8e18-477837636a39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="wrapper">
+      <UniqueIdentifier>{6c915fc2-37fd-4c09-9fa1-1733664500bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gameview">
+      <UniqueIdentifier>{f50a68ca-675a-4df9-8ccd-2bf179c402d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="buildin_shader">
+      <UniqueIdentifier>{e66d9338-6b38-469e-bb19-f17b539fa8da}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\3rdparty\imgui_docking\examples\libs\gl3w\GL\gl3w.c">
+      <Filter>glfw</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\3rdparty\imgui_docking\imgui.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\3rdparty\imgui_docking\imgui_demo.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\3rdparty\imgui_docking\imgui_draw.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\app\main_shared.cpp">
+      <Filter>app</Filter>
+    </ClCompile>
+    <ClCompile Include="src\app\app.cpp">
+      <Filter>app</Filter>
+    </ClCompile>
+    <ClCompile Include="src\imgui\imgui_utils.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\imgui\imgui_wrapper.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\imgui\imgui_impl_bgfx.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\3rdparty\imgui_docking\imgui_widgets.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\filesystem\FileSystem.cpp">
+      <Filter>filesystem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\loader\loader.cpp">
+      <Filter>loader</Filter>
+    </ClCompile>
+    <ClCompile Include="src\wrapper\wrapper.cpp">
+      <Filter>wrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gameview\game_view.cpp">
+      <Filter>gameview</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\app\app.h">
+      <Filter>app</Filter>
+    </ClInclude>
+    <ClInclude Include="src\app\main_shared.h">
+      <Filter>app</Filter>
+    </ClInclude>
+    <ClInclude Include="src\imgui\imgui_utils.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\imgui\imgui_wrapper.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\imgui\imgui_impl_bgfx.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\filesystem\FileSystem.h">
+      <Filter>filesystem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\loader\loader.h">
+      <Filter>loader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\wrapper\wrapper.h">
+      <Filter>wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameview\game_view.h">
+      <Filter>gameview</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="shaders\varying.def.sc">
+      <Filter>buildin_shader</Filter>
+    </None>
+    <None Include="shaders\vs_buildin.sc">
+      <Filter>buildin_shader</Filter>
+    </None>
+    <None Include="shaders\vs_fbo.sc">
+      <Filter>buildin_shader</Filter>
+    </None>
+    <None Include="shaders\fbo_varying.def.sc">
+      <Filter>buildin_shader</Filter>
+    </None>
+    <None Include="shaders\fs_buildin.sc">
+      <Filter>buildin_shader</Filter>
+    </None>
+    <None Include="shaders\fs_fbo.sc">
+      <Filter>buildin_shader</Filter>
+    </None>
+  </ItemGroup>
+</Project>

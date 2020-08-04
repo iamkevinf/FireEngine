@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "fireengine.managed.player": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}

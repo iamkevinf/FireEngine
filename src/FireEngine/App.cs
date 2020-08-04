@@ -1,9 +1,9 @@
 ﻿using ImGuiNET;
-using RenderCoreNet;
 using System;
 using System.Numerics;
+using FireEngine;
 
-namespace FireEngine
+namespace FireEngine.Editor
 {
     class App
     {
@@ -13,12 +13,12 @@ namespace FireEngine
 
         public void Run()
         {
-            ImGui.App_MainLoop("FireEngine NetCore", OnInit, OnGui, OnExit);
+            AppNative.feApp_MainLoop("FireEngine NetCore中", OnInit, OnGui, OnExit);
         }
 
         void OnInit()
         {
-            textureHandle1 = RC.LoadTexture("images/test_texture.png", out m_texture_size);
+            textureHandle1 = FireEngineNative.LoadTexture("images/test_texture.png", out m_texture_size);
             mainMenuBar.OnInit();
             InitHeader();
         }
@@ -36,14 +36,10 @@ namespace FireEngine
         void OnExit()
         {
             mainMenuBar.OnExit();
-
-            RC.DestroyCube(cubeHandle);
         }
 
-        int cubeHandle = -1;
         void InitHeader()
         {
-            cubeHandle = RC.CreateCube( );
         }
 
         void DrawHeader()
@@ -69,12 +65,8 @@ namespace FireEngine
                     ImGui.Text("Left 2"); ImGui.SameLine();
 
                 ImGui.EndChild();
-
                 ImGui.End();
             }
-
-            RC.DrawCube(9, cubeHandle);
         }
-
     }
 }

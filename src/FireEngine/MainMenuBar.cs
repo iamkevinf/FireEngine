@@ -6,6 +6,8 @@ namespace FireEngine
 {
     class MainMenuBar
     {
+        bool m_gameViewVisible = false;
+
         public void OnInit()
         {
         }
@@ -37,11 +39,14 @@ namespace FireEngine
 
                     if (ImGui.MenuItem("bgfx", "CTRL+2"))
                     {
+                        _ShowGameView();
                     }
                     ImGui.EndMenu();
                 }
                 ImGui.EndMainMenuBar();
             }
+
+            _DrawGameView();
         }
 
         public void OnExit()
@@ -90,6 +95,39 @@ namespace FireEngine
                 ImGui.EndMenu();
             }
             if (ImGui.MenuItem("Quit", "Alt+F4")) { }
+        }
+
+        void _ShowGameView()
+        {
+            if (!m_gameViewVisible)
+            {
+                m_gameViewVisible = true;
+            }
+        }
+
+        void _DrawGameView()
+        {
+            if (m_gameViewVisible)
+            {
+                ImGui.Begin("GameView", ref m_gameViewVisible);
+                {
+                    Vector2 pos = ImGui.GetCursorScreenPos();
+                    Vector2 viewPortPos = ImGui.GetWindowViewport().Pos;
+                    //IntPtr tex = RenderCoreNet.RC.GameViewDraw(pos - viewPortPos - Vector2.One * 8);
+
+
+                    //Vector2 m_texture_size;
+                    //var textureHandle1 = RenderCoreNet.RC.LoadTexture("images/test_texture2.png", out m_texture_size);
+                    //IntPtr tex = (IntPtr)textureHandle1.idx;
+                    //ImGui.GetWindowDrawList(/*).*/AddImage(tex, pos, pos + gameViewSize, new Vector2(0, 1), new Vector2(1, 0));
+                    //ImGui.GetWindowDrawList().AddImage(tex, Vector2.Zero, gameViewSize, new Vector2(0, 1), new Vector2(1, 0));
+                }
+                ImGui.End();
+            }
+            else
+            {
+                //RenderCoreNet.RC.GameViewFini();
+            }
         }
     }
 }

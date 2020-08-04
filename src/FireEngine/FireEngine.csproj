@@ -14,12 +14,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\3rdparty\DotNetCorePlugins\src\Plugins\McMaster.NETCore.Plugins.csproj" />
-    <ProjectReference Include="..\FireWrapper\FireWrapper.vcxproj" />
-    <ProjectReference Include="..\ImGuiNet\ImGuiNET.csproj" />
-    <ProjectReference Include="..\RenderCoreNet\RenderCoreNet.csproj" />
+    <ProjectReference Include="..\fireengine.managed.player\fireengine.managed.player.csproj" />
+    <ProjectReference Include="..\fireengine.native.player\fireengine.native.player.vcxproj" />
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="COPY &quot;$(SolutionDir)bin\$(ConfigurationName)\FireWrapper.dll&quot; &quot;$(OutDir)FireWrapper.dll&quot;&#xD;&#xA;COPY &quot;$(SolutionDir)bin\$(ConfigurationName)\FireWrapper.pdb&quot; &quot;$(OutDir)FireWrapper.pdb&quot;" />
+    <Exec Command="COPY  &quot;$(SolutionDir)bin\$(ConfigurationName)\*.*&quot; &quot;$(OutDir)\*&quot;" />
   </Target>
 </Project>
