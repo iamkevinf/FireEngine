@@ -162,7 +162,7 @@ namespace FireEngine
 			((uint8_t*)&mem)[3] = 0;
 			auto TexID = (ImTextureID)mem;
 
-			ImGui::Image(TexID, ImVec2(ImGui::GetWindowWidth() - 20, ImGui::GetWindowHeight() - 40));
+			ImGui::Image(TexID, ImGui::GetWindowSize());
 			ImGui::End();
 		}
 	}
