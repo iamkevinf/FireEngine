@@ -118,5 +118,8 @@
     <None Include="shaders\fs_fbo.sc">
       <Filter>buildin_shader</Filter>
     </None>
+    <None Include="compile_shader.cmd">
+      <Filter>buildin_shader</Filter>
+    </None>
   </ItemGroup>
 </Project>

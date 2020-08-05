@@ -886,6 +886,11 @@ int WindowMain(const char16_t* title, void(*OnInit)(), void(*OnGUI)(), void(*OnE
     // Main loop
     MSG msg;
     ZeroMemory(&msg, sizeof(msg));
+
+    float lastTime = 0;
+    float dt;
+    float time;
+
     while (msg.message != WM_QUIT)
     {
         // Poll and handle messages (inputs, window resize, etc.)
@@ -899,10 +904,16 @@ int WindowMain(const char16_t* title, void(*OnInit)(), void(*OnGUI)(), void(*OnE
             ::DispatchMessage(&msg);
             continue;
         }
-        FireEngine::GameView::OnTick();
+
+        uint64_t value;
+        QueryPerformanceCounter((LARGE_INTEGER*)&value);
+
+        time = (float)value;
+        dt = time - lastTime;
+        lastTime = time;
+
+        FireEngine::GameView::OnTick(dt);
         PlatformFrame(OnGUI, FireEngine::GameView::OnEditorGUI);
-
-
     }
 
     PlatformFinalize();

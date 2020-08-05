@@ -14,6 +14,8 @@ namespace FireEngine
 	EXPORT_API bgfx::TextureHandle feLoadTexture(const char* _name, uint64_t _flags = BGFX_TEXTURE_NONE | BGFX_SAMPLER_NONE, uint8_t _skip = 0, bgfx::TextureInfo* _info = NULL, bimg::Orientation::Enum* _orientation = NULL);
 	EXPORT_API bgfx::ShaderHandle feLoadShader(const char* name);
 
+	EXPORT_API void feApp_ShowState();
+
 }
 
 #endif // __WRAPPER_H__

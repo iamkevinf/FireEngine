@@ -7,6 +7,13 @@
 #include "../loader/loader.h"
 #include <imgui.h>
 
+#include <glm/glm.hpp>
+
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/euler_angles.hpp>
+#include "../imgui/imgui_impl_bgfx.h"
+
+
 namespace FireEngine
 {
 	bgfx::TextureHandle g_frame_tex;
@@ -83,66 +90,49 @@ namespace FireEngine
 		auto dvb = bgfx::createDynamicVertexBuffer(bgfx::makeRef(s_cubeVertices, sizeof(s_cubeVertices)), g_layout);
 		bgfx::update(dvb, 0, bgfx::makeRef(s_cubeVertices, sizeof(s_cubeVertices)));
 
-
 		g_ctex = loadTexture("images/test_texture2.png");
-
 	}
 
-	void GameView::OnTick()
+	void GameView::OnTick(float dTime)
 	{
 		bgfx::setViewFrameBuffer(10, g_framebuffer);
 
-		bgfx::setViewRect(10, 0, 0, 1024, 1024);
-		bgfx::setViewClear(10, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH, 0x000000FF);
-		bgfx::touch(10);
+		bgfx::ViewId viewId = 10;
+		bgfx::setViewRect(viewId, 0, 0, 1024, 1024);
+		bgfx::setViewClear(viewId, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH, 0x000000FF);
+		bgfx::touch(viewId);
 
-
-		const bx::Vec3 at = { 0.0f, 0.0f,   0.0f };
-		const bx::Vec3 eye = { 0.0f, 0.0f, -35.0f };
+		glm::mat4 view = glm::lookAt(glm::vec3(0.0f, 0.0f, -35.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		glm::mat4 proj = glm::perspective(glm::radians(60.0f), float(1024) / 1024, 0.1f, 100.0f);
 
 		// Set view and projection matrix for view 10.
 		{
-			g_time += 0.001f;
+			g_time += dTime;
 
-			float view[16];
-			bx::mtxLookAt(view, eye, at);
+			bgfx::setViewTransform(viewId, &view, &proj);
 
-			float proj[16];
-			bx::mtxProj(proj, 60.0f, float(1024) / float(1024), 0.1f, 100.0f, bgfx::getCaps()->homogeneousDepth);
-			bgfx::setViewTransform(10, view, proj);
-
-
-			float mtx[16];
-			for (int i = 0; i < 10; ++i)
+			for (int i = 0; i < 11; ++i)
 			{
-				for (int j = 0; j < 10; ++j)
+				for (int j = 0; j < 11; ++j)
 				{
-					bx::mtxIdentity(mtx);
-					bx::mtxSRT(mtx, 1, 1, 1, g_time + 10 * 0.21f, g_time + 10 * 0.37f, 0, i * 5 - 25, j * 5 - 25, 0);
+					glm::mat4 mtx = glm::identity<glm::mat4>();
+					mtx = glm::translate(mtx, glm::vec3(15.0f - float(j) * 3.0f, -15.0f + float(i) * 3.0f, 0.0f));
+					mtx *= glm::yawPitchRoll(g_time + j * 0.21f, g_time + i * 0.37f, 0.0f);
 
 					// Set model matrix for rendering.
-					bgfx::setTransform(mtx);
+					bgfx::setTransform(&mtx);
 
 					// Set vertex and index buffer.
 					bgfx::setVertexBuffer(0, g_vb);
 					bgfx::setIndexBuffer(g_ib);
 
-					uint64_t state = 0
-						| BGFX_STATE_WRITE_MASK  //1.write mask （rgb a z）
-						| BGFX_STATE_DEPTH_TEST_LESS //2.z test(less lessequal...
-						| BGFX_STATE_BLEND_FUNC(BGFX_STATE_BLEND_ONE, BGFX_STATE_BLEND_ZERO) //3.alphablend 
-						//or BGFX_STATE_BLEND_FUNC_SEPARATE;
-						//4.BLEND_EQUATION 大部分情况下都是使用Func_add，基本上用不到改
-						| BGFX_STATE_CULL_CW //5 cull ， //CW CCW or none
-						| BGFX_STATE_PT_TRISTRIP //6 primitive type，也在state中，不加就是trilist 绘制模式也是放在state里面的，
-						| BGFX_STATE_MSAA //7.msaa 
-						;
+					uint64_t state = BGFX_STATE_DEFAULT;
 
 					// Set render states.
 					bgfx::setState(state);
 
 					// Submit primitive for rendering to view 0.
-					bgfx::submit(10, g_program);
+					bgfx::submit(viewId, g_program);
 				}
 			}
 
@@ -153,18 +143,23 @@ namespace FireEngine
 
 	void GameView::OnEditorGUI()
 	{
-		static bool s_a = true;
-		if (ImGui::Begin("test RT", &s_a, ImGuiWindowFlags_NoCollapse))
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+
+		if (ImGui::Begin("game view", 0, ImGuiWindowFlags_NoCollapse))
 		{
 			uint32_t mem = 0;
 			((uint16_t*)&mem)[0] = g_frame_tex.idx;
-			((uint8_t*)&mem)[2] = 1;//1 =IMGUI_FLAGS_ALPHA_BLEND
+			((uint8_t*)&mem)[2] = IMGUI_FLAGS_ALPHA_BLEND;
 			((uint8_t*)&mem)[3] = 0;
 			auto TexID = (ImTextureID)mem;
 
 			ImGui::Image(TexID, ImGui::GetWindowSize());
+
+			ImGui::PopStyleVar();
+
 			ImGui::End();
 		}
+
 	}
 
 	void GameView::OnExit()

@@ -25,7 +25,7 @@ namespace FireEngine.Editor
 
         public void OnGUI()
         {
-            ImGui.Text("this is a about windows.");
+            ImGui.Text("this is a about windows中文.");
             if (ImGui.Button("close me!"))
                 Hide();
         }

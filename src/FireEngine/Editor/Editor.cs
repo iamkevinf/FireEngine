@@ -8,6 +8,7 @@ namespace FireEngine.Editor
     class Editor
     {
         static bool bShowDemo = false;
+        static bool bShowState = false;
         Dictionary<Type, iWindow> windows = new Dictionary<Type, iWindow>();
         Menu menu = new Menu();
 
@@ -18,6 +19,10 @@ namespace FireEngine.Editor
 
         void OnInit()
         {
+            ImGuiIOPtr io = ImGui.GetIO();
+            ImFontPtr font = io.Fonts.AddFontFromFileTTF(
+                "fonts/AlibabaPH-Regular.otf", 14f, null, io.Fonts.GetGlyphRangesChineseFull());
+
             menu.CreateMenuGUI("Test/test secondary menu", OnMenuGUI_TestSecondaryMenu);
 
             menu.CreateMenuEvent("Help/About", () =>
@@ -49,7 +54,6 @@ namespace FireEngine.Editor
                         win.OnGUI();
                         ImGui.End();
                     }
-
                 }
             }
 
@@ -62,6 +66,7 @@ namespace FireEngine.Editor
                 if (ImGui.BeginMenu("Demo"))
                 {
                     ImGui.MenuItem("show demo", "", ref bShowDemo);
+                    ImGui.MenuItem("show state", "", ref bShowState);
                     ImGui.EndMenu();
                 }
                 ImGui.EndMainMenuBar();
@@ -70,6 +75,11 @@ namespace FireEngine.Editor
             if (bShowDemo)
             {
                 ImGui.ShowDemoWindow();
+            }
+
+            if(bShowState)
+            {
+                AppNative.feApp_ShowState();
             }
 
         }
@@ -98,6 +108,7 @@ namespace FireEngine.Editor
             ImGuiWindowFlags window_flags = ImGuiWindowFlags.MenuBar | ImGuiWindowFlags.NoDocking;
             window_flags |= ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove;
             window_flags |= ImGuiWindowFlags.NoBringToFrontOnFocus | ImGuiWindowFlags.NoNavFocus;
+
 
             if (ImGui.Begin("DockWindow", window_flags))
             {

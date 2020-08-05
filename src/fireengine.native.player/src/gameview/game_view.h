@@ -7,7 +7,7 @@ namespace FireEngine
 	{
 	public:
 		static void OnInit();
-		static void OnTick();
+		static void OnTick(float dTime);
 		static void OnEditorGUI();
 		static void OnExit();
 	};
