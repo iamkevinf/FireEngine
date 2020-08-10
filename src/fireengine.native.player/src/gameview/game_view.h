@@ -1,6 +1,11 @@
 #ifndef __GAME_VIEW_HPP
 #define __GAME_VIEW_HPP
 
+namespace bgfx
+{
+	struct TextureHandle;
+}
+
 namespace FireEngine
 {
 	class GameView
@@ -8,8 +13,8 @@ namespace FireEngine
 	public:
 		static void OnInit();
 		static void OnTick(float dTime);
-		static void OnEditorGUI();
 		static void OnExit();
+		static bgfx::TextureHandle GetTexture();
 	};
 }
 

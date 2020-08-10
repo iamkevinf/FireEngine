@@ -5,7 +5,7 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <OutputPath>$(SolutionDir)bin\$(Configuration)</OutputPath>
     <StartupObject></StartupObject>
-    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <RunPostBuildEvent>Always</RunPostBuildEvent>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -19,6 +19,6 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="COPY  &quot;$(SolutionDir)bin\$(ConfigurationName)\*.*&quot; &quot;$(OutDir)\*&quot;" />
+    <Exec Command="COPY  &quot;$(SolutionDir)bin\$(ConfigurationName)\*.*&quot; &quot;$(OutDir)\*&quot;&#xD;&#xA;" />
   </Target>
 </Project>

@@ -18,7 +18,6 @@ namespace FireEngine
 {
 	bgfx::TextureHandle g_frame_tex;
 	bgfx::FrameBufferHandle g_framebuffer;
-	bgfx::TextureHandle g_ctex;
 	bgfx::VertexLayout g_layout;
 	bgfx::ProgramHandle g_program;
 
@@ -87,10 +86,6 @@ namespace FireEngine
 		);
 		g_ib = bgfx::createIndexBuffer(
 			bgfx::makeRef(s_cubeTriList, sizeof(s_cubeTriList)));
-		auto dvb = bgfx::createDynamicVertexBuffer(bgfx::makeRef(s_cubeVertices, sizeof(s_cubeVertices)), g_layout);
-		bgfx::update(dvb, 0, bgfx::makeRef(s_cubeVertices, sizeof(s_cubeVertices)));
-
-		g_ctex = loadTexture("images/test_texture2.png");
 	}
 
 	void GameView::OnTick(float dTime)
@@ -102,7 +97,14 @@ namespace FireEngine
 		bgfx::setViewClear(viewId, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH, 0x000000FF);
 		bgfx::touch(viewId);
 
-		glm::mat4 view = glm::lookAt(glm::vec3(0.0f, 0.0f, -35.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		static glm::vec3 eye = glm::vec3(0.0f, 0.0f, -35.0f);
+		ImGuiIO io = ImGui::GetIO();
+		if (io.WantCaptureMouse && io.MouseClicked[0])
+			eye.z++;
+		else if (io.WantCaptureMouse && io.MouseClicked[1])
+			eye.z--;
+
+		glm::mat4 view = glm::lookAt(eye, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		glm::mat4 proj = glm::perspective(glm::radians(60.0f), float(1024) / 1024, 0.1f, 100.0f);
 
 		// Set view and projection matrix for view 10.
@@ -141,30 +143,44 @@ namespace FireEngine
 
 	}
 
-	void GameView::OnEditorGUI()
-	{
-		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
-
-		if (ImGui::Begin("game view", 0, ImGuiWindowFlags_NoCollapse))
-		{
-			uint32_t mem = 0;
-			((uint16_t*)&mem)[0] = g_frame_tex.idx;
-			((uint8_t*)&mem)[2] = IMGUI_FLAGS_ALPHA_BLEND;
-			((uint8_t*)&mem)[3] = 0;
-			auto TexID = (ImTextureID)mem;
-
-			ImGui::Image(TexID, ImGui::GetWindowSize());
-
-			ImGui::PopStyleVar();
-
-			ImGui::End();
-		}
-
-	}
-
 	void GameView::OnExit()
 	{
+		if (bgfx::isValid(g_vb))
+		{
+			bgfx::destroy(g_vb);
+			g_vb = BGFX_INVALID_HANDLE;
+		}
+		if (bgfx::isValid(g_ib))
+		{
+			bgfx::destroy(g_ib);
+			g_ib = BGFX_INVALID_HANDLE;
+		}
+		if (bgfx::isValid(g_program))
+		{
+			bgfx::destroy(g_program);
+			g_program = BGFX_INVALID_HANDLE;
+		}
 
+		if (bgfx::isValid(g_frame_tex))
+		{
+			bgfx::destroy(g_frame_tex);
+			g_frame_tex = BGFX_INVALID_HANDLE;
+		}
+		if (bgfx::isValid(g_framebuffer))
+		{
+			bgfx::destroy(g_framebuffer);
+			g_framebuffer = BGFX_INVALID_HANDLE;
+		}
+	}
+
+
+	bgfx::TextureHandle GameView::GetTexture()
+	{
+		union { struct { bgfx::TextureHandle handle; uint8_t flags; uint8_t mip; } s; ImTextureID id; } tex;
+		tex.s.handle = g_frame_tex;
+		tex.s.flags = IMGUI_FLAGS_ALPHA_BLEND;
+		tex.s.mip = 0;
+		return tex.s.handle;
 	}
 
 }

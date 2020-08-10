@@ -6,11 +6,11 @@
         {
             get;
         }
-        bool inwindowlist
+        bool isInWIndowList
         {
             get;
         }
-        bool candock
+        bool canDock
         {
             get;
         }

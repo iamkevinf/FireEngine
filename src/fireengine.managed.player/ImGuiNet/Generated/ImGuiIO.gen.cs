@@ -222,6 +222,10 @@ namespace ImGuiNET
                 Util.Free(native_str);
             }
         }
+        public void SetFontDefault(ImFontPtr fontPtr)
+        {
+            NativePtr->FontDefault = fontPtr.NativePtr;
+        }
         public void ClearInputCharacters()
         {
             ImGuiNative.ImGuiIO_ClearInputCharacters(NativePtr);

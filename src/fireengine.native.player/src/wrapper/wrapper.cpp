@@ -6,6 +6,7 @@
 
 #include "../app/app.h"
 #include "../loader/loader.h"
+#include "../gameview/game_view.h"
 
 namespace FireEngine
 {
@@ -140,6 +141,11 @@ namespace FireEngine
 
 		ImGui::End();
 
+	}
+
+	bgfx::TextureHandle feGetGameViewTexture()
+	{
+		return GameView::GetTexture();
 	}
 
 }

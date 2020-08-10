@@ -286,9 +286,9 @@ namespace ImGuiNET
         public static extern float igGetTreeNodeToLabelSpacing();
         [DllImport(ImGuiDllName, CallingConvention = CallingConvention.Cdecl)]
         public static extern byte* igGetVersion();
-        [DllImport(ImGuiDllName, CallingConvention = CallingConvention.Cdecl, EntryPoint = "igGetWindowContentRegionMax_nonUDT2")]
+        [DllImport(ImGuiDllName, CallingConvention = CallingConvention.Cdecl)]
         public static extern Vector2 igGetWindowContentRegionMax();
-        [DllImport(ImGuiDllName, CallingConvention = CallingConvention.Cdecl, EntryPoint = "igGetWindowContentRegionMin_nonUDT2")]
+        [DllImport(ImGuiDllName, CallingConvention = CallingConvention.Cdecl)]
         public static extern Vector2 igGetWindowContentRegionMin();
         [DllImport(ImGuiDllName, CallingConvention = CallingConvention.Cdecl)]
         public static extern float igGetWindowContentRegionWidth();

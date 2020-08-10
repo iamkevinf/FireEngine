@@ -9,6 +9,7 @@ namespace FireEngine.Editor
     {
         static bool bShowDemo = false;
         static bool bShowState = false;
+        static bool bShowFont = false;
         Dictionary<Type, iWindow> windows = new Dictionary<Type, iWindow>();
         Menu menu = new Menu();
 
@@ -19,12 +20,34 @@ namespace FireEngine.Editor
 
         void OnInit()
         {
+            _OnInitFont();
+
+            _OnCreateWindow();
+
+            _OnCreateMenu();
+        }
+
+        void _OnInitFont()
+        {
             ImGuiIOPtr io = ImGui.GetIO();
+            ImFontPtr defaultFont = io.Fonts.AddFontDefault();
             ImFontPtr font = io.Fonts.AddFontFromFileTTF(
-                "fonts/AlibabaPH-Regular.otf", 14f, null, io.Fonts.GetGlyphRangesChineseFull());
+                "fonts/AlibabaPH-Regular.otf", 16f, null, io.Fonts.GetGlyphRangesChineseFull());
+            io.SetFontDefault(defaultFont);
+        }
 
+        void _OnCreateWindow()
+        {
+            CreateWindow(typeof(WindowGameView));
+            CreateWindow(typeof(WindowSceneView));
+            CreateWindow(typeof(WindowInspector));
+            CreateWindow(typeof(WindowHierarchy));
+        }
+
+        void _OnCreateMenu()
+        {
             menu.CreateMenuGUI("Test/test secondary menu", OnMenuGUI_TestSecondaryMenu);
-
+            menu.CreateMenuGUI("Windows/Views", OnMenuGUI_WindowsView);
             menu.CreateMenuEvent("Help/About", () =>
             {
                 CreateWindow(typeof(WindowAbout)).Show();
@@ -42,7 +65,7 @@ namespace FireEngine.Editor
                 {
                     bool open = true;
                     ImGuiWindowFlags flag = ImGuiWindowFlags.NoCollapse;
-                    if (!win.candock) flag |= ImGuiWindowFlags.NoDocking;
+                    if (!win.canDock) flag |= ImGuiWindowFlags.NoDocking;
                     if (ImGui.Begin(win.title, ref open, flag))
                     {
                         if (open == false)
@@ -52,8 +75,8 @@ namespace FireEngine.Editor
                             continue;
                         }
                         win.OnGUI();
-                        ImGui.End();
                     }
+                    ImGui.End();
                 }
             }
 
@@ -67,6 +90,7 @@ namespace FireEngine.Editor
                 {
                     ImGui.MenuItem("show demo", "", ref bShowDemo);
                     ImGui.MenuItem("show state", "", ref bShowState);
+                    ImGui.MenuItem("show font", "", ref bShowFont);
                     ImGui.EndMenu();
                 }
                 ImGui.EndMainMenuBar();
@@ -77,9 +101,14 @@ namespace FireEngine.Editor
                 ImGui.ShowDemoWindow();
             }
 
-            if(bShowState)
+            if (bShowState)
             {
                 AppNative.feApp_ShowState();
+            }
+
+            if (bShowFont)
+            {
+                ImGui.ShowFontSelector("font selector");
             }
 
         }
@@ -95,6 +124,24 @@ namespace FireEngine.Editor
             ImGui.MenuItem("SecondaryMenu B");
         }
 
+        void OnMenuGUI_WindowsView()
+        {
+            foreach (var iter in windows)
+            {
+                iWindow window = iter.Value;
+                bool visible = window.visible;
+                if (window.isInWIndowList && ImGui.MenuItem(window.title, "", ref visible))
+                {
+                    if (visible != window.visible)
+                    {
+                        if (visible)
+                            window.Show();
+                        else
+                            window.Hide();
+                    }
+                }
+            }
+        }
 
         void DrawDock()
         {
@@ -109,7 +156,6 @@ namespace FireEngine.Editor
             window_flags |= ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove;
             window_flags |= ImGuiWindowFlags.NoBringToFrontOnFocus | ImGuiWindowFlags.NoNavFocus;
 
-
             if (ImGui.Begin("DockWindow", window_flags))
             {
                 uint rootdockid = ImGui.GetID("rootdock");
@@ -120,7 +166,6 @@ namespace FireEngine.Editor
 
                 ImGui.End();
             }
-
         }
 
         public iWindow CreateWindow(Type type)

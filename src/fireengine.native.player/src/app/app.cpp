@@ -913,11 +913,11 @@ int WindowMain(const char16_t* title, void(*OnInit)(), void(*OnGUI)(), void(*OnE
         lastTime = time;
 
         FireEngine::GameView::OnTick(dt);
-        PlatformFrame(OnGUI, FireEngine::GameView::OnEditorGUI);
+        PlatformFrame(OnGUI);
     }
 
-    PlatformFinalize();
     FireEngine::GameView::OnExit();
+    PlatformFinalize();
     OnExit();
 
     ::DestroyWindow(hwnd);

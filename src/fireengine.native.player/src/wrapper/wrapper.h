@@ -16,6 +16,8 @@ namespace FireEngine
 
 	EXPORT_API void feApp_ShowState();
 
+	EXPORT_API bgfx::TextureHandle feGetGameViewTexture();
+
 }
 
 #endif // __WRAPPER_H__

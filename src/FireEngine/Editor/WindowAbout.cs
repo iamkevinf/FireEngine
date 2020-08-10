@@ -5,39 +5,36 @@ using System.Text;
 
 namespace FireEngine.Editor
 {
-    class WindowAbout : iWindow
+    class WindowAbout : WindowBase
     {
-        public WindowAbout()
+        public override void Init()
         {
             visible = false;
         }
 
-        public bool inwindowlist => false;
-        public bool visible
+        public override string title => "about";
+
+
+        public override void OnGUI()
         {
-            get;
-            private set;
-        }
+            var fonts = ImGui.GetIO().Fonts.Fonts;
+            for (var i = 0; i < fonts.Size; i++)
+            {
+                var font = fonts[i];
+                ImGui.PushFont(font);//临时换字体
+                ImFontGlyphPtr fontGlyphPtr = font.FindGlyphNoFallback('中');
+                unsafe
+                {
+                    if (fontGlyphPtr.NativePtr != null)
+                        ImGui.Text("这是一个中文 \"关于\" 窗口。");
+                    else
+                        ImGui.Text("this is a english \"about\" window.");
+                }
+                ImGui.PopFont();
+            }
 
-        public bool candock => false;
-        public string title => "about";
-
-
-        public void OnGUI()
-        {
-            ImGui.Text("this is a about windows中文.");
             if (ImGui.Button("close me!"))
                 Hide();
-        }
-
-        public void Hide()
-        {
-            visible = false;
-        }
-
-        public void Show()
-        {
-            visible = true;
         }
     }
 }

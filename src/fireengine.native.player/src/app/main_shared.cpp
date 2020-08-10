@@ -61,7 +61,7 @@ void PlatformInit(void* window, int w, int h)
     ImGui_Implbgfx_Init();
 }
 
-void PlatformFrame(void(*OnGUI)(), void(*OnEditorGUIGameView)())
+void PlatformFrame(void(*OnGUI)())
 {
     ImGuiIO& io = ImGui::GetIO();
 
@@ -77,7 +77,6 @@ void PlatformFrame(void(*OnGUI)(), void(*OnEditorGUIGameView)())
     ImGui::NewFrame();
 
     OnGUI();
-    OnEditorGUIGameView();
 
     // Rendering
     ImGui::EndFrame();
