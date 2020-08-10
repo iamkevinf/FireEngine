@@ -5970,12 +5970,14 @@ namespace ImGuiNET
         }
         public static Vector2 GetWindowContentRegionMax()
         {
-            Vector2 ret = ImGuiNative.igGetWindowContentRegionMax();
+            Vector2 ret;
+            ImGuiNative.igGetWindowContentRegionMax(&ret);
             return ret;
         }
         public static Vector2 GetWindowContentRegionMin()
         {
-            Vector2 ret = ImGuiNative.igGetWindowContentRegionMin();
+            Vector2 ret;
+            ImGuiNative.igGetWindowContentRegionMin(&ret);
             return ret;
         }
         public static float GetWindowContentRegionWidth()

@@ -39,12 +39,6 @@
     <ClCompile Include="..\..\3rdparty\imgui_docking\imgui_draw.cpp">
       <Filter>imgui</Filter>
     </ClCompile>
-    <ClCompile Include="src\app\main_shared.cpp">
-      <Filter>app</Filter>
-    </ClCompile>
-    <ClCompile Include="src\app\app.cpp">
-      <Filter>app</Filter>
-    </ClCompile>
     <ClCompile Include="src\imgui\imgui_utils.cpp">
       <Filter>imgui</Filter>
     </ClCompile>
@@ -69,14 +63,14 @@
     <ClCompile Include="src\gameview\game_view.cpp">
       <Filter>gameview</Filter>
     </ClCompile>
+    <ClCompile Include="src\app\main_shared.cpp">
+      <Filter>app</Filter>
+    </ClCompile>
+    <ClCompile Include="src\app\app.cpp">
+      <Filter>app</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\app\app.h">
-      <Filter>app</Filter>
-    </ClInclude>
-    <ClInclude Include="src\app\main_shared.h">
-      <Filter>app</Filter>
-    </ClInclude>
     <ClInclude Include="src\imgui\imgui_utils.h">
       <Filter>imgui</Filter>
     </ClInclude>
@@ -97,6 +91,12 @@
     </ClInclude>
     <ClInclude Include="src\gameview\game_view.h">
       <Filter>gameview</Filter>
+    </ClInclude>
+    <ClInclude Include="src\app\app.h">
+      <Filter>app</Filter>
+    </ClInclude>
+    <ClInclude Include="src\app\main_shared.h">
+      <Filter>app</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

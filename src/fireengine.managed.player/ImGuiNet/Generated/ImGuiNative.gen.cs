@@ -287,9 +287,9 @@ namespace ImGuiNET
         [DllImport(ImGuiDllName, CallingConvention = CallingConvention.Cdecl)]
         public static extern byte* igGetVersion();
         [DllImport(ImGuiDllName, CallingConvention = CallingConvention.Cdecl)]
-        public static extern Vector2 igGetWindowContentRegionMax();
+        public static extern void igGetWindowContentRegionMax(Vector2* pOut);
         [DllImport(ImGuiDllName, CallingConvention = CallingConvention.Cdecl)]
-        public static extern Vector2 igGetWindowContentRegionMin();
+        public static extern void igGetWindowContentRegionMin(Vector2* pOut);
         [DllImport(ImGuiDllName, CallingConvention = CallingConvention.Cdecl)]
         public static extern float igGetWindowContentRegionWidth();
         [DllImport(ImGuiDllName, CallingConvention = CallingConvention.Cdecl)]

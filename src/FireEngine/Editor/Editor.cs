@@ -166,6 +166,7 @@ namespace FireEngine.Editor
 
                 ImGui.End();
             }
+
         }
 
         public iWindow CreateWindow(Type type)

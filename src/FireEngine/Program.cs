@@ -9,6 +9,7 @@ namespace FireEngine
         static void Main(string[] args)
         {
             Editor.Editor app = new Editor.Editor();
+            //Editor.App app = new Editor.App();
             app.Run();
         }
 

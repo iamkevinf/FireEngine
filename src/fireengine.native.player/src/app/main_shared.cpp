@@ -82,7 +82,7 @@ void PlatformFrame(void(*OnGUI)())
     ImGui::EndFrame();
 
     ImGui::Render();
-    ImGui_Implbgfx_RenderDrawData(0, ImGui::GetDrawData());
+    ImGui_Implbgfx_RenderDrawData(ImGui::GetDrawData());
     bgfx::frame();
 
     // Update and Render additional Platform Windows
