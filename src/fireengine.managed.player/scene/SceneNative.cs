@@ -37,8 +37,8 @@ namespace FireEngine
         //场景名字
         [DllImport(FireEngineNative.FireEngineDllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         public static extern void SceneSetName(SceneHandle scene, string name);
-        [DllImport(FireEngineNative.FireEngineDllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
-        public static extern IntPtr SceneGetName(SceneHandle scene);
+        [DllImport(FireEngineNative.FireEngineDllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode, EntryPoint="SceneGetName")]
+        public static extern IntPtr SceneGetNameNative(SceneHandle scene);
 
         //场景是否活动
         [DllImport(FireEngineNative.FireEngineDllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]

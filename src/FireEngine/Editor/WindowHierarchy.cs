@@ -44,31 +44,24 @@ namespace FireEngine.Editor
                 for (int i = 0; i < SceneNative.SceneCount(); ++i)
                 {
                     SceneNative.SceneHandle handle = SceneNative.SceneFindByIndex(i);
-                    var name = SceneNative.SceneGetName(handle);
-                    var active = SceneNative.SceneGetActive(handle);
+                    string name = SceneNative.SceneGetName(handle);
+                    SceneNative.ActiveOption active = SceneNative.SceneGetActive(handle);
                     string scenekey = string.Format("scene::{0}", i);
-
-                    string namestr;
-                    unsafe
-                    {
-                        namestr = new string((char*)name);
-                    }
-
 
                     ImGuiTreeNodeFlags select = scenekey == selectkey ? ImGuiTreeNodeFlags.Selected : ImGuiTreeNodeFlags.None;
 
                     bool selected = false;
 
-                    if (ImGui.TreeNodeEx(string.Format("{0}|{1}_{2}", namestr, active, i), select))
+                    if (ImGui.TreeNodeEx(string.Format("{0}|{1}_{2}", name, active, i), select))
                     {
-                        OnGUI_SceneMenu(handle, scenekey, namestr, active == SceneNative.ActiveOption.Active);
+                        OnGUI_SceneMenu(handle, scenekey, name, active == SceneNative.ActiveOption.Active);
 
                         var root = SceneNative.SceneGetRoot(handle);
                         ImGui.TreePop();
                     }
                     else
                     {
-                        OnGUI_SceneMenu(handle, scenekey, namestr, active == SceneNative.ActiveOption.Active);
+                        OnGUI_SceneMenu(handle, scenekey, name, active == SceneNative.ActiveOption.Active);
                     }
 
                     if (!selected && ImGui.IsItemClicked())
