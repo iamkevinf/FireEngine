@@ -4,7 +4,7 @@
 #include "bgfx/bgfx.h"
 #include "bimg/bimg.h"
 
-#define EXPORT_API extern "C" __declspec(dllexport)
+#include "../exportapi.h"
 
 namespace FireEngine
 {

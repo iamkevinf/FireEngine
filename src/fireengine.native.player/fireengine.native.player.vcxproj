@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -28,21 +28,28 @@
     <ClCompile Include="src\app\main_shared.cpp" />
     <ClCompile Include="src\filesystem\FileSystem.cpp" />
     <ClCompile Include="src\gameview\game_view.cpp" />
+    <ClCompile Include="src\graphics\transform.cpp" />
     <ClCompile Include="src\imgui\imgui_impl_bgfx.cpp" />
     <ClCompile Include="src\imgui\imgui_utils.cpp" />
     <ClCompile Include="src\imgui\imgui_wrapper.cpp" />
     <ClCompile Include="src\loader\loader.cpp" />
+    <ClCompile Include="src\object\object.cpp" />
+    <ClCompile Include="src\scene\scene.cpp" />
     <ClCompile Include="src\wrapper\wrapper.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\app\app.h" />
     <ClInclude Include="src\app\main_shared.h" />
+    <ClInclude Include="src\exportapi.h" />
     <ClInclude Include="src\filesystem\FileSystem.h" />
     <ClInclude Include="src\gameview\game_view.h" />
+    <ClInclude Include="src\graphics\transform.h" />
     <ClInclude Include="src\imgui\imgui_impl_bgfx.h" />
     <ClInclude Include="src\imgui\imgui_utils.h" />
     <ClInclude Include="src\imgui\imgui_wrapper.h" />
     <ClInclude Include="src\loader\loader.h" />
+    <ClInclude Include="src\object\object.h" />
+    <ClInclude Include="src\scene\scene.h" />
     <ClInclude Include="src\wrapper\wrapper.h" />
   </ItemGroup>
   <ItemGroup>

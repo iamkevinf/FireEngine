@@ -1,6 +1,7 @@
 ﻿using ImGuiNET;
 using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Text;
 
 namespace FireEngine.Editor
@@ -66,6 +67,7 @@ namespace FireEngine.Editor
                     bool open = true;
                     ImGuiWindowFlags flag = ImGuiWindowFlags.NoCollapse;
                     if (!win.canDock) flag |= ImGuiWindowFlags.NoDocking;
+                    ImGui.SetNextWindowSizeConstraints(Vector2.One * 100, Vector2.One * 10240);
                     if (ImGui.Begin(win.title, ref open, flag))
                     {
                         if (open == false)

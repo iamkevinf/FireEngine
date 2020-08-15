@@ -25,6 +25,15 @@
     <Filter Include="buildin_shader">
       <UniqueIdentifier>{e66d9338-6b38-469e-bb19-f17b539fa8da}</UniqueIdentifier>
     </Filter>
+    <Filter Include="scene">
+      <UniqueIdentifier>{1b1d6d83-3fe9-4de3-ac6a-29e3414d52f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="graphics">
+      <UniqueIdentifier>{9dd19e19-8e7d-49e5-bd4e-d62b164eb85b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="object">
+      <UniqueIdentifier>{636eb084-6ba4-4f5e-bbf1-fbfe0373b2e6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\3rdparty\imgui_docking\examples\libs\gl3w\GL\gl3w.c">
@@ -69,6 +78,15 @@
     <ClCompile Include="src\app\app.cpp">
       <Filter>app</Filter>
     </ClCompile>
+    <ClCompile Include="src\scene\scene.cpp">
+      <Filter>scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\transform.cpp">
+      <Filter>graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\object\object.cpp">
+      <Filter>object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\imgui\imgui_utils.h">
@@ -97,6 +115,16 @@
     </ClInclude>
     <ClInclude Include="src\app\main_shared.h">
       <Filter>app</Filter>
+    </ClInclude>
+    <ClInclude Include="src\exportapi.h" />
+    <ClInclude Include="src\scene\scene.h">
+      <Filter>scene</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\transform.h">
+      <Filter>graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\object\object.h">
+      <Filter>object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
