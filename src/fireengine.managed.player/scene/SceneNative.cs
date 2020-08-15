@@ -11,10 +11,6 @@ namespace FireEngine
         {
             public Int16 idx;
         }
-        public struct TransformHandle
-        {
-            public Int16 idx;
-        }
 
         public enum ActiveOption
         {
@@ -48,7 +44,7 @@ namespace FireEngine
 
 
         [DllImport(FireEngineNative.FireEngineDllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
-        public static extern TransformHandle SceneGetRoot(SceneHandle scene);
+        public static extern TransformNative.TransformHandle SceneGetRoot(SceneHandle scene);
 
     }
 }

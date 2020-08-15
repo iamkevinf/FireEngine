@@ -1,5 +1,10 @@
 #include "object.h"
 
+#include "../graphics/transform.h"
+
+#include <memory>
+#include <iostream>
+
 namespace FireEngine
 {
 	std::map<uint16_t, ObjectWeakPtr> ObjectManager::objPool;
@@ -22,5 +27,12 @@ namespace FireEngine
 	ObjectPtr ObjectManager::Get(ObjectHandle handle)
 	{
 		return ObjectManager::objPool[handle.idx].lock();
+	}
+
+	TransformPtr ObjectManager::Get(TransformHandle handle)
+	{
+		ObjectPtr objPtr = ObjectManager::objPool[handle.idx].lock();
+		TransformPtr ret = std::static_pointer_cast<Transform>(objPtr);
+		return ret;
 	}
 }

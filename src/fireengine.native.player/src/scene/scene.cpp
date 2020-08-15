@@ -9,7 +9,47 @@ namespace FireEngine
 	void Scene::Init()
 	{
 		root = TransformPtr(new Transform());
+		root->name = u"Empty";
 		ObjectManager::Register(root, ObjectType::Transform);
+	}
+
+	void SceneManager::AddScene(ScenePtr scene)
+	{
+		SceneManager::scenePool.push_back(scene);
+	}
+
+	void SceneManager::RemoveScene(ScenePtr scene)
+	{
+		SceneManager::scenePool.erase(
+			std::find(
+				SceneManager::scenePool.begin(),
+				SceneManager::scenePool.end(),
+				scene)
+		);
+	}
+
+	void SceneManager::RemoveScene(SceneHandle handle)
+	{
+		ScenePtr scene = SceneManager::GetScene(handle);
+
+		SceneManager::RemoveScene(scene);
+	}
+
+	ScenePtr SceneManager::GetScene(SceneHandle handle)
+	{
+		ObjectHandle* objHandle = reinterpret_cast<ObjectHandle*>(&handle);
+		auto scene = ObjectManager::Get(*objHandle);
+		if (scene == nullptr)
+			return nullptr;
+
+		Scene* sptr = (Scene*)scene.get();
+		for (auto iter = SceneManager::scenePool.begin(); iter != SceneManager::scenePool.end();)
+		{
+			if (iter->get() == sptr)
+				return *iter;
+		}
+
+		return nullptr;
 	}
 
 	EXPORT_API SceneHandle SceneCreate(const char16_t* name)
@@ -18,7 +58,7 @@ namespace FireEngine
 		ObjectManager::Register(scene, ObjectType::Scene);
 		scene->name = name;
 		scene->active = ActiveOption::Active;
-		SceneManager::scenePool.push_back(scene);
+		SceneManager::AddScene(scene);
 
 		scene->Init();
 		return { scene->objectID };
@@ -26,19 +66,7 @@ namespace FireEngine
 
 	EXPORT_API void SceneRemove(SceneHandle handle)
 	{
-		ObjectHandle* objHandle = reinterpret_cast<ObjectHandle*>(&handle);
-		auto scene = ObjectManager::Get(*objHandle);
-		if (scene == nullptr)
-			return;
-
-		Scene* sptr = (Scene*)scene.get();
-		for (auto iter = SceneManager::scenePool.begin(); iter != SceneManager::scenePool.end();)
-		{
-			if (iter->get() == sptr)
-				iter = SceneManager::scenePool.erase(iter);
-			else
-				iter++;
-		}
+		SceneManager::RemoveScene(handle);
 	}
 
 	EXPORT_API int SceneCount()

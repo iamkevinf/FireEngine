@@ -44,6 +44,12 @@ namespace FireEngine
 	class SceneManager
 	{
 	public:
+		static void AddScene(ScenePtr scene);
+		static void RemoveScene(ScenePtr scene);
+		static void RemoveScene(SceneHandle handle);
+		static ScenePtr GetScene(SceneHandle handle);
+
+	public:
 		static std::vector<ScenePtr> scenePool;
 	};
 }

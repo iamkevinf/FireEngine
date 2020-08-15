@@ -26,6 +26,9 @@ namespace FireEngine
 
 	typedef std::shared_ptr<IObject> ObjectPtr;
 	typedef std::weak_ptr<IObject> ObjectWeakPtr;
+	typedef std::shared_ptr<class Transform> TransformPtr;
+
+	struct TransformHandle;
 
 	class ObjectManager
 	{
@@ -33,6 +36,7 @@ namespace FireEngine
 		static ObjectHandle Register(ObjectPtr obj, ObjectType type);
 		static void UnRegister(ObjectHandle handle);
 		static ObjectPtr Get(ObjectHandle handle);
+		static TransformPtr Get(TransformHandle handle);
 
 	public:
 		static std::map<uint16_t, ObjectWeakPtr> objPool;
