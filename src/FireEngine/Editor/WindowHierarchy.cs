@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using static FireEngine.TransformNative;
+using FireEngine;
 
 namespace FireEngine.Editor
 {
@@ -50,43 +50,6 @@ namespace FireEngine.Editor
 
         }
 
-        void DragTransform(TransformHandle handle, string name)
-        {
-            if (ImGui.BeginDragDropTarget())
-            {
-                var payload = ImGui.AcceptDragDropPayload("_TREENODE");
-                unsafe
-                {
-                    if (payload.NativePtr != null)
-                    {
-                        IntPtr data = payload.Data;
-
-                        int size = sizeof(int);
-                        byte[] managedArray = new byte[size];
-                        System.Runtime.InteropServices.Marshal.Copy(data, managedArray, 0, size);
-                        UInt16 from = BitConverter.ToUInt16(managedArray);
-                        TransformHandle fromHandle;
-                        fromHandle.idx = from;
-                        TransformMove(fromHandle, handle);
-                    }
-                }
-
-                ImGui.EndDragDropTarget();
-            }
-
-            if (ImGui.BeginDragDropSource())
-            {
-                IntPtr data;
-                unsafe
-                {
-                    data = (IntPtr)(&handle.idx);
-                }
-                ImGui.SetDragDropPayload("_TREENODE", data, sizeof(UInt16));
-                ImGui.Text(name);
-                ImGui.EndDragDropSource();
-            }
-        }
-
         void OnGUI_TransformTree(TransformNative.TransformHandle handle, string selectppkey)
         {
             int count = TransformNative.TransformChildCount(handle);
@@ -101,7 +64,8 @@ namespace FireEngine.Editor
                     | (TransformNative.TransformChildCount(item) == 0 ? ImGuiTreeNodeFlags.Leaf : ImGuiTreeNodeFlags.None);
                 if (ImGui.TreeNodeEx(name, select))
                 {
-                    DragTransform(item, name);
+                    DragDropManager.BeginDragDropSource(name, BitConverter.GetBytes(handle.idx), sizeof(UInt16), DragDropWindow.Hierarchy, DragDropTree.Transforms, "_DDTreeWindow", ImGuiDragDropFlags.None);
+                    DragDropManager.BeginDragDropTarget("_DDTreeWindow", ImGuiDragDropFlags.None, null);
 
                     OnGUI_TransfromMenu(item, name);
                     OnGUI_TransformTree(item, selectitemkey);
@@ -111,6 +75,7 @@ namespace FireEngine.Editor
                 {
                     OnGUI_TransfromMenu(item, name);
                 }
+
             }
         }
 
@@ -140,9 +105,13 @@ namespace FireEngine.Editor
 
                     ImGuiTreeNodeFlags select = ImGuiTreeNodeFlags.DefaultOpen
                         | (TransformNative.TransformChildCount(root) == 0 ? ImGuiTreeNodeFlags.Leaf : ImGuiTreeNodeFlags.None);
-                    if (ImGui.TreeNodeEx(string.Format("{0} {1} {2}", scenename, active, i), select))
+                    string name = string.Format("{0} {1} {2}", scenename, active, i);
+                    if (ImGui.TreeNodeEx(name, select))
                     {
                         OnGUI_SceneMenu(handle, scenekey, scenename, active == SceneNative.ActiveOption.Active);
+
+                        DragDropManager.BeginDragDropSource(name, BitConverter.GetBytes(handle.idx), sizeof(UInt16), DragDropWindow.Hierarchy, DragDropTree.Scenes, "_DDTreeWindow", ImGuiDragDropFlags.None);
+                        DragDropManager.BeginDragDropTarget("_DDTreeWindow", ImGuiDragDropFlags.None, null);
 
                         OnGUI_TransformTree(root, scenekey);
 
@@ -153,8 +122,8 @@ namespace FireEngine.Editor
                         OnGUI_SceneMenu(handle, scenekey, scenename, active == SceneNative.ActiveOption.Active);
                     }
 
-
                 }
+
                 ImGui.TreePop();
             }
         }
