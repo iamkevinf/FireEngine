@@ -9,7 +9,7 @@ namespace FireEngine
     {
         public struct SceneHandle
         {
-            public Int16 idx;
+            public UInt16 idx;
         }
 
         public enum ActiveOption

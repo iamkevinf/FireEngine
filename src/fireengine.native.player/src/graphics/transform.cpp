@@ -23,10 +23,8 @@ namespace FireEngine
 
 	EXPORT_API void TransformRemove(TransformHandle handle)
 	{
-		ObjectHandle* objHandle = reinterpret_cast<ObjectHandle*>(&handle);
-		auto object = ObjectManager::Get(*objHandle);
+		auto object = ObjectManager::Get(handle);
 		Transform* pTransform = (Transform*)object.get();
-		pTransform->parent.reset();
 
 		auto parent = pTransform->parent.lock();
 		for (auto iter = parent->children.begin(); iter != parent->children.end(); ++iter)
@@ -41,8 +39,7 @@ namespace FireEngine
 
 	EXPORT_API int TransformChildCount(TransformHandle handle)
 	{
-		ObjectHandle* objHandle = reinterpret_cast<ObjectHandle*>(&handle);
-		auto object = ObjectManager::Get(*objHandle);
+		auto object = ObjectManager::Get(handle);
 		Transform* pTransform = (Transform*)object.get();
 		return (int)pTransform->children.size();
 	}
@@ -79,8 +76,7 @@ namespace FireEngine
 
 	EXPORT_API TransformHandle TransformFindChildByIndex(TransformHandle handle, int index)
 	{
-		ObjectHandle* objHandle = reinterpret_cast<ObjectHandle*>(&handle);
-		auto object = ObjectManager::Get(*objHandle);
+		auto object = ObjectManager::Get(handle);
 		Transform* pTransform = (Transform*)object.get();
 
 		auto child = pTransform->children[index];
@@ -89,16 +85,14 @@ namespace FireEngine
 
 	EXPORT_API void TransformSetName(TransformHandle handle, const char16_t* name)
 	{
-		ObjectHandle* objHandle = reinterpret_cast<ObjectHandle*>(&handle);
-		auto object = ObjectManager::Get(*objHandle);
+		auto object = ObjectManager::Get(handle);
 		Transform* pTransform = (Transform*)object.get();
 		pTransform->name = name;
 	}
 
 	EXPORT_API const char16_t* TransformGetName(TransformHandle handle)
 	{
-		ObjectHandle* objHandle = reinterpret_cast<ObjectHandle*>(&handle);
-		auto object = ObjectManager::Get(*objHandle);
+		auto object = ObjectManager::Get(handle);
 		Transform* pTransform = (Transform*)object.get();
 		return pTransform->name.c_str();
 	}
@@ -106,8 +100,7 @@ namespace FireEngine
 
 	EXPORT_API void TransformSetActive(TransformHandle handle, ActiveOption active)
 	{
-		ObjectHandle* objHandle = reinterpret_cast<ObjectHandle*>(&handle);
-		auto object = ObjectManager::Get(*objHandle);
+		auto object = ObjectManager::Get(handle);
 		Transform* pTransform = (Transform*)object.get();
 		pTransform->active = active;
 
@@ -115,8 +108,7 @@ namespace FireEngine
 
 	EXPORT_API ActiveOption TransformGetActive(TransformHandle handle)
 	{
-		ObjectHandle* objHandle = reinterpret_cast<ObjectHandle*>(&handle);
-		auto object = ObjectManager::Get(*objHandle);
+		auto object = ObjectManager::Get(handle);
 		Transform* pTransform = (Transform*)object.get();
 		return pTransform->active;
 	}
@@ -124,16 +116,14 @@ namespace FireEngine
 
 	EXPORT_API void TransformSetMatrix(TransformHandle handle, glm::mat4 mat)
 	{
-		ObjectHandle* objHandle = reinterpret_cast<ObjectHandle*>(&handle);
-		auto object = ObjectManager::Get(*objHandle);
+		auto object = ObjectManager::Get(handle);
 		Transform* pTransform = (Transform*)object.get();
 		pTransform->worldMatrix = mat;
 	}
 
 	EXPORT_API void TransformGetMatrix(TransformHandle handle, glm::mat4& mat)
 	{
-		ObjectHandle* objHandle = reinterpret_cast<ObjectHandle*>(&handle);
-		auto object = ObjectManager::Get(*objHandle);
+		auto object = ObjectManager::Get(handle);
 		Transform* pTransform = (Transform*)object.get();
 		mat = pTransform->worldMatrix;
 	}

@@ -12,6 +12,7 @@ namespace FireEngine.Editor
         public override bool isInWIndowList => true;
         public override bool canDock => true;
 
+
         public override void Init()
         {
             Show();
@@ -60,12 +61,16 @@ namespace FireEngine.Editor
                 string name = TransformNative.TransformGetName(handle) + " " + i;
                 string selectitemkey = selectppkey + "_" + i;
 
+                bool drapDroped = false;
+
                 ImGuiTreeNodeFlags select = ImGuiTreeNodeFlags.DefaultOpen
                     | (TransformNative.TransformChildCount(item) == 0 ? ImGuiTreeNodeFlags.Leaf : ImGuiTreeNodeFlags.None);
                 if (ImGui.TreeNodeEx(name, select))
                 {
-                    DragDropManager.BeginDragDropSource(name, BitConverter.GetBytes(handle.idx), sizeof(UInt16), DragDropWindow.Hierarchy, DragDropTree.Transforms, "_DDTreeWindow", ImGuiDragDropFlags.None);
-                    DragDropManager.BeginDragDropTarget("_DDTreeWindow", ImGuiDragDropFlags.None, null);
+                    drapDroped = DragDropManager.DragDrop(name, item.idx,
+                        DragDropWindow.Hierarchy, DragDropTree.Transforms,
+                        "_DDTreeWindow", ImGuiDragDropFlags.None,
+                        DragDropManager.OnDragDropAction);
 
                     OnGUI_TransfromMenu(item, name);
                     OnGUI_TransformTree(item, selectitemkey);
@@ -76,6 +81,8 @@ namespace FireEngine.Editor
                     OnGUI_TransfromMenu(item, name);
                 }
 
+                if (drapDroped)
+                    break;
             }
         }
 
@@ -103,6 +110,7 @@ namespace FireEngine.Editor
 
                     var root = SceneNative.SceneGetRoot(handle);
 
+
                     ImGuiTreeNodeFlags select = ImGuiTreeNodeFlags.DefaultOpen
                         | (TransformNative.TransformChildCount(root) == 0 ? ImGuiTreeNodeFlags.Leaf : ImGuiTreeNodeFlags.None);
                     string name = string.Format("{0} {1} {2}", scenename, active, i);
@@ -110,8 +118,10 @@ namespace FireEngine.Editor
                     {
                         OnGUI_SceneMenu(handle, scenekey, scenename, active == SceneNative.ActiveOption.Active);
 
-                        DragDropManager.BeginDragDropSource(name, BitConverter.GetBytes(handle.idx), sizeof(UInt16), DragDropWindow.Hierarchy, DragDropTree.Scenes, "_DDTreeWindow", ImGuiDragDropFlags.None);
-                        DragDropManager.BeginDragDropTarget("_DDTreeWindow", ImGuiDragDropFlags.None, null);
+                        DragDropManager.DragDropTarget(handle.idx,
+                            DragDropWindow.Hierarchy, DragDropTree.Scenes,
+                            "_DDTreeWindow", ImGuiDragDropFlags.None,
+                            DragDropManager.OnDragDropAction);
 
                         OnGUI_TransformTree(root, scenekey);
 
@@ -121,6 +131,7 @@ namespace FireEngine.Editor
                     {
                         OnGUI_SceneMenu(handle, scenekey, scenename, active == SceneNative.ActiveOption.Active);
                     }
+
 
                 }
 

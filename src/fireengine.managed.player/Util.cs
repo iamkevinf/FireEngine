@@ -4,7 +4,7 @@ using System.Text;
 
 namespace FireEngine
 {
-    internal static unsafe class Util
+    public static unsafe class Util
     {
         internal const int StackAllocationSizeLimit = 2048;
 
@@ -39,6 +39,12 @@ namespace FireEngine
             {
                 return Encoding.UTF8.GetBytes(utf16Ptr, s.Length, utf8Bytes, utf8ByteCount);
             }
+        }
+
+        public static void GetBytesGC0(ushort value, ref byte[] ret)
+        {
+            fixed (byte* b = ret)
+                *((ushort*)b) = value;
         }
     }
 }

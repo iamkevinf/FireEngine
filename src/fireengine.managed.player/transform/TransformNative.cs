@@ -15,7 +15,7 @@ namespace FireEngine
         [DllImport(FireEngineNative.FireEngineDllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         public static extern TransformHandle TransformCreate(TransformHandle parent, string name);
         [DllImport(FireEngineNative.FireEngineDllName, CallingConvention = CallingConvention.Cdecl)]
-        public static extern void TransformRemove(TransformHandle parent);
+        public static extern void TransformRemove(TransformHandle handle);
         [DllImport(FireEngineNative.FireEngineDllName, CallingConvention = CallingConvention.Cdecl)]
         public static extern int TransformChildCount(TransformHandle parent);
         [DllImport(FireEngineNative.FireEngineDllName, CallingConvention = CallingConvention.Cdecl)]

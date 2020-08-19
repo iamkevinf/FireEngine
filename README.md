@@ -9,3 +9,8 @@
  - change [bgfx/bimg/bimg_decode/bx and so on in bgfx filter] project to x64
  - FireEngine -> Properties -> Debug -> Working directory  set to **runtime** path
  - build it
+
+## todo
+ - [x] log
+ - [x] tree name 在create的时候由C#这边设置
+ - [x] dragdrop treenode的时候包含children

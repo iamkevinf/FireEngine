@@ -50,6 +50,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "fireengine.managed.player",
 		{061A7541-4E82-4458-83B7-8CB7EE46C068} = {061A7541-4E82-4458-83B7-8CB7EE46C068}
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MD", "MD", "{E3B33F54-86BF-465D-AB4B-767FBC68D740}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
