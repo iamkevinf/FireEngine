@@ -51,7 +51,7 @@ namespace FireEngine.Editor
 
         }
 
-        void OnGUI_TransformTree(TransformNative.TransformHandle handle, string selectppkey)
+        bool OnGUI_TransformTree(TransformNative.TransformHandle handle, string selectppkey)
         {
             int count = TransformNative.TransformChildCount(handle);
 
@@ -61,16 +61,18 @@ namespace FireEngine.Editor
                 string name = TransformNative.TransformGetName(handle) + " " + i;
                 string selectitemkey = selectppkey + "_" + i;
 
-                bool drapDroped = false;
-
                 ImGuiTreeNodeFlags select = ImGuiTreeNodeFlags.DefaultOpen
                     | (TransformNative.TransformChildCount(item) == 0 ? ImGuiTreeNodeFlags.Leaf : ImGuiTreeNodeFlags.None);
                 if (ImGui.TreeNodeEx(name, select))
                 {
-                    drapDroped = DragDropManager.DragDrop(name, item.idx,
+                    if(DragDropManager.DragDrop(name, item.idx,
                         DragDropWindow.Hierarchy, DragDropTree.Transforms,
                         "_DDTreeWindow", ImGuiDragDropFlags.None,
-                        DragDropManager.OnDragDropAction);
+                        DragDropManager.OnDragDropAction))
+                    {
+                        ImGui.TreePop();
+                        return false;
+                    }
 
                     OnGUI_TransfromMenu(item, name);
                     OnGUI_TransformTree(item, selectitemkey);
@@ -81,9 +83,9 @@ namespace FireEngine.Editor
                     OnGUI_TransfromMenu(item, name);
                 }
 
-                if (drapDroped)
-                    break;
             }
+
+            return true;
         }
 
         public override void OnGUI()
@@ -118,14 +120,17 @@ namespace FireEngine.Editor
                     {
                         OnGUI_SceneMenu(handle, scenekey, scenename, active == SceneNative.ActiveOption.Active);
 
-                        DragDropManager.DragDropTarget(handle.idx,
+                        bool dragdroped = DragDropManager.DragDropTarget(handle.idx,
                             DragDropWindow.Hierarchy, DragDropTree.Scenes,
                             "_DDTreeWindow", ImGuiDragDropFlags.None,
                             DragDropManager.OnDragDropAction);
 
-                        OnGUI_TransformTree(root, scenekey);
+                        bool breakif = !OnGUI_TransformTree(root, scenekey);
 
                         ImGui.TreePop();
+
+                        if (dragdroped || breakif)
+                            break;
                     }
                     else
                     {
