@@ -3127,6 +3127,10 @@ CIMGUI_API void igToggleButtonStr(const char* str_id, bool* v);
 CIMGUI_API bool igImageRadioButtonBool(ImTextureID tid_active, ImTextureID tid_deactivate, const ImVec2 size, bool active);
 CIMGUI_API bool igImageRadioButtonIntPtr(ImTextureID tid_active, ImTextureID tid_deactivate, const ImVec2 size, int* v, int v_button);
 
+//ImGUI µÄ Assert»úÖÆ
+typedef void (*delegateIMAssertHacker)(const char16_t* _expr, const char16_t* filename, int line);
+CIMGUI_API void igSetIMAssertHacker(delegateIMAssertHacker callback);
+
 /////////////////////////hand written functions
 //no LogTextV
 CIMGUI_API void igLogText(CONST char *fmt, ...);

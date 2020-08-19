@@ -30,8 +30,24 @@ namespace FireEngine.Editor
 
         public override void Init()
         {
+            unsafe
+            {
+                FireEngineNative.SetIMAssertHacker(OnIMGUIAsset);
+            }
+
             Show();
         }
+
+        unsafe void OnIMGUIAsset(char* expr, char* filename, int line)
+        {
+            LogNode node;
+            node.level = LogLevel.Log;
+            node.str = string.Format("IMGuiLog: (file:{0}, line:{1}): {2}",
+                new string(filename), line, new string(expr));
+
+            logs.Add(node);
+        }
+
 
         public void Log(string str)
         {
@@ -86,7 +102,7 @@ namespace FireEngine.Editor
         {
             base.OnGUI();
 
-            if(ImGui.Button("Clear"))
+            if (ImGui.Button("Clear"))
             {
                 logs.Clear();
             }
@@ -141,9 +157,13 @@ namespace FireEngine.Editor
                         break;
                 }
 
-                ImGui.PushStyleColor(ImGuiCol.Text, color);
-                ImGui.Text(node.str);
-                ImGui.PopStyleColor();
+                if (ImGui.BeginChild("LogChildForm"))
+                {
+                    ImGui.PushStyleColor(ImGuiCol.Text, color);
+                    ImGui.TextWrapped(node.str);
+                    ImGui.Spacing();
+                    ImGui.PopStyleColor();
+                }ImGui.EndChild();
             }
 
 

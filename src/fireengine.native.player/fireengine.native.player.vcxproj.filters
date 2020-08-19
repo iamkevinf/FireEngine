@@ -87,6 +87,9 @@
     <ClCompile Include="src\object\object.cpp">
       <Filter>object</Filter>
     </ClCompile>
+    <ClCompile Include="src\imgui\imgui_config.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\imgui\imgui_utils.h">
@@ -125,6 +128,9 @@
     </ClInclude>
     <ClInclude Include="src\object\object.h">
       <Filter>object</Filter>
+    </ClInclude>
+    <ClInclude Include="src\imgui\imgui_config.h">
+      <Filter>imgui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

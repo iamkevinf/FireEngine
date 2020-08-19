@@ -9,6 +9,9 @@
 //  [X] Platform: Multi-viewport support (multiple windows). Enable with 'io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable'.
 
 #include "app.h"
+
+#define IMGUI_USER_CONFIG "../imgui/imgui_config.h"
+
 #include "imgui.h"
 #include "main_shared.h"
 #include <bgfx/bgfx.h>

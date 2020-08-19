@@ -29,6 +29,7 @@
     <ClCompile Include="src\filesystem\FileSystem.cpp" />
     <ClCompile Include="src\gameview\game_view.cpp" />
     <ClCompile Include="src\graphics\transform.cpp" />
+    <ClCompile Include="src\imgui\imgui_config.cpp" />
     <ClCompile Include="src\imgui\imgui_impl_bgfx.cpp" />
     <ClCompile Include="src\imgui\imgui_utils.cpp" />
     <ClCompile Include="src\imgui\imgui_wrapper.cpp" />
@@ -44,6 +45,7 @@
     <ClInclude Include="src\filesystem\FileSystem.h" />
     <ClInclude Include="src\gameview\game_view.h" />
     <ClInclude Include="src\graphics\transform.h" />
+    <ClInclude Include="src\imgui\imgui_config.h" />
     <ClInclude Include="src\imgui\imgui_impl_bgfx.h" />
     <ClInclude Include="src\imgui\imgui_utils.h" />
     <ClInclude Include="src\imgui\imgui_wrapper.h" />
@@ -160,7 +162,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\..\3rdparty\bx\include\compat\msvc;..\..\3rdparty\bgfx\include;..\..\3rdparty\bimg\include;..\..\3rdparty\bx\include;..\..\3rdparty\imgui_docking;..\..\3rdparty\imgui_docking\examples;..\..\3rdparty\imgui_docking\examples\libs\gl3w;..\..\3rdparty\imgui_docking\examples\libs\glfw\include;..\..\3rdparty\glm;..\RenderCore;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\3rdparty\bx\include\compat\msvc;..\..\3rdparty\bgfx\include;..\..\3rdparty\bimg\include;..\..\3rdparty\bx\include;..\..\3rdparty\imgui_docking;..\..\3rdparty\imgui_docking\examples;..\..\3rdparty\imgui_docking\examples\libs\gl3w;..\..\3rdparty\imgui_docking\examples\libs\glfw\include;..\..\3rdparty\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>

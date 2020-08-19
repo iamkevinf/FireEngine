@@ -2,6 +2,7 @@
 //based on imgui.h file version "1.77" from Dear ImGui https://github.com/ocornut/imgui
 //with imgui_internal.h api
 
+#include "imgui_config.h"
 #include "imgui.h"
 #include "imgui_internal.h"
 #include "imgui_wrapper.h"
@@ -4200,6 +4201,11 @@ CIMGUI_API bool igImageRadioButtonBool(ImTextureID tid_active, ImTextureID tid_d
 CIMGUI_API bool igImageRadioButtonIntPtr(ImTextureID tid_active, ImTextureID tid_deactivate, const ImVec2 size, int* v, int v_button)
 {
 	return ImGui::RadioButton(tid_active, tid_deactivate, size, v, v_button);
+}
+
+CIMGUI_API void igSetIMAssertHacker(delegateIMAssertHacker callback)
+{
+	onImAssert = callback;
 }
 
 /////////////////////////////manual written functions

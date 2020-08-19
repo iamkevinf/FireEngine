@@ -38,5 +38,10 @@ namespace FireEngine
             return handle;
         }
 
+        public static void SetIMAssertHacker(delegateIMAssertHacker callback)
+        {
+            igSetIMAssertHacker(callback);
+        }
+
     }
 }
