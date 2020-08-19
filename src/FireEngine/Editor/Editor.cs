@@ -43,6 +43,8 @@ namespace FireEngine.Editor
             CreateWindow(typeof(WindowSceneView));
             CreateWindow(typeof(WindowInspector));
             CreateWindow(typeof(WindowHierarchy));
+            var logger = CreateWindow(typeof(WindowConsole)) as iLogger;
+            Debug.SetLogger(logger);
         }
 
         void _OnCreateMenu()

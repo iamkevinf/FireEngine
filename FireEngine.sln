@@ -55,6 +55,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MD", "MD", "{E3B33F54-86BF-
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fireengine.managed.editor", "src\fireengine.managed.editor\fireengine.managed.editor.csproj", "{BEB9D048-168F-469F-8262-4BB2E1F38B5F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -163,6 +165,18 @@ Global
 		{AF074727-D08E-4594-A361-19C755CE48B8}.Release|x64.Build.0 = Release|Any CPU
 		{AF074727-D08E-4594-A361-19C755CE48B8}.Release|x86.ActiveCfg = Release|Any CPU
 		{AF074727-D08E-4594-A361-19C755CE48B8}.Release|x86.Build.0 = Release|Any CPU
+		{BEB9D048-168F-469F-8262-4BB2E1F38B5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BEB9D048-168F-469F-8262-4BB2E1F38B5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BEB9D048-168F-469F-8262-4BB2E1F38B5F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{BEB9D048-168F-469F-8262-4BB2E1F38B5F}.Debug|x64.Build.0 = Debug|Any CPU
+		{BEB9D048-168F-469F-8262-4BB2E1F38B5F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BEB9D048-168F-469F-8262-4BB2E1F38B5F}.Debug|x86.Build.0 = Debug|Any CPU
+		{BEB9D048-168F-469F-8262-4BB2E1F38B5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BEB9D048-168F-469F-8262-4BB2E1F38B5F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BEB9D048-168F-469F-8262-4BB2E1F38B5F}.Release|x64.ActiveCfg = Release|Any CPU
+		{BEB9D048-168F-469F-8262-4BB2E1F38B5F}.Release|x64.Build.0 = Release|Any CPU
+		{BEB9D048-168F-469F-8262-4BB2E1F38B5F}.Release|x86.ActiveCfg = Release|Any CPU
+		{BEB9D048-168F-469F-8262-4BB2E1F38B5F}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -181,6 +195,7 @@ Global
 		{399C62B3-A871-4B25-AFFA-045D82984D65} = {BAC3EE35-0244-44A9-81DE-52D413D01A27}
 		{061A7541-4E82-4458-83B7-8CB7EE46C068} = {C5DB2705-F282-470C-B25F-5069128272E1}
 		{AF074727-D08E-4594-A361-19C755CE48B8} = {C81656A1-477D-4F95-83D2-000EA5C75945}
+		{BEB9D048-168F-469F-8262-4BB2E1F38B5F} = {C81656A1-477D-4F95-83D2-000EA5C75945}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4005A8AA-F06E-4FF0-A0C4-6404472AADE2}

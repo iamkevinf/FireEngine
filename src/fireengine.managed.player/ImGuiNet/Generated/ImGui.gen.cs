@@ -10014,7 +10014,7 @@ namespace ImGuiNET
         }
         public static void PushStyleColor(ImGuiCol idx, Vector4 col)
         {
-            ImGuiNative.igPushStyleColor(idx, col);
+            ImGuiNative.igPushStyleColorVec4(idx, col);
         }
         public static void PushStyleVar(ImGuiStyleVar idx, float val)
         {

@@ -497,7 +497,7 @@ namespace ImGuiNET
         [DllImport(ImGuiDllName, CallingConvention = CallingConvention.Cdecl)]
         public static extern void igPushStyleColorU32(ImGuiCol idx, uint col);
         [DllImport(ImGuiDllName, CallingConvention = CallingConvention.Cdecl)]
-        public static extern void igPushStyleColor(ImGuiCol idx, Vector4 col);
+        public static extern void igPushStyleColorVec4(ImGuiCol idx, Vector4 col);
         [DllImport(ImGuiDllName, CallingConvention = CallingConvention.Cdecl)]
         public static extern void igPushStyleVarFloat(ImGuiStyleVar idx, float val);
         [DllImport(ImGuiDllName, CallingConvention = CallingConvention.Cdecl)]

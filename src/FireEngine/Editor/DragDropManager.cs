@@ -110,9 +110,6 @@ namespace FireEngine.Editor
             DragDropWindow windowS, DragDropTree treeS, ushort handleIdxS,
             DragDropWindow windowT, DragDropTree treeT, ushort handleIdxT)
         {
-            Console.WriteLine(string.Format("Source {0} {1} {2}", windowS, treeS, handleIdxS));
-            Console.WriteLine(string.Format("Target {0} {1} {2}", windowT, treeT, handleIdxT));
-
             switch (windowS)
             {
                 case DragDropWindow.Hierarchy:
@@ -120,7 +117,7 @@ namespace FireEngine.Editor
                     break;
 
                 default:
-                    Console.WriteLine("未处理");
+                    Debug.LogError("未处理");
                     break;
             }
 
@@ -136,7 +133,7 @@ namespace FireEngine.Editor
                     break;
 
                 default:
-                    Console.WriteLine("未处理2");
+                    Debug.LogError("未处理");
                     break;
             }
         }
@@ -199,13 +196,13 @@ namespace FireEngine.Editor
         private static void OnDragDropFromHierarchySceneToHierachyScene(
             ushort handleIdxS, ushort handleIdxT)
         {
-            Console.WriteLine("不允许这样做");
+            Debug.LogWarning("未处理");
         }
 
         private static void OnDragDropFromHierarchySceneToHierachyTransform(
             ushort handleIdxS, ushort handleIdxT)
         {
-            Console.WriteLine("不允许这样做");
+            Debug.LogWarning("未处理");
         }
 
 

@@ -11,6 +11,6 @@
  - build it
 
 ## todo
- - [x] log
+ - [ ] log
  - [x] tree name 在create的时候由C#这边设置
  - [x] dragdrop treenode的时候包含children
