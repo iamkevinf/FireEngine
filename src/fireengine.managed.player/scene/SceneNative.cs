@@ -10,6 +10,19 @@ namespace FireEngine
         public struct SceneHandle
         {
             public UInt16 idx;
+            public static SceneHandle InValid = new SceneHandle() { idx = FireEngineNative.kInvalidHandle };
+            public bool IsValid()
+            {
+                return idx != FireEngineNative.kInvalidHandle;
+            }
+            public static bool operator ==(SceneHandle lhs, SceneHandle rhs)
+            {
+                return lhs.idx == rhs.idx;
+            }
+            public static bool operator !=(SceneHandle lhs, SceneHandle rhs)
+            {
+                return lhs.idx != rhs.idx;
+            }
         }
 
         public enum ActiveOption

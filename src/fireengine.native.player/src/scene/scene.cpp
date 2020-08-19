@@ -9,7 +9,7 @@ namespace FireEngine
 	void Scene::Init()
 	{
 		root = TransformPtr(new Transform());
-		root->name = u"Empty";
+		root->name = u"root";
 		ObjectManager::Register(root, ObjectType::Transform);
 	}
 

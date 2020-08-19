@@ -7,6 +7,7 @@ namespace FireEngine
 {
     public static unsafe partial class FireEngineNative
     {
+        public static UInt16 kInvalidHandle = UInt16.MaxValue;
         public static TextureHandle LoadTexture(string _name, ushort _flags, Byte _skip, TextureInfoPtr _info, ref Orientation.Enum _orientation)
         {
             TextureInfo* native_info = _info.NativePtr;

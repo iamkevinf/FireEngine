@@ -10,6 +10,20 @@ namespace FireEngine
         public struct TransformHandle
         {
             public UInt16 idx;
+            public static TransformHandle InValid = new TransformHandle() { idx = FireEngineNative.kInvalidHandle};
+
+            public bool IsValid()
+            {
+                return idx != FireEngineNative.kInvalidHandle;
+            }
+            public static bool operator ==(TransformHandle lhs, TransformHandle rhs)
+            {
+                return lhs.idx == rhs.idx;
+            }
+            public static bool operator !=(TransformHandle lhs, TransformHandle rhs)
+            {
+                return lhs.idx != rhs.idx;
+            }
         }
 
         [DllImport(FireEngineNative.FireEngineDllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
