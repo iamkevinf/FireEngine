@@ -212,14 +212,11 @@ namespace FireEngine.Editor
             TransformNative.TransformHandle handleS;
             handleS.idx = handleIdxS;
 
-            string name = TransformNative.TransformGetName(handleS);
-            TransformNative.TransformRemove(handleS);
-
             SceneNative.SceneHandle handleT;
             handleT.idx = handleIdxT;
             var root = SceneNative.SceneGetRoot(handleT);
 
-            TransformNative.TransformCreate(root, name);
+            TransformNative.TransformMove(handleS, root);
         }
 
         private static void OnDragDropFromHierarchyTransformToHierachyTransform(

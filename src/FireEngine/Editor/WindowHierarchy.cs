@@ -112,7 +112,6 @@ namespace FireEngine.Editor
 
                     var root = SceneNative.SceneGetRoot(handle);
 
-
                     ImGuiTreeNodeFlags select = ImGuiTreeNodeFlags.DefaultOpen
                         | (TransformNative.TransformChildCount(root) == 0 ? ImGuiTreeNodeFlags.Leaf : ImGuiTreeNodeFlags.None);
                     string name = string.Format("{0} {1} {2}", scenename, active, i);

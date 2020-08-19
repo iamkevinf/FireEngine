@@ -12,5 +12,5 @@
 
 ## todo
  - [x] log
+ - [x] dragdrop treenode的时候包含children
  - [ ] tree name 在create的时候由C#这边设置
- - [ ] dragdrop treenode的时候包含children
