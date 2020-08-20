@@ -1,5 +1,5 @@
 #include "main_shared.h"
-#include "imgui.h"
+#include "imgui/imgui_config.h"
 #include "bgfx/bgfx.h"
 #include "../imgui/imgui_impl_bgfx.h"
 
