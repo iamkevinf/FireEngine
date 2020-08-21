@@ -22,7 +22,7 @@ namespace FireEngine.Editor
         }
 
 
-
+        Camera mainCamera;
         void OnGUI_RightMenu(TransformNative.TransformHandle handle)
         {
             if (ImGui.MenuItem("Create Scene", !handle.IsValid()))
@@ -45,16 +45,16 @@ namespace FireEngine.Editor
 
             if (ImGui.MenuItem("Create Empty", handle.IsValid()))
             {
-                GameObject.Inner_Create(handle, "Test GameObject");
-            }
-
-            if (ImGui.MenuItem("Temp Create Transform", handle.IsValid()))
-            {
                 int count = TransformNative.TransformChildCount(handle);
                 string _name = "Transform";
                 if (count > 0)
                     _name = string.Format("Transform ({0})", count);
-                TransformNative.TransformCreate(handle, _name);
+                GameObject.Inner_Create(handle, _name);
+            }
+
+            if (ImGui.MenuItem("Camera", handle.IsValid()))
+            {
+                mainCamera = Camera.Inner_Create(handle, "Main Camera");
             }
         }
 
@@ -146,7 +146,7 @@ namespace FireEngine.Editor
                     bool clicked = ImGui.IsItemClicked();
                     bool focused = childCount == 0 ? ImGui.IsItemFocused() : ImGui.IsItemHovered();
                     if (count > 0)
-                        Debug.LogFormat("{0} {1} {2}", ImGui.IsItemActive(), ImGui.IsItemActivated(), 
+                        Debug.LogFormat("{0} {1} {2}", ImGui.IsItemActive(), ImGui.IsItemActivated(),
                             ImGui.IsItemToggledOpen());
                     if (clicked || focused)
                     {
@@ -251,11 +251,11 @@ namespace FireEngine.Editor
                         OnGUI_SceneMenu(handle, label, active == SceneNative.ActiveOption.Active);
                     }
 
-                    if(!selected)
+                    if (!selected)
                     {
                         bool clicked = ImGui.IsItemClicked();
                         bool focused = childCount == 0 ? ImGui.IsItemFocused() : ImGui.IsItemHovered();
-                        if(clicked || focused)
+                        if (clicked || focused)
                         {
                             curSelectedScene = handle;
                             curSelectedTransform = TransformNative.TransformHandle.InValid;
@@ -275,6 +275,24 @@ namespace FireEngine.Editor
                 }
 
                 ImGui.TreePop();
+
+                if (mainCamera != null)
+                {
+                    if (ImGui.GetIO().KeysDown[87])
+                    {
+                        Vector3 pos = Vector3.Zero;
+                        TransformNative.TransformGetWorldPosition(mainCamera.transformHandle, ref pos);
+                        pos.Z++;
+                        TransformNative.TransformSetWorldPosition(mainCamera.transformHandle, pos);
+                    }
+                    if (ImGui.GetIO().KeysDown[83])
+                    {
+                        Vector3 pos = Vector3.Zero;
+                        TransformNative.TransformGetWorldPosition(mainCamera.transformHandle, ref pos);
+                        pos.Z--;
+                        TransformNative.TransformSetWorldPosition(mainCamera.transformHandle, pos);
+                    }
+                }
             }
         }
     }

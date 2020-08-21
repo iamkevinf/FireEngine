@@ -14,6 +14,8 @@ namespace FireEngine
 		friend GameObject;
 
 	public:
+		virtual ~Component();
+
 		Component() = default;
 		Component(const Component& ref) = delete;
 		Component& operator= (const Component& scene) = delete;
@@ -38,6 +40,7 @@ namespace FireEngine
 		virtual void LateUpdate() { }
 		virtual void OnEnable() { }
 		virtual void OnDisable() { }
+		virtual void OnTransformChanged() { }
 
 	private:
 		void Delete();
@@ -47,9 +50,9 @@ namespace FireEngine
 		std::weak_ptr<Transform> transform;
 
 	private:
-		bool deleted;
-		bool started;
-		bool enable;
+		bool deleted = false;
+		bool started = false;
+		bool enable = true;
 	};
 }
 

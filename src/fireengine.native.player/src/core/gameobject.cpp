@@ -1,6 +1,7 @@
 #include "gameobject.h"
 
 #include "exportapi.h"
+#include "world.h"
 
 namespace FireEngine
 {
@@ -12,7 +13,8 @@ namespace FireEngine
 
 		if (add_to_world)
 		{
-			obj->inWorld = true;
+			obj->in_world = true;
+			World::AddGameObject(obj);
 		}
 
 		TransformPtr transform = TransformPtr((Transform*)Component::Create(Transform::ClassName()));
@@ -232,6 +234,9 @@ namespace FireEngine
 		com->gameObject = transform.lock()->gameObject;
 		com->name = name;
 		com->Awake();
+
+		if (in_world)
+			World::AddGameObject(GetTransform()->GetGameObject());
 	}
 
 
@@ -245,6 +250,19 @@ namespace FireEngine
 		for (uint32_t i = 0; i < child_count; ++i)
 			transform->GetChild(i)->GetGameObject()->Delete();
 
+	}
+
+	void GameObject::OnTransformChanged()
+	{
+		for (const auto& i : components)
+		{
+			i->OnTransformChanged();
+		}
+
+		for (const auto& i : components_neo)
+		{
+			i->OnTransformChanged();
+		}
 	}
 
 	void GameObject::Start()

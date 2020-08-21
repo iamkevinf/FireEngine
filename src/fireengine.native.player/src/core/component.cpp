@@ -1,6 +1,7 @@
 #include "component.h"
 #include "gameobject.h"
 #include "transform.h"
+#include "graphics/camera.h"
 
 namespace FireEngine
 {
@@ -9,12 +10,18 @@ namespace FireEngine
 	/*static*/void Component::RegisterComponents()
 	{
 		Transform::RegisterComponent();
+		Camera::RegisterComponent();
 	}
 
 	/*static*/void Component::Destroy(std::shared_ptr<Component> com)
 	{
 		if (com)
 			com->Delete();
+	}
+
+	Component::~Component()
+	{
+
 	}
 
 	void Component::Enable(bool enable)

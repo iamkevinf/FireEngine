@@ -16,7 +16,8 @@ namespace FireEngine
 
 	class GameObject : public IObject
 	{
-		friend class Transform;
+		friend class Transform;;
+		friend class World;
 
 	public:
 		static std::shared_ptr<GameObject> Create(TransformWeakPtr parent, const std::string& name, bool add_to_world = true);
@@ -56,10 +57,15 @@ namespace FireEngine
 		void Update();
 		void LateUpdate();
 		void SetActiveInHierarchy(bool active);
+		void OnTransformChanged();
 
 	private:
 		bool deleted;
 		bool inWorld;
+
+		bool in_world;
+		bool in_world_update;
+
 		std::list<std::shared_ptr<Component>> components;
 		std::list<std::shared_ptr<Component>> components_neo;
 

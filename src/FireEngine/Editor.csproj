@@ -18,10 +18,6 @@
     <ProjectReference Include="..\fireengine.native.player\fireengine.native.player.vcxproj" />
   </ItemGroup>
 
-  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="COPY  &quot;$(SolutionDir)bin\$(ConfigurationName)\*.*&quot; &quot;$(OutDir)\*&quot;&#xD;&#xA;" />
-  </Target>
-
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="COPY  &quot;$(SolutionDir)bin\$(ConfigurationName)\*.*&quot; &quot;$(OutDir)\*&quot;&#xD;&#xA;" />
   </Target>

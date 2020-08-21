@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -44,5 +45,11 @@ namespace FireEngine
         public static extern void TransformSetActive(TransformHandle handle, string name);
         [DllImport(FireEngineNative.FireEngineDllName, CallingConvention = CallingConvention.Cdecl)]
         public static extern SceneNative.ActiveOption TransformGetActive(TransformHandle handle);
+
+        [DllImport(FireEngineNative.FireEngineDllName, CallingConvention = CallingConvention.Cdecl)]
+        public static extern void TransformSetWorldPosition(TransformHandle handle, Vector3 pos);
+        [DllImport(FireEngineNative.FireEngineDllName, CallingConvention = CallingConvention.Cdecl)]
+        public static extern void TransformGetWorldPosition(TransformHandle handle, Vector3* pos);
+
     }
 }

@@ -17,6 +17,9 @@
 
 #include "scene/scene.h"
 #include "core/component.h"
+#include "core/transform.h"
+#include "core/world.h"
+#include "graphics/camera.h"
 
 namespace FireEngine
 {
@@ -68,7 +71,7 @@ namespace FireEngine
 
 	void GameView::OnInit()
 	{
-		Component::RegisterComponents();
+		IM_ASSERT(World::Init() && "World Init Error");
 
 		//create rt
 		g_frame_tex = bgfx::createTexture2D(1024, 1024, false, 1, bgfx::TextureFormat::RGBA8, BGFX_TEXTURE_RT);
@@ -97,6 +100,13 @@ namespace FireEngine
 
 	void GameView::OnTick(float dTime)
 	{
+		World::Tick();
+		Camera::RenderAll();
+
+		auto cameraMain = Camera::Main();
+		if (!cameraMain)
+			return;
+
 		bgfx::ViewId viewId = 10;
 		bgfx::setViewFrameBuffer(viewId, g_framebuffer);
 
@@ -104,15 +114,14 @@ namespace FireEngine
 		bgfx::setViewClear(viewId, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH, 0x000000FF);
 		bgfx::touch(viewId);
 
-		static glm::vec3 eye = glm::vec3(0.0f, 10.0f, -35.0f);
-		ImGuiIO io = ImGui::GetIO();
-		if (io.WantCaptureMouse && io.MouseClicked[0])
-			eye.z++;
-		else if (io.WantCaptureMouse && io.MouseClicked[1])
-			eye.z--;
+		TransformPtr cameraTransform = cameraMain->GetTransform();
+		if (!cameraTransform)
+			return;
 
-		glm::mat4 view = glm::lookAt(eye, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		glm::mat4 proj = glm::perspective(glm::radians(60.0f), float(1024) / 1024, 0.1f, 100.0f);
+		glm::vec3 eye = cameraTransform->GetWorldPosition(); //glm::vec3(0.0f, 10.0f, -35.0f);
+
+		glm::mat4 view = glm::lookAt(eye, glm::vec3(0.0f, 0.0f, 0.0f), cameraTransform->GetRight());
+		glm::mat4 proj = cameraMain->GetProjectionMatrix(); // glm::perspective(glm::radians(60.0f), float(1024) / 1024, 0.1f, 100.0f);
 
 		// Set view and projection matrix for view 10.
 		{
@@ -183,6 +192,8 @@ namespace FireEngine
 		}
 
 		ddShutdown();
+
+		World::Fini();
 	}
 
 

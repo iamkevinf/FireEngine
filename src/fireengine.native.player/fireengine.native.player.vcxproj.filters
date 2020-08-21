@@ -99,6 +99,9 @@
     <ClCompile Include="src\core\transform.cpp">
       <Filter>core</Filter>
     </ClCompile>
+    <ClCompile Include="src\core\world.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\imgui\imgui_utils.h">
@@ -148,6 +151,9 @@
       <Filter>core</Filter>
     </ClInclude>
     <ClInclude Include="src\core\transform.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\world.h">
       <Filter>core</Filter>
     </ClInclude>
   </ItemGroup>
