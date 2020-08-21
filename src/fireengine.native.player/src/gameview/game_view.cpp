@@ -68,13 +68,12 @@ namespace FireEngine
 		6, 3, 7,
 	};
 
-
 	void GameView::OnInit()
 	{
 		IM_ASSERT(World::Init() && "World Init Error");
 
 		//create rt
-		g_frame_tex = bgfx::createTexture2D(1024, 1024, false, 1, bgfx::TextureFormat::RGBA8, BGFX_TEXTURE_RT);
+		g_frame_tex = bgfx::createTexture2D(1024 * 2, 1024 * 2, false, 1, bgfx::TextureFormat::RGBA8, BGFX_TEXTURE_RT);
 		g_framebuffer = bgfx::createFrameBuffer(1, &g_frame_tex, true);
 
 		//ÅäÖÃvertexbuffer ÄÚ´æ²¼¾Ö
@@ -110,8 +109,8 @@ namespace FireEngine
 		bgfx::ViewId viewId = 10;
 		bgfx::setViewFrameBuffer(viewId, g_framebuffer);
 
-		bgfx::setViewRect(viewId, 0, 0, 1024, 1024);
-		bgfx::setViewClear(viewId, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH, 0x000000FF);
+		bgfx::setViewRect(viewId, 0, 0, 1024 * 2, 1024 * 2);
+		bgfx::setViewClear(viewId, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH, 0xCDCDCDFF);
 		bgfx::touch(viewId);
 
 		TransformPtr cameraTransform = cameraMain->GetTransform();

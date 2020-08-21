@@ -67,12 +67,12 @@ namespace FireEngine
 	{
 		matrix_dirty = false;
 
-		uint32_t width = 1920;
-		uint32_t height = 1080;
+		uint32_t width = 1024 * 2;
+		uint32_t height = 1024 * 2;
 
 		TransformPtr transform = GetTransform();
 
-		view_matrix = glm::lookAt(transform->GetWorldPosition(), transform->GetForward(), transform->GetUp());
+		view_matrix = glm::lookAt(transform->GetWorldPosition(), transform->GetWorldPosition() + transform->GetForward(), transform->GetUp());
 
 		if (!IsOrthographic())
 		{

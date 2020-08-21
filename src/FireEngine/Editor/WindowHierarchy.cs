@@ -117,7 +117,6 @@ namespace FireEngine.Editor
                             ref neo_name, 64, inputFlags))
                         {
                             TransformNative.TransformSetName(curSelectedTransform, neo_name);
-                            Debug.LogFormat("neo name is {0}", neo_name);
                             renameing = false;
                         }
 
@@ -145,9 +144,6 @@ namespace FireEngine.Editor
                 {
                     bool clicked = ImGui.IsItemClicked();
                     bool focused = childCount == 0 ? ImGui.IsItemFocused() : ImGui.IsItemHovered();
-                    if (count > 0)
-                        Debug.LogFormat("{0} {1} {2}", ImGui.IsItemActive(), ImGui.IsItemActivated(),
-                            ImGui.IsItemToggledOpen());
                     if (clicked || focused)
                     {
                         curSelectedTransform = item;
@@ -225,7 +221,6 @@ namespace FireEngine.Editor
                             if (ImGui.InputText(string.Format("##Scene_{0}_{1}", name, i), ref neo_name, 64, inputFlags))
                             {
                                 SceneNative.SceneSetName(handle, neo_name);
-                                Debug.LogFormat("neo name is {0}", neo_name);
                                 renameing = false;
                             }
 
@@ -276,13 +271,14 @@ namespace FireEngine.Editor
 
                 ImGui.TreePop();
 
-                if (mainCamera != null)
+                if (ImGui.IsWindowFocused() && mainCamera != null)
                 {
                     if (ImGui.GetIO().KeysDown[87])
                     {
                         Vector3 pos = Vector3.Zero;
                         TransformNative.TransformGetWorldPosition(mainCamera.transformHandle, ref pos);
                         pos.Z++;
+
                         TransformNative.TransformSetWorldPosition(mainCamera.transformHandle, pos);
                     }
                     if (ImGui.GetIO().KeysDown[83])

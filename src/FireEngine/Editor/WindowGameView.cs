@@ -25,7 +25,7 @@ namespace FireEngine.Editor
             Vector2 contentRegionMin = ImGui.GetWindowContentRegionMin();
             Vector2 pos = ImGui.GetCursorScreenPos();
             Vector2 contentSize = contentRegionMax - contentRegionMin;
-            Vector2 gameViewSize = Vector2.One * 1024.0f;
+            Vector2 gameViewSize = Vector2.One * 1024 * 2;
 
             Vector2 center = pos + (contentRegionMin + contentRegionMax) * 0.5f;
 
