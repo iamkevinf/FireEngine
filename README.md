@@ -14,4 +14,9 @@
  - [x] log
  - [x] dragdrop treenode的时候包含children
  - [x] tree name 在create的时候由C#这边设置
- - [ ] tree rename
+ - [ ] tree rename (暂时这样还有待优化)
+ - [x] 挂载显示内容在editor窗口从grid开始
+ - [x] gameobject component 系统
+ - [x] camera
+ - [ ] 导出现有的gameobject transform camera
+ - [ ] editor窗口怎么接受鼠标拖拽framebuffer中渲染出来的gizmos？
