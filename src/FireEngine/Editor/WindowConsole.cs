@@ -98,6 +98,7 @@ namespace FireEngine.Editor
         }
 
         bool bEnableT = true, bEnableW = true, bEnableE = true;
+        Vector2 pos = Vector2.Zero;
         public override void OnGUI()
         {
             base.OnGUI();
@@ -124,49 +125,55 @@ namespace FireEngine.Editor
             ImGui.ToggleButton("T", ref bEnableT);
             ImGui.SameLine(ImGui.GetWindowContentRegionMax().X - beginPosX - widthText * 3 - widthToggle * 2);
             ImGui.Text("T");
-
-            for (int i = 0; i < logs.Count; ++i)
+            float footer_height_to_reserve = ImGui.GetStyle().ItemSpacing.Y + ImGui.GetFrameHeightWithSpacing();
+            pos.Y = -footer_height_to_reserve;
+            if (ImGui.BeginChild("LogChildForm", pos, false, ImGuiWindowFlags.HorizontalScrollbar))
             {
-                LogNode node = logs[i];
-
-                if (!bEnableT && node.level == LogLevel.Log)
-                    continue;
-                if (!bEnableW && node.level == LogLevel.Warning)
-                    continue;
-                if (!bEnableE && node.level == LogLevel.Error)
-                    continue;
-
-                Vector4 color = System.Numerics.Vector4.One;
-                switch (node.level)
+                for (int i = 0; i < logs.Count; ++i)
                 {
-                    case LogLevel.Warning:
-                        color.X = 1;
-                        color.Y = 1;
-                        color.Z = 0;
-                        color.W = 1;
-                        break;
-                    case LogLevel.Error:
-                        color.X = 1;
-                        color.Y = 0;
-                        color.Z = 0;
-                        color.W = 1;
-                        break;
+                    LogNode node = logs[i];
 
-                    default:
-                        color = System.Numerics.Vector4.One;
-                        break;
-                }
+                    if (!bEnableT && node.level == LogLevel.Log)
+                        continue;
+                    if (!bEnableW && node.level == LogLevel.Warning)
+                        continue;
+                    if (!bEnableE && node.level == LogLevel.Error)
+                        continue;
 
-                if (ImGui.BeginChild("LogChildForm"))
-                {
+                    Vector4 color = System.Numerics.Vector4.One;
+                    switch (node.level)
+                    {
+                        case LogLevel.Warning:
+                            color.X = 1;
+                            color.Y = 1;
+                            color.Z = 0;
+                            color.W = 1;
+                            break;
+                        case LogLevel.Error:
+                            color.X = 1;
+                            color.Y = 0;
+                            color.Z = 0;
+                            color.W = 1;
+                            break;
+
+                        default:
+                            color = System.Numerics.Vector4.One;
+                            break;
+                    }
+
+
                     ImGui.PushStyleColor(ImGuiCol.Text, color);
                     ImGui.TextWrapped(node.str);
                     ImGui.Spacing();
                     ImGui.PopStyleColor();
-                }ImGui.EndChild();
+                }
+
             }
 
+            if (ImGui.GetScrollY() >= ImGui.GetScrollMaxY())
+                ImGui.SetScrollHereY(1.0f);
 
+            ImGui.EndChild();
         }
     }
 }

@@ -1,12 +1,14 @@
 #ifndef __SCENE_H__
 #define __SCENE_H__
 
-#include "../object/object.h"
+#include "core/object.h"
 
 #include <string>
 #include <vector>
 
 #include "../exportapi.h"
+
+#include <bgfx/bgfx.h>
 
 namespace FireEngine
 {
@@ -48,6 +50,8 @@ namespace FireEngine
 		static void RemoveScene(ScenePtr scene);
 		static void RemoveScene(SceneHandle handle);
 		static ScenePtr GetScene(SceneHandle handle);
+
+		static void Render(bgfx::ViewId viewId);
 
 	public:
 		static std::vector<ScenePtr> scenePool;

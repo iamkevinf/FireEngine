@@ -1,9 +1,8 @@
 #ifndef __TRANSFORM_H__
 #define __TRANSFORM_H__
 
-#include "../object/object.h"
-
-#include "../scene/scene.h"
+#include "scene/scene.h"
+#include "core/component.h"
 
 #include <glm/glm.hpp>
 #include <string>
@@ -16,10 +15,22 @@ namespace FireEngine
 
 	FIREENGINE_HANDLE(TransformHandle);
 
-	class Transform : public IObject
+	class Transform : public Component
 	{
+		DECLARE_COM_CLASS(Transform, Component);
+
+	private:
+		friend class GameObject;
+
 	public:
-		std::u16string name;
+		TransformWeakPtr GetParent()const { return parent; }
+		void SetParent(const TransformWeakPtr& parent);
+		bool IsRoot()const { return parent.expired(); }
+
+		uint32_t GetChildCount() { return (uint32_t)children.size(); }
+		TransformPtr GetChild(uint32_t index)const;
+
+	public:
 		ActiveOption active = ActiveOption::Active;
 		glm::mat4 worldMatrix;
 		TransformWeakPtr parent;

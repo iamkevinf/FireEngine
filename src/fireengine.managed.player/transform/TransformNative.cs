@@ -38,7 +38,7 @@ namespace FireEngine
         public static extern TransformHandle TransformFindChildByIndex(TransformHandle handle, int index);
         [DllImport(FireEngineNative.FireEngineDllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         public static extern void TransformSetName(TransformHandle handle, string name);
-        [DllImport(FireEngineNative.FireEngineDllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode, EntryPoint="TransformGetName")]
+        [DllImport(FireEngineNative.FireEngineDllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint="TransformGetName")]
         public static extern byte* TransformGetNameNative(TransformHandle handle);
         [DllImport(FireEngineNative.FireEngineDllName, CallingConvention = CallingConvention.Cdecl)]
         public static extern void TransformSetActive(TransformHandle handle, string name);

@@ -1,16 +1,73 @@
 #include "transform.h"
 
+#include "core/gameobject.h"
+
 #include "../exportapi.h"
 #include "../scene/scene.h"
 
 namespace FireEngine
 {
+	DEFINE_COM_CLASS(Transform);
+
+
+	void Transform::SetParent(const TransformWeakPtr& _parent)
+	{
+		auto obj = GetGameObject();
+
+		Transform* pFrom = this->parent.lock().get();
+		if (pFrom != _parent.lock().get())
+		{
+			TransformPtr whoPtr = nullptr;
+			for (auto iter = pFrom->children.begin(); iter != pFrom->children.end(); ++iter)
+			{
+				if ((*iter).get() == this)
+				{
+					whoPtr = *iter;
+					pFrom->children.erase(iter);
+					break;
+				}
+			}
+
+			if (whoPtr)
+			{
+				this->parent = _parent;
+				_parent.lock()->children.push_back(whoPtr);
+			}
+		}
+	}
+
+
+	std::shared_ptr<Transform> Transform::GetChild(uint32_t index)const
+	{
+		if (index > children.size() - 1)
+		{
+			return std::shared_ptr<Transform>();
+		}
+
+		return children[index];
+	}
+
+	void Transform::DeepCopy(const ObjectPtr& source)
+	{
+		Component::DeepCopy(source);
+
+		auto src = std::dynamic_pointer_cast<Transform>(source);
+
+		for (auto i = 0; i < src->children.size(); i++)
+		{
+			auto src_child = src->children[i];
+			auto child = GameObject::Instantiate(src_child->GetGameObject());
+
+			child->GetTransform()->SetParent(std::dynamic_pointer_cast<Transform>(GetRef()));
+		}
+	}
+
 	EXPORT_API TransformHandle TransformCreate(TransformHandle parent, const char16_t* name)
 	{
 		TransformPtr parentPtr = ObjectManager::Get(parent);
 
 		Transform* transform = new Transform();
-		transform->name = name;
+		transform->name = toUTF8(std::u16string(name));
 		TransformPtr transformPtr = TransformPtr(transform);
 		parentPtr->children.push_back(transformPtr);
 
@@ -50,28 +107,8 @@ namespace FireEngine
 		Transform* pWho = (Transform*)whoObjPtr.get();
 
 		auto toObjPtr = ObjectManager::Get(to);
-		Transform* pTo = (Transform*)toObjPtr.get();
 
-		Transform* pFrom = pWho->parent.lock().get();
-		if (pFrom != pTo)
-		{
-			TransformPtr whoPtr = nullptr;
-			for (auto iter = pFrom->children.begin(); iter != pFrom->children.end(); ++iter)
-			{
-				if ((*iter).get() == pWho)
-				{
-					whoPtr = *iter;
-					pFrom->children.erase(iter);
-					break;
-				}
-			}
-
-			if (whoPtr)
-			{
-				pWho->parent = toObjPtr;
-				pTo->children.push_back(whoPtr);
-			}
-		}
+		pWho->SetParent(toObjPtr);
 	}
 
 	EXPORT_API TransformHandle TransformFindChildByIndex(TransformHandle handle, int index)
@@ -87,10 +124,10 @@ namespace FireEngine
 	{
 		auto object = ObjectManager::Get(handle);
 		Transform* pTransform = (Transform*)object.get();
-		pTransform->name = name;
+		pTransform->name = toUTF8(std::u16string(name));
 	}
 
-	EXPORT_API const char16_t* TransformGetName(TransformHandle handle)
+	EXPORT_API const char* TransformGetName(TransformHandle handle)
 	{
 		auto object = ObjectManager::Get(handle);
 		Transform* pTransform = (Transform*)object.get();

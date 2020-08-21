@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -18,62 +18,11 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\..\3rdparty\imgui_docking\examples\libs\gl3w\GL\gl3w.c" />
-    <ClCompile Include="..\..\3rdparty\imgui_docking\imgui.cpp" />
-    <ClCompile Include="..\..\3rdparty\imgui_docking\imgui_demo.cpp" />
-    <ClCompile Include="..\..\3rdparty\imgui_docking\imgui_draw.cpp" />
-    <ClCompile Include="..\..\3rdparty\imgui_docking\imgui_widgets.cpp" />
-    <ClCompile Include="src\app\app.cpp" />
-    <ClCompile Include="src\app\main_shared.cpp" />
-    <ClCompile Include="src\core\component.cpp" />
-    <ClCompile Include="src\core\gameobject.cpp" />
-    <ClCompile Include="src\core\object.cpp" />
-    <ClCompile Include="src\filesystem\FileSystem.cpp" />
-    <ClCompile Include="src\gameview\game_view.cpp" />
-    <ClCompile Include="src\graphics\camera.cpp" />
-    <ClCompile Include="src\graphics\transform.cpp" />
-    <ClCompile Include="src\imgui\imgui_config.cpp" />
-    <ClCompile Include="src\imgui\imgui_impl_bgfx.cpp" />
-    <ClCompile Include="src\imgui\imgui_utils.cpp" />
-    <ClCompile Include="src\imgui\imgui_wrapper.cpp" />
-    <ClCompile Include="src\loader\loader.cpp" />
-    <ClCompile Include="src\scene\scene.cpp" />
-    <ClCompile Include="src\wrapper\wrapper.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="src\app\app.h" />
-    <ClInclude Include="src\app\main_shared.h" />
-    <ClInclude Include="src\core\component.h" />
-    <ClInclude Include="src\core\gameobject.h" />
-    <ClInclude Include="src\core\object.h" />
-    <ClInclude Include="src\exportapi.h" />
-    <ClInclude Include="src\filesystem\FileSystem.h" />
-    <ClInclude Include="src\gameview\game_view.h" />
-    <ClInclude Include="src\graphics\camera.h" />
-    <ClInclude Include="src\graphics\transform.h" />
-    <ClInclude Include="src\imgui\imgui_config.h" />
-    <ClInclude Include="src\imgui\imgui_impl_bgfx.h" />
-    <ClInclude Include="src\imgui\imgui_utils.h" />
-    <ClInclude Include="src\imgui\imgui_wrapper.h" />
-    <ClInclude Include="src\loader\loader.h" />
-    <ClInclude Include="src\scene\scene.h" />
-    <ClInclude Include="src\wrapper\wrapper.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="compile_shader.cmd" />
-    <None Include="shaders\fbo_varying.def.sc" />
-    <None Include="shaders\fs_buildin.sc" />
-    <None Include="shaders\fs_fbo.sc" />
-    <None Include="shaders\varying.def.sc" />
-    <None Include="shaders\vs_buildin.sc" />
-    <None Include="shaders\vs_fbo.sc" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{061a7541-4e82-4458-83b7-8cb7ee46c068}</ProjectGuid>
-    <RootNamespace>fireenginenativeplayer</RootNamespace>
+    <ProjectGuid>{afbc9962-1d27-4721-b837-eccc4774c8f7}</ProjectGuid>
+    <RootNamespace>fireenginenativeeditor</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -168,21 +117,11 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\..\3rdparty\bx\include\compat\msvc;..\..\3rdparty\bgfx\include;..\..\3rdparty\bimg\include;..\..\3rdparty\bgfx\examples\common;..\..\3rdparty\bx\include;..\..\3rdparty\imgui_docking;..\..\3rdparty\imgui_docking\examples;..\..\3rdparty\imgui_docking\examples\libs\gl3w;..\..\3rdparty\imgui_docking\examples\libs\glfw\include;..\..\3rdparty\glm;..\..\src\fireengine.native.player\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <PreprocessToFile>false</PreprocessToFile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <AdditionalOptions>/D IMGUI_USER_CONFIG=&lt;imgui/imgui_config.h&gt; %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\..\libs\glfw\lib-vc2019-64;..\..\3rdparty\bgfx\.build\win64_vs2019\bin;..\..\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib;bgfxDebug.lib;bimgDebug.lib;bimg_decodeDebug.lib;bxDebug.lib;example-commonDebug.lib;opengl32.lib;assimp-vc140-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
-    <PostBuildEvent>
-      <Command>./compile_shader.cmd</Command>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -200,6 +139,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
+  <ItemGroup>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

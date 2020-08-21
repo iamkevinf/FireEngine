@@ -24,6 +24,11 @@ namespace FireEngine
 		ObjectManager::objPool.erase(ObjectManager::objPool.find(handle.idx));
 	}
 
+	ObjectPtr ObjectManager::GetRef(uint16_t objectId)
+	{
+		return ObjectManager::objPool[objectId].lock();
+	}
+
 	ObjectPtr ObjectManager::Get(ObjectHandle handle)
 	{
 		return ObjectManager::objPool[handle.idx].lock();

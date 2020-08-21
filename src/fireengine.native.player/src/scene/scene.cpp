@@ -1,6 +1,9 @@
 #include "scene.h"
 
-#include "../graphics/transform.h"
+#include "graphics/transform.h"
+#include <bx/math.h>
+
+#include <debugdraw/debugdraw.h>
 
 namespace FireEngine
 {
@@ -9,7 +12,7 @@ namespace FireEngine
 	void Scene::Init()
 	{
 		root = TransformPtr(new Transform());
-		root->name = u"root";
+		root->name = "root";
 		ObjectManager::Register(root, ObjectType::Transform);
 	}
 
@@ -50,6 +53,18 @@ namespace FireEngine
 		}
 
 		return nullptr;
+	}
+
+	void SceneManager::Render(bgfx::ViewId viewId)
+	{
+		DebugDrawEncoder dde;
+		dde.begin(viewId);
+
+		dde.drawGrid(Axis::Y, { 0.0f, 0.0f, 0.0f }, 100);
+		dde.drawAxis(0, 0, 0);
+		dde.drawCone({ 0.0f, 0.0f, 0.0f }, {0.0f, 10.0f, 0.0f}, 1.0f);
+
+		dde.end();
 	}
 
 	EXPORT_API SceneHandle SceneCreate(const char16_t* name)

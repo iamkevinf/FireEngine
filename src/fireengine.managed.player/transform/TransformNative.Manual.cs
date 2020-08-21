@@ -15,7 +15,7 @@ namespace FireEngine
             string namestr;
             unsafe
             {
-                namestr = new string((char*)name);
+                namestr = new string((sbyte*)name);
             }
 
             return namestr;

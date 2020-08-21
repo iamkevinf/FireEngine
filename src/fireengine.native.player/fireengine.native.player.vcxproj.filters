@@ -31,7 +31,7 @@
     <Filter Include="graphics">
       <UniqueIdentifier>{9dd19e19-8e7d-49e5-bd4e-d62b164eb85b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="object">
+    <Filter Include="core">
       <UniqueIdentifier>{636eb084-6ba4-4f5e-bbf1-fbfe0373b2e6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -84,11 +84,20 @@
     <ClCompile Include="src\graphics\transform.cpp">
       <Filter>graphics</Filter>
     </ClCompile>
-    <ClCompile Include="src\object\object.cpp">
-      <Filter>object</Filter>
-    </ClCompile>
     <ClCompile Include="src\imgui\imgui_config.cpp">
       <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\camera.cpp">
+      <Filter>graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\object.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\component.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\gameobject.cpp">
+      <Filter>core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -126,11 +135,20 @@
     <ClInclude Include="src\graphics\transform.h">
       <Filter>graphics</Filter>
     </ClInclude>
-    <ClInclude Include="src\object\object.h">
-      <Filter>object</Filter>
-    </ClInclude>
     <ClInclude Include="src\imgui\imgui_config.h">
       <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\camera.h">
+      <Filter>graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\object.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\component.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\gameobject.h">
+      <Filter>core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

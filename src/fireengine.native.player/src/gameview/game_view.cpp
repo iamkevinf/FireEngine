@@ -1,18 +1,22 @@
 #include "game_view.h"
 
-#include "bgfx/bgfx.h"
-#include "bx/bx.h"
-#include "bx/math.h"
+#include <bgfx/bgfx.h>
+#include <bx/bx.h>
+#include <bx/math.h>
+#include <debugdraw/debugdraw.h>
 
-#include "../loader/loader.h"
+#include "loader/loader.h"
+
 #include <imgui.h>
+#include "imgui/imgui_impl_bgfx.h"
 
 #include <glm/glm.hpp>
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/euler_angles.hpp>
-#include "../imgui/imgui_impl_bgfx.h"
 
+#include "scene/scene.h"
+#include "core/component.h"
 
 namespace FireEngine
 {
@@ -64,10 +68,11 @@ namespace FireEngine
 
 	void GameView::OnInit()
 	{
+		Component::RegisterComponents();
+
 		//create rt
 		g_frame_tex = bgfx::createTexture2D(1024, 1024, false, 1, bgfx::TextureFormat::RGBA8, BGFX_TEXTURE_RT);
-		bgfx::TextureHandle fbtexture = g_frame_tex;
-		g_framebuffer = bgfx::createFrameBuffer(1, &fbtexture, true);
+		g_framebuffer = bgfx::createFrameBuffer(1, &g_frame_tex, true);
 
 		//≈‰÷√vertexbuffer ƒ⁄¥Ê≤ºæ÷
 		g_layout
@@ -86,18 +91,20 @@ namespace FireEngine
 		);
 		g_ib = bgfx::createIndexBuffer(
 			bgfx::makeRef(s_cubeTriList, sizeof(s_cubeTriList)));
+
+		ddInit();
 	}
 
 	void GameView::OnTick(float dTime)
 	{
-		bgfx::setViewFrameBuffer(10, g_framebuffer);
-
 		bgfx::ViewId viewId = 10;
+		bgfx::setViewFrameBuffer(viewId, g_framebuffer);
+
 		bgfx::setViewRect(viewId, 0, 0, 1024, 1024);
 		bgfx::setViewClear(viewId, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH, 0x000000FF);
 		bgfx::touch(viewId);
 
-		static glm::vec3 eye = glm::vec3(0.0f, 0.0f, -35.0f);
+		static glm::vec3 eye = glm::vec3(0.0f, 10.0f, -35.0f);
 		ImGuiIO io = ImGui::GetIO();
 		if (io.WantCaptureMouse && io.MouseClicked[0])
 			eye.z++;
@@ -139,6 +146,9 @@ namespace FireEngine
 			}
 
 		}
+
+		SceneManager::Render(viewId);
+
 		bgfx::frame();
 
 	}
@@ -171,6 +181,8 @@ namespace FireEngine
 			bgfx::destroy(g_framebuffer);
 			g_framebuffer = BGFX_INVALID_HANDLE;
 		}
+
+		ddShutdown();
 	}
 
 
