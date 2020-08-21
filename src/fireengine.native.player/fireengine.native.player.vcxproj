@@ -29,10 +29,10 @@
     <ClCompile Include="src\core\component.cpp" />
     <ClCompile Include="src\core\gameobject.cpp" />
     <ClCompile Include="src\core\object.cpp" />
+    <ClCompile Include="src\core\transform.cpp" />
     <ClCompile Include="src\filesystem\FileSystem.cpp" />
     <ClCompile Include="src\gameview\game_view.cpp" />
     <ClCompile Include="src\graphics\camera.cpp" />
-    <ClCompile Include="src\graphics\transform.cpp" />
     <ClCompile Include="src\imgui\imgui_config.cpp" />
     <ClCompile Include="src\imgui\imgui_impl_bgfx.cpp" />
     <ClCompile Include="src\imgui\imgui_utils.cpp" />
@@ -47,11 +47,11 @@
     <ClInclude Include="src\core\component.h" />
     <ClInclude Include="src\core\gameobject.h" />
     <ClInclude Include="src\core\object.h" />
+    <ClInclude Include="src\core\transform.h" />
     <ClInclude Include="src\exportapi.h" />
     <ClInclude Include="src\filesystem\FileSystem.h" />
     <ClInclude Include="src\gameview\game_view.h" />
     <ClInclude Include="src\graphics\camera.h" />
-    <ClInclude Include="src\graphics\transform.h" />
     <ClInclude Include="src\imgui\imgui_config.h" />
     <ClInclude Include="src\imgui\imgui_impl_bgfx.h" />
     <ClInclude Include="src\imgui\imgui_utils.h" />
@@ -75,6 +75,7 @@
     <ProjectGuid>{061a7541-4e82-4458-83b7-8cb7ee46c068}</ProjectGuid>
     <RootNamespace>fireenginenativeplayer</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>fireengine.native.player</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

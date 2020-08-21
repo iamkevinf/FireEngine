@@ -2,7 +2,7 @@
 #define __GAMEOBJECT_H__
 
 #include "object.h"
-#include "graphics/transform.h"
+#include "transform.h"
 #include <list>
 #include "exportapi.h"
 

@@ -81,9 +81,6 @@
     <ClCompile Include="src\scene\scene.cpp">
       <Filter>scene</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\transform.cpp">
-      <Filter>graphics</Filter>
-    </ClCompile>
     <ClCompile Include="src\imgui\imgui_config.cpp">
       <Filter>imgui</Filter>
     </ClCompile>
@@ -97,6 +94,9 @@
       <Filter>core</Filter>
     </ClCompile>
     <ClCompile Include="src\core\gameobject.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\core\transform.cpp">
       <Filter>core</Filter>
     </ClCompile>
   </ItemGroup>
@@ -132,9 +132,6 @@
     <ClInclude Include="src\scene\scene.h">
       <Filter>scene</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphics\transform.h">
-      <Filter>graphics</Filter>
-    </ClInclude>
     <ClInclude Include="src\imgui\imgui_config.h">
       <Filter>imgui</Filter>
     </ClInclude>
@@ -148,6 +145,9 @@
       <Filter>core</Filter>
     </ClInclude>
     <ClInclude Include="src\core\gameobject.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\transform.h">
       <Filter>core</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,6 +1,6 @@
 #include "component.h"
 #include "gameobject.h"
-#include "graphics/transform.h"
+#include "transform.h"
 
 namespace FireEngine
 {
