@@ -36,7 +36,7 @@ namespace FireEngine.Editor
 
             // 按照gameview的宽高比从新计算content的size
             float contentHeightNeo = contentSize.X / aspectGame;
-            if(contentHeightNeo > contentSize.Y)
+            if (contentHeightNeo > contentSize.Y)
             {
                 bgn.X = center.X - contentSize.Y * 0.5f;
                 bgn.Y = pos.Y;

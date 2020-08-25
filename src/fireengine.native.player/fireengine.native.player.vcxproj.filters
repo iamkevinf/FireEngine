@@ -34,6 +34,12 @@
     <Filter Include="core">
       <UniqueIdentifier>{636eb084-6ba4-4f5e-bbf1-fbfe0373b2e6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="math">
+      <UniqueIdentifier>{2400eff8-7dc5-496d-b892-4e964ad94571}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="utils">
+      <UniqueIdentifier>{af4177d6-905c-43fa-8a8b-2261cf26f10b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\3rdparty\imgui_docking\examples\libs\gl3w\GL\gl3w.c">
@@ -102,6 +108,33 @@
     <ClCompile Include="src\core\world.cpp">
       <Filter>core</Filter>
     </ClCompile>
+    <ClCompile Include="src\imgui\ImGradient.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\imgui\ImGuizmo.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\imgui\ImSequencer.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\imgui\ImCurveEdit.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\renderpass.cpp">
+      <Filter>graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\texture.cpp">
+      <Filter>graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\rendertexture.cpp">
+      <Filter>graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\color.cpp">
+      <Filter>graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\time.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\imgui\imgui_utils.h">
@@ -155,6 +188,54 @@
     </ClInclude>
     <ClInclude Include="src\core\world.h">
       <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\imgui\ImGradient.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\imgui\ImGuizmo.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\imgui\ImSequencer.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\imgui\ImCurveEdit.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\renderpass.h">
+      <Filter>graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\texture.h">
+      <Filter>graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\rendertexture.h">
+      <Filter>graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\rendertextureformat.h">
+      <Filter>graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\depthbuffer.h">
+      <Filter>graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\filtermode.h">
+      <Filter>graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\texturewrapmode.h">
+      <Filter>graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\cameraclearflags.h">
+      <Filter>graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\framebuffer.h">
+      <Filter>graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\color.h">
+      <Filter>graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\math.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\time.h">
+      <Filter>utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

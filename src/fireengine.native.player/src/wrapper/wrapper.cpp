@@ -3,16 +3,18 @@
 #include <glm/glm.hpp>
 #include <bx/string.h>
 #include <imgui.h>
+#include <imgui/imgui_impl_bgfx.h>
 
-#include "../app/app.h"
-#include "../loader/loader.h"
-#include "../gameview/game_view.h"
+#include "app/app.h"
+#include "loader/loader.h"
+#include "gameview/game_view.h"
+#include "graphics/camera.h"
 
 namespace FireEngine
 {
-	int feApp_MainLoop(const char16_t* title, void(*OnInit)(), void(*OnGUI)(), void(*OnExit)())
+	int feApp_MainLoop(const char16_t* title, void(*OnInit)(), void(*OnGUI)(), void(*OnTick)(), void(*OnExit)())
 	{
-		return WindowMain(title, OnInit, OnGUI, OnExit);
+		return WindowMain(title, OnInit, OnGUI, OnTick, OnExit);
 	}
 
 	bool feApp_SetWindowTitle(const char16_t* title)
@@ -145,8 +147,113 @@ namespace FireEngine
 
 	bgfx::TextureHandle feGetGameViewTexture()
 	{
-		return GameView::GetTexture();
+#if Test
+		return Camera::GetTexture();
+#else
+		return {bgfx::kInvalidHandle};
+#endif
 	}
+
+	struct Target
+	{
+	public:
+		bgfx::TextureHandle     frametex;
+		bgfx::FrameBufferHandle framebuffer;
+		int width;
+		int height;
+	};
+
+	EXPORT_API TargetHandle feTarget_Create(int width, int height)
+	{
+		auto texframe = bgfx::createTexture2D(width, height, false, 1, bgfx::TextureFormat::RGBA8, BGFX_TEXTURE_RT);
+		auto t = new Target();
+		t->frametex = texframe;
+		t->framebuffer = bgfx::createFrameBuffer(1, &texframe, true);
+		t->width = width;
+		t->height = height;
+		return TargetHandle{ t };
+	}
+	EXPORT_API ImTextureID feTarget_GetImGuiTexID(TargetHandle handle)
+	{
+		union { struct { bgfx::TextureHandle handle; uint8_t flags; uint8_t mip; } s; ImTextureID id; } tex;
+		tex.s.handle = handle.ptr->frametex;
+		tex.s.flags = IMGUI_FLAGS_ALPHA_BLEND;
+		tex.s.mip = 0;
+		return tex.id;
+	}
+	EXPORT_API void feTarget_Destory(TargetHandle handle)
+	{
+		bgfx::destroy(handle.ptr->framebuffer);
+		handle.ptr->framebuffer = BGFX_INVALID_HANDLE;
+		handle.ptr->frametex = BGFX_INVALID_HANDLE;
+		delete handle.ptr;
+	}
+	EXPORT_API void feTarget_Reset(TargetHandle handle, int width, int height)
+	{
+		if (bgfx::isValid(handle.ptr->framebuffer))
+		{
+			if (width != handle.ptr->width || height != handle.ptr->height)
+			{
+				bgfx::destroy(handle.ptr->framebuffer);
+				handle.ptr->framebuffer = BGFX_INVALID_HANDLE;
+				handle.ptr->frametex = BGFX_INVALID_HANDLE;
+			}
+		}
+		if (!bgfx::isValid(handle.ptr->framebuffer))
+		{
+			auto texframe = bgfx::createTexture2D(width, height, false, 1, bgfx::TextureFormat::RGBA8, BGFX_TEXTURE_RT);
+			auto texd16 = bgfx::createTexture2D(width, height, false, 1, bgfx::TextureFormat::D16, BGFX_TEXTURE_RT_WRITE_ONLY);
+			bgfx::TextureHandle fbtextures[] = { texframe,texd16 };
+			handle.ptr->frametex = texframe;
+			handle.ptr->framebuffer = bgfx::createFrameBuffer(2, fbtextures, true);
+			handle.ptr->width = width;
+			handle.ptr->height = height;
+		}
+	}
+
+	int fviewid;
+	TargetHandle target;
+	EXPORT_API void feFrame_Clear(uint32_t color, bool withColor, bool withDepth)
+	{
+		fviewid++;
+
+		IM_ASSERT((withColor || withDepth) && "error clear args");
+
+		uint16_t flag = 0;
+		if (withColor)flag |= BGFX_CLEAR_COLOR;
+		if (withDepth)flag |= BGFX_CLEAR_DEPTH;
+
+		if (target.ptr != NULL)
+		{
+			bgfx::setViewFrameBuffer(fviewid, target.ptr->framebuffer);
+			bgfx::setViewRect(fviewid, 0, 0, target.ptr->width, target.ptr->height);
+		}
+		else
+		{
+			auto w = bgfx::getStats()->width;
+			auto h = bgfx::getStats()->height;
+			bgfx::setViewFrameBuffer(fviewid, BGFX_INVALID_HANDLE);
+			bgfx::setViewRect(fviewid, 0, 0, w, h);
+		}
+		bgfx::setViewClear(fviewid, flag, color);
+		bgfx::touch(fviewid);
+	}
+	EXPORT_API void feFrame_SetTarget(TargetHandle handle)
+	{
+		target = handle;
+		fviewid = -1;
+	}
+	EXPORT_API void feFrame_SetMainScreen()
+	{
+		target.ptr = NULL;
+		fviewid = -1;
+	}
+	EXPORT_API void feFrame_Flush()
+	{
+		bgfx::frame();
+		fviewid = -1;
+	}
+
 
 }
 

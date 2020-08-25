@@ -40,6 +40,10 @@ namespace FireEngine.Editor
         {
         }
 
+        public virtual void OnTick()
+        {
+        }
+
         public virtual void OnShow() { }
         public virtual void Show()
         {

@@ -34,12 +34,21 @@
     <ClCompile Include="src\filesystem\FileSystem.cpp" />
     <ClCompile Include="src\gameview\game_view.cpp" />
     <ClCompile Include="src\graphics\camera.cpp" />
+    <ClCompile Include="src\graphics\color.cpp" />
+    <ClCompile Include="src\graphics\renderpass.cpp" />
+    <ClCompile Include="src\graphics\rendertexture.cpp" />
+    <ClCompile Include="src\graphics\texture.cpp" />
+    <ClCompile Include="src\imgui\ImCurveEdit.cpp" />
+    <ClCompile Include="src\imgui\ImGradient.cpp" />
+    <ClCompile Include="src\imgui\ImGuizmo.cpp" />
     <ClCompile Include="src\imgui\imgui_config.cpp" />
     <ClCompile Include="src\imgui\imgui_impl_bgfx.cpp" />
     <ClCompile Include="src\imgui\imgui_utils.cpp" />
     <ClCompile Include="src\imgui\imgui_wrapper.cpp" />
+    <ClCompile Include="src\imgui\ImSequencer.cpp" />
     <ClCompile Include="src\loader\loader.cpp" />
     <ClCompile Include="src\scene\scene.cpp" />
+    <ClCompile Include="src\utils\time.cpp" />
     <ClCompile Include="src\wrapper\wrapper.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -54,12 +63,28 @@
     <ClInclude Include="src\filesystem\FileSystem.h" />
     <ClInclude Include="src\gameview\game_view.h" />
     <ClInclude Include="src\graphics\camera.h" />
+    <ClInclude Include="src\graphics\cameraclearflags.h" />
+    <ClInclude Include="src\graphics\color.h" />
+    <ClInclude Include="src\graphics\depthbuffer.h" />
+    <ClInclude Include="src\graphics\filtermode.h" />
+    <ClInclude Include="src\graphics\framebuffer.h" />
+    <ClInclude Include="src\graphics\renderpass.h" />
+    <ClInclude Include="src\graphics\rendertexture.h" />
+    <ClInclude Include="src\graphics\rendertextureformat.h" />
+    <ClInclude Include="src\graphics\texture.h" />
+    <ClInclude Include="src\graphics\texturewrapmode.h" />
+    <ClInclude Include="src\imgui\ImCurveEdit.h" />
+    <ClInclude Include="src\imgui\ImGradient.h" />
+    <ClInclude Include="src\imgui\ImGuizmo.h" />
     <ClInclude Include="src\imgui\imgui_config.h" />
     <ClInclude Include="src\imgui\imgui_impl_bgfx.h" />
     <ClInclude Include="src\imgui\imgui_utils.h" />
     <ClInclude Include="src\imgui\imgui_wrapper.h" />
+    <ClInclude Include="src\imgui\ImSequencer.h" />
     <ClInclude Include="src\loader\loader.h" />
+    <ClInclude Include="src\math\math.h" />
     <ClInclude Include="src\scene\scene.h" />
+    <ClInclude Include="src\utils\time.h" />
     <ClInclude Include="src\wrapper\wrapper.h" />
   </ItemGroup>
   <ItemGroup>

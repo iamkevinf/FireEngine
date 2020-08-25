@@ -1471,7 +1471,11 @@ namespace ImGuiNET
         }
         public static Vector4 ColorConvertU32ToFloat4(uint @in)
         {
-            Vector4 ret = ImGuiNative.igColorConvertU32ToFloat4(@in);
+            Vector4 ret;
+            unsafe
+            {
+                ImGuiNative.igColorConvertU32ToFloat4(&ret, @in);
+            }
             return ret;
         }
         public static bool ColorEdit3(string label, ref Vector3 col)
@@ -5698,12 +5702,23 @@ namespace ImGuiNET
         }
         public static Vector2 GetContentRegionAvail()
         {
-            Vector2 ret = ImGuiNative.igGetContentRegionAvail();
+            Vector2 ret;
+            unsafe
+            {
+                Vector2* native = &ret;
+                ImGuiNative.igGetContentRegionAvail(native);
+            }
             return ret;
         }
         public static Vector2 GetContentRegionMax()
         {
-            Vector2 ret = ImGuiNative.igGetContentRegionMax();
+            Vector2 ret;
+            unsafe
+            {
+                Vector2* native = &ret;
+                ImGuiNative.igGetContentRegionMax(native);
+            }
+
             return ret;
         }
         public static IntPtr GetCurrentContext()

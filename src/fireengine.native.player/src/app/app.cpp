@@ -861,7 +861,7 @@ static void ImGui_ImplWin32_ShutdownPlatformInterface()
 //---------------------------------------------------------------------------------------------------------
 LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 HWND gHwnd = nullptr;
-int WindowMain(const char16_t* title, void(*OnInit)(), void(*OnGUI)(), void(*OnExit)())
+int WindowMain(const char16_t* title, void(*OnInit)(), void(*OnGUI)(), void(*OnTick)(), void(*OnExit)())
 {
     ImGui_ImplWin32_EnableDpiAwareness();
 
@@ -912,6 +912,7 @@ int WindowMain(const char16_t* title, void(*OnInit)(), void(*OnGUI)(), void(*OnE
         dt = time - lastTime;
         lastTime = time;
 
+        OnTick();
         FireEngine::GameView::OnTick(dt);
         PlatformFrame(OnGUI);
     }

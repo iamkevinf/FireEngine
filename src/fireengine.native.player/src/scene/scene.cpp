@@ -3,7 +3,11 @@
 #include "core/transform.h"
 #include <bx/math.h>
 
+#include <cassert>
 #include <debugdraw/debugdraw.h>
+#include <imgui.h>
+#include <imgui/ImGuizmo.h>
+#include <graphics/camera.h>
 
 namespace FireEngine
 {
@@ -55,14 +59,56 @@ namespace FireEngine
 		return nullptr;
 	}
 
+	float fov = 90;
 	void SceneManager::Render(bgfx::ViewId viewId)
+	{
+		Camera* camera = Camera::Main();
+		if (camera)
+		{
+			ImGuiIO& io = ImGui::GetIO();
+
+			float width = 1024;// pos.x + contentRegionMax.x - contentRegionMin.x;
+			float height = 1024;// pos.y + contentRegionMax.y - contentRegionMin.y;
+
+			ImGuizmo::BeginFrame();
+			ImGui::SliderFloat("Fov", &fov, 20.f, 110.f);
+			camera->SetFieldOfView(fov);
+
+			ImGui::Text("X: %f Y: %f", io.MousePos.x, io.MousePos.y);
+
+			float* matrix = (float*)&camera->GetTransform()->GetLocal2WorldMatrix()[0][0];
+			float matrixTranslation[3], matrixRotation[3], matrixScale[3];
+			ImGuizmo::DecomposeMatrixToComponents(matrix,
+				matrixTranslation, matrixRotation, matrixScale);
+
+			ImGui::InputFloat3("Tr", matrixTranslation, 3);
+			ImGui::InputFloat3("Rt", matrixRotation, 3);
+			ImGui::InputFloat3("Sc", matrixScale, 3);
+
+			ImGuizmo::RecomposeMatrixFromComponents(matrixTranslation,
+				matrixRotation, matrixScale, matrix);
+
+			const float* view = &camera->GetViewMatrix()[0][0];
+			const float* proj = &camera->GetProjectionMatrix()[0][0];
+			ImGuizmo::DrawGrid(view, proj, &glm::identity<glm::mat4>()[0][0], 100.f);
+
+			ImGuizmo::SetRect(0, 0, width, height);
+			ImGuizmo::Manipulate(view, proj, ImGuizmo::TRANSLATE, ImGuizmo::LOCAL,
+				&glm::identity<glm::mat4>()[0][0], NULL, NULL, NULL, NULL);
+
+			ImGuizmo::ViewManipulate((float*)view, 5,
+				ImVec2(width - 128, 0), ImVec2(128, 128), 0x10101010);
+
+			ImGuizmo::DrawCubes(view, proj, &glm::identity<glm::mat4>()[0][0], 1);
+		}
+	}
+
+	void SceneManager::TickTest(bgfx::ViewId viewId, float dTime)
 	{
 		DebugDrawEncoder dde;
 		dde.begin(viewId);
 
-		dde.drawGrid(Axis::Y, { 0.0f, 0.0f, 0.0f }, 100);
-		dde.drawAxis(0, 0, 0);
-		dde.drawCone({ 0.0f, 0.0f, 0.0f }, {0.0f, 10.0f, 0.0f}, 1.0f);
+		dde.drawGrid(Axis::Y, { 0,0,0 });
 
 		dde.end();
 	}

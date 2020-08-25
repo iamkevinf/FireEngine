@@ -16,7 +16,7 @@ namespace FireEngine.Editor
 
         public void Run()
         {
-            AppNative.feApp_MainLoop("FireEngine DotNetCore", OnInit, OnGUI, OnExit);
+            AppNative.feApp_MainLoop("FireEngine DotNetCore", OnInit, OnGUI, OnTick, OnExit);
         }
 
         void OnInit()
@@ -115,6 +115,14 @@ namespace FireEngine.Editor
                 ImGui.ShowFontSelector("font selector");
             }
 
+        }
+
+        void OnTick()
+        {
+            foreach (var win in windows.Values)
+            {
+                win.OnTick();
+            }
         }
 
         void OnExit()

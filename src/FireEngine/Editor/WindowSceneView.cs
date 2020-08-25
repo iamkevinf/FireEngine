@@ -12,6 +12,13 @@ namespace FireEngine.Editor
         public override bool isInWIndowList => true;
         public override bool canDock => true;
 
+        private Vector2 size;
+        AppNative.TargetHandle target = new AppNative.TargetHandle();
+        IntPtr targetTexture = IntPtr.Zero;
+        int targetW;
+        int targetH;
+        public static uint s_clearColor = 0x314D79FF;
+
         public override void Init()
         {
             Show();
@@ -19,23 +26,39 @@ namespace FireEngine.Editor
 
         public override void OnGUI()
         {
-            base.OnGUI();
+            //Vector2 canvas_sz = ImGui.GetContentRegionAvail();
 
-            TextureHandle tex = FireEngine.FireEngineNative.feGetGameViewTexture();
+            //size = canvas_sz;
+            //if (target.ptr != IntPtr.Zero)
+            //{
+            //    var texid = AppNative.feTarget_GetImGuiTexID(target);
+            //    ImGui.Image(texid, size);
+            //}
+        }
 
-            Vector2 contentRegionMax = ImGui.GetWindowContentRegionMax();
-            Vector2 contentRegionMin = ImGui.GetWindowContentRegionMin();
-            Vector2 pos = ImGui.GetCursorScreenPos();
-            Vector2 gameViewSize = Vector2.One * 1024 * 2;
+        public override void OnTick()
+        {
+            //var w = (int)size.X;
+            //var h = (int)size.Y;
+            //if (w == 0 || h == 0)
+            //    return;
 
-            Vector2 center = pos + (contentRegionMin + contentRegionMax) * 0.5f;
+            //if (target.ptr == IntPtr.Zero)
+            //{
+            //    targetW = w;
+            //    targetH = h;
+            //    target = AppNative.feTarget_Create(w, h);
+            //}
+            //else if (w != targetW || h != targetH)
+            //{
+            //    targetW = w;
+            //    targetH = h;
+            //    AppNative.feTarget_Reset(target, w, h);
+            //}
 
-            Vector2 bgn, end;
-
-            bgn = center - gameViewSize * 0.5f;
-            end = center + gameViewSize * 0.5f;
-
-            ImGui.GetWindowDrawList().AddImage((IntPtr)tex.idx, bgn, end, new Vector2(0, 1), new Vector2(1, 0));
+            //AppNative.feFrame_SetTarget(target);
+            //AppNative.feFrame_Clear(s_clearColor, true, true);
+            //AppNative.feFrame_Flush();
         }
     }
 }

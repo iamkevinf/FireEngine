@@ -84,8 +84,8 @@ namespace ImGuiNET
         public static extern void igColorConvertHSVtoRGB(float h, float s, float v, float* out_r, float* out_g, float* out_b);
         [DllImport(ImGuiDllName, CallingConvention = CallingConvention.Cdecl)]
         public static extern void igColorConvertRGBtoHSV(float r, float g, float b, float* out_h, float* out_s, float* out_v);
-        [DllImport(ImGuiDllName, CallingConvention = CallingConvention.Cdecl, EntryPoint = "igColorConvertU32ToFloat4_nonUDT2")]
-        public static extern Vector4 igColorConvertU32ToFloat4(uint @in);
+        [DllImport(ImGuiDllName, CallingConvention = CallingConvention.Cdecl)]
+        public static extern void igColorConvertU32ToFloat4(Vector4* pOut, uint @in);
         [DllImport(ImGuiDllName, CallingConvention = CallingConvention.Cdecl)]
         public static extern byte igColorEdit3(byte* label, Vector3* col, ImGuiColorEditFlags flags);
         [DllImport(ImGuiDllName, CallingConvention = CallingConvention.Cdecl)]
@@ -193,9 +193,9 @@ namespace ImGuiNET
         [DllImport(ImGuiDllName, CallingConvention = CallingConvention.Cdecl)]
         public static extern float igGetColumnWidth(int column_index);
         [DllImport(ImGuiDllName, CallingConvention = CallingConvention.Cdecl)]
-        public static extern Vector2 igGetContentRegionAvail();
+        public static extern void igGetContentRegionAvail(Vector2* pOut);
         [DllImport(ImGuiDllName, CallingConvention = CallingConvention.Cdecl)]
-        public static extern Vector2 igGetContentRegionMax();
+        public static extern void igGetContentRegionMax(Vector2* pOut);
         [DllImport(ImGuiDllName, CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr igGetCurrentContext();
         [DllImport(ImGuiDllName, CallingConvention = CallingConvention.Cdecl)]

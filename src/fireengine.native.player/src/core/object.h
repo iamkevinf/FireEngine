@@ -112,6 +112,7 @@ namespace FireEngine
 	{
 	public:
 		virtual void DeepCopy(const ObjectPtr& source) {}
+		void SetName(const std::string& name) { this->name = name; }
 
 		uint16_t objectID;
 		ObjectType type;

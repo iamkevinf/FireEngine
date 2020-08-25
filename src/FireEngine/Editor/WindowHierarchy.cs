@@ -55,6 +55,8 @@ namespace FireEngine.Editor
             if (ImGui.MenuItem("Camera", handle.IsValid()))
             {
                 mainCamera = Camera.Inner_Create(handle, "Main Camera");
+                TransformNative.TransformSetWorldPosition(mainCamera.transformHandle,
+                    new Vector3(0, 50, 0));
             }
         }
 
@@ -277,15 +279,14 @@ namespace FireEngine.Editor
                     {
                         Vector3 pos = Vector3.Zero;
                         TransformNative.TransformGetWorldPosition(mainCamera.transformHandle, ref pos);
-                        pos.Z++;
-
+                        pos.Y++;
                         TransformNative.TransformSetWorldPosition(mainCamera.transformHandle, pos);
                     }
                     if (ImGui.GetIO().KeysDown[83])
                     {
                         Vector3 pos = Vector3.Zero;
                         TransformNative.TransformGetWorldPosition(mainCamera.transformHandle, ref pos);
-                        pos.Z--;
+                        pos.Y--;
                         TransformNative.TransformSetWorldPosition(mainCamera.transformHandle, pos);
                     }
                 }

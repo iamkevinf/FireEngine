@@ -13,7 +13,7 @@ namespace FireEngine.Editor
 
         public void Run()
         {
-            AppNative.feApp_MainLoop("FireEngine NetCore中", OnInit, OnGui, OnExit);
+            AppNative.feApp_MainLoop("FireEngine NetCore中", OnInit, OnGui, ()=> { },OnExit);
         }
 
         void OnInit()

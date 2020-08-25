@@ -46,5 +46,7 @@ namespace FireEngine
             fixed (byte* b = ret)
                 *((ushort*)b) = value;
         }
+
+
     }
 }

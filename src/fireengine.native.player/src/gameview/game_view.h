@@ -12,9 +12,9 @@ namespace FireEngine
 	{
 	public:
 		static void OnInit();
+		static void OnGui();
 		static void OnTick(float dTime);
 		static void OnExit();
-		static bgfx::TextureHandle GetTexture();
 	};
 }
 

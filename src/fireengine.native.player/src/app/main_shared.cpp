@@ -1,9 +1,10 @@
 #include "main_shared.h"
 #include "imgui/imgui_config.h"
 #include "bgfx/bgfx.h"
-#include "../imgui/imgui_impl_bgfx.h"
+#include "imgui/imgui_impl_bgfx.h"
 
 #include "bx/bx.h"
+#include <gameview/game_view.h>
 
 #ifdef BX_COMPILER_MSVC
 bool ImGui_ImplWin32_Init(void* hwnd);
@@ -77,6 +78,8 @@ void PlatformFrame(void(*OnGUI)())
     ImGui::NewFrame();
 
     OnGUI();
+
+    FireEngine::GameView::OnGui();
 
     // Rendering
     ImGui::EndFrame();

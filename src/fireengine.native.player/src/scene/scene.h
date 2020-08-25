@@ -52,6 +52,7 @@ namespace FireEngine
 		static ScenePtr GetScene(SceneHandle handle);
 
 		static void Render(bgfx::ViewId viewId);
+		static void TickTest(bgfx::ViewId viewId, float dTime);
 
 	public:
 		static std::vector<ScenePtr> scenePool;

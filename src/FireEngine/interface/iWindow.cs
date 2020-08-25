@@ -19,6 +19,7 @@
             get;
         }
         void OnGUI();
+        void OnTick();
         void Hide();
         void Show();
 
