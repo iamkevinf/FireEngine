@@ -55,7 +55,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MD", "MD", "{E3B33F54-86BF-
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FireEditor", "src\fireengine.managed.editor\FireEditor.csproj", "{BEB9D048-168F-469F-8262-4BB2E1F38B5F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FireEditor", "src\fireengine.managed.editor\FireEditor.csproj", "{BEB9D048-168F-469F-8262-4BB2E1F38B5F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{AF074727-D08E-4594-A361-19C755CE48B8} = {AF074727-D08E-4594-A361-19C755CE48B8}
+		{061A7541-4E82-4458-83B7-8CB7EE46C068} = {061A7541-4E82-4458-83B7-8CB7EE46C068}
+		{AFBC9962-1D27-4721-B837-ECCC4774C8F7} = {AFBC9962-1D27-4721-B837-ECCC4774C8F7}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "fireengine.native.editor", "src\fireengine.native.editor\fireengine.native.editor.vcxproj", "{AFBC9962-1D27-4721-B837-ECCC4774C8F7}"
 EndProject
