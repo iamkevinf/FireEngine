@@ -13,6 +13,16 @@ namespace FireEngine
 	{
 	}
 
+	Color::Color(uint32_t color32)
+	{
+		float s = 1.0f / 255.0f;
+
+		r = (color32 & 0xFF) * s; color32 >>= 8;
+		g = (color32 & 0xFF) * s; color32 >>= 8;
+		b = (color32 & 0xFF) * s; color32 >>= 8;
+		a = (color32 & 0xFF) * s; /* color32 >>= 8; */
+	}
+
 	uint32_t Color::GetHex()
 	{
 		uint32_t out;

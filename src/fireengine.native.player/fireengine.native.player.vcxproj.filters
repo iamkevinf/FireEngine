@@ -135,6 +135,9 @@
     <ClCompile Include="src\utils\time.cpp">
       <Filter>utils</Filter>
     </ClCompile>
+    <ClCompile Include="src\utils\messagehandler.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\imgui\imgui_utils.h">
@@ -235,6 +238,9 @@
       <Filter>math</Filter>
     </ClInclude>
     <ClInclude Include="src\utils\time.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\messagehandler.h">
       <Filter>utils</Filter>
     </ClInclude>
   </ItemGroup>

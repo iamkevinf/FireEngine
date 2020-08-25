@@ -11,6 +11,7 @@ namespace FireEngine
 		static Color Lerp(const Color& from, const Color& to, float t, bool clamp_01 = true);
 
 		Color(float r = 0, float g = 0, float b = 0, float a = 0);
+		Color(uint32_t color32);
 		uint32_t GetHex();
 
 		bool operator ==(const Color& c) const;

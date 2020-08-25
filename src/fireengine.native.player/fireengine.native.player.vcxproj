@@ -48,6 +48,7 @@
     <ClCompile Include="src\imgui\ImSequencer.cpp" />
     <ClCompile Include="src\loader\loader.cpp" />
     <ClCompile Include="src\scene\scene.cpp" />
+    <ClCompile Include="src\utils\messagehandler.cpp" />
     <ClCompile Include="src\utils\time.cpp" />
     <ClCompile Include="src\wrapper\wrapper.cpp" />
   </ItemGroup>
@@ -84,6 +85,7 @@
     <ClInclude Include="src\loader\loader.h" />
     <ClInclude Include="src\math\math.h" />
     <ClInclude Include="src\scene\scene.h" />
+    <ClInclude Include="src\utils\messagehandler.h" />
     <ClInclude Include="src\utils\time.h" />
     <ClInclude Include="src\wrapper\wrapper.h" />
   </ItemGroup>

@@ -73,7 +73,7 @@ namespace ImGuiNET
         [DllImport(ImGuiDllName, CallingConvention = CallingConvention.Cdecl)]
         public static extern void igCloseCurrentPopup();
         [DllImport(ImGuiDllName, CallingConvention = CallingConvention.Cdecl)]
-        public static extern byte igCollapsingHeader(byte* label, ImGuiTreeNodeFlags flags);
+        public static extern byte igCollapsingHeaderTreeNodeFlags(byte* label, ImGuiTreeNodeFlags flags);
         [DllImport(ImGuiDllName, CallingConvention = CallingConvention.Cdecl)]
         public static extern byte igCollapsingHeaderBoolPtr(byte* label, byte* p_open, ImGuiTreeNodeFlags flags);
         [DllImport(ImGuiDllName, CallingConvention = CallingConvention.Cdecl)]

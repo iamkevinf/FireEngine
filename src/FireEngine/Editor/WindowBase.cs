@@ -4,7 +4,7 @@ using System.Text;
 
 namespace FireEngine.Editor
 {
-    class WindowBase : iWindow
+    public class WindowBase : iWindow
     {
         public WindowBase()
         {

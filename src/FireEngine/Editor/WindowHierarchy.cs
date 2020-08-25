@@ -16,6 +16,33 @@ namespace FireEngine.Editor
         ImGuiTreeNodeFlags flagsBase = ImGuiTreeNodeFlags.DefaultOpen
             | ImGuiTreeNodeFlags.OpenOnArrow;
 
+        private static Dictionary<TransformNative.TransformHandle, Component> s_pool = new Dictionary<TransformNative.TransformHandle, Component>();
+        public static void AddToPool(TransformNative.TransformHandle handle, Component component)
+        {
+            if (s_pool.ContainsKey(handle))
+                s_pool[handle] = component;
+            else
+                s_pool.Add(handle, component);
+        }
+
+        public static Component GetComponent(TransformNative.TransformHandle handle)
+        {
+            Component ret = null;
+            s_pool.TryGetValue(handle, out ret);
+            return ret;
+        }
+
+
+        public static Component GetComponentSelected()
+        {
+            if (!s_curSelectedTransform.IsValid())
+                return null;
+
+            Component ret = null;
+            s_pool.TryGetValue(s_curSelectedTransform, out ret);
+            return ret;
+        }
+
         public override void Init()
         {
             Show();
@@ -55,8 +82,7 @@ namespace FireEngine.Editor
             if (ImGui.MenuItem("Camera", handle.IsValid()))
             {
                 mainCamera = Camera.Inner_Create(handle, "Main Camera");
-                TransformNative.TransformSetWorldPosition(mainCamera.transformHandle,
-                    new Vector3(0, 50, 0));
+                AddToPool(mainCamera.transformHandle, mainCamera);
             }
         }
 
@@ -79,7 +105,20 @@ namespace FireEngine.Editor
             }
         }
 
-        private TransformNative.TransformHandle curSelectedTransform = TransformNative.TransformHandle.InValid;
+        public static TransformNative.TransformHandle s_curSelectedTransform = TransformNative.TransformHandle.InValid;
+        private TransformNative.TransformHandle m_curSelectedTransform = TransformNative.TransformHandle.InValid;
+        private TransformNative.TransformHandle curSelectedTransform
+        {
+            get
+            {
+                return m_curSelectedTransform;
+            }
+            set
+            {
+                m_curSelectedTransform = value;
+                s_curSelectedTransform = m_curSelectedTransform;
+            }
+        }
 
         bool OnGUI_TransformTree(TransformNative.TransformHandle handle, int idx, ref bool selected)
         {
@@ -275,20 +314,20 @@ namespace FireEngine.Editor
 
                 if (ImGui.IsWindowFocused() && mainCamera != null)
                 {
-                    if (ImGui.GetIO().KeysDown[87])
-                    {
-                        Vector3 pos = Vector3.Zero;
-                        TransformNative.TransformGetWorldPosition(mainCamera.transformHandle, ref pos);
-                        pos.Y++;
-                        TransformNative.TransformSetWorldPosition(mainCamera.transformHandle, pos);
-                    }
-                    if (ImGui.GetIO().KeysDown[83])
-                    {
-                        Vector3 pos = Vector3.Zero;
-                        TransformNative.TransformGetWorldPosition(mainCamera.transformHandle, ref pos);
-                        pos.Y--;
-                        TransformNative.TransformSetWorldPosition(mainCamera.transformHandle, pos);
-                    }
+                    //if (ImGui.GetIO().KeysDown[87])
+                    //{
+                    //    Vector3 pos = Vector3.Zero;
+                    //    TransformNative.TransformGetWorldPosition(mainCamera.transformHandle, ref pos);
+                    //    pos.Y++;
+                    //    TransformNative.TransformSetWorldPosition(mainCamera.transformHandle, pos);
+                    //}
+                    //if (ImGui.GetIO().KeysDown[83])
+                    //{
+                    //    Vector3 pos = Vector3.Zero;
+                    //    TransformNative.TransformGetWorldPosition(mainCamera.transformHandle, ref pos);
+                    //    pos.Y--;
+                    //    TransformNative.TransformSetWorldPosition(mainCamera.transformHandle, pos);
+                    //}
                 }
             }
         }

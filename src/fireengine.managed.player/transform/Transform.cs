@@ -1,10 +1,11 @@
-﻿using System;
+﻿using ImGuiNET;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace FireEngine
 {
-    public class Transform
+    public partial class Transform : Component
     {
     }
 }

@@ -328,7 +328,7 @@ namespace FireEngine
 			1024;// Graphics::GetDisplay()->GetHeight();
 	}
 
-	EXPORT_API CameraHandle CameraCreate(TransformHandle parent, const char16_t* name)
+	EXPORT_API Camera* CameraCreate(TransformHandle parent, const char16_t* name)
 	{
 		std::string _name = toUTF8(std::u16string(name));
 		TransformPtr parentPtr = ObjectManager::Get(parent);
@@ -336,12 +336,12 @@ namespace FireEngine
 
 		ObjectManager::Register(camera, ObjectType::Component);
 
-		return { camera->objectID };
+		return camera.get();
 	}
 
-	EXPORT_API TransformHandle CameraGetTransformHandle(CameraHandle handle)
+	EXPORT_API TransformHandle CameraGetTransformHandle(Camera* camera)
 	{
-		ObjectPtr objPtr = ObjectManager::GetRef(handle.idx);
+		ObjectPtr objPtr = ObjectManager::GetRef(camera->objectID);
 		CameraPtr ret = std::static_pointer_cast<Camera>(objPtr);
 
 		TransformPtr transform = ret->GetTransform();
@@ -353,6 +353,18 @@ namespace FireEngine
 		}
 
 		return { kInvalidHandle };
+	}
+
+	EXPORT_API uint32_t CameraGetClearColor(Camera* camera)
+	{
+		Color color = camera->GetClearColor();
+		return color.GetHex();
+	}
+
+	EXPORT_API void CameraSetClearColor(Camera* camera, uint32_t colorHex)
+	{
+		Color color(colorHex);
+		camera->SetClearColor(color);
 	}
 
 }

@@ -20,8 +20,6 @@ namespace FireEngine
 	typedef std::shared_ptr<class Camera> CameraPtr;
 	typedef std::weak_ptr<class Camera> CameraWeakPtr;
 
-	FIREENGINE_HANDLE(CameraHandle);
-
 	class RenderPass;
 	class FrameBuffer;
 
