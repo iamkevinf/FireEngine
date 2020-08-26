@@ -13,9 +13,6 @@
     <Filter Include="filesystem">
       <UniqueIdentifier>{d937509e-15aa-4de3-b39a-3ca8e3380524}</UniqueIdentifier>
     </Filter>
-    <Filter Include="loader">
-      <UniqueIdentifier>{99eb85c3-dbeb-44a5-8e18-477837636a39}</UniqueIdentifier>
-    </Filter>
     <Filter Include="wrapper">
       <UniqueIdentifier>{6c915fc2-37fd-4c09-9fa1-1733664500bc}</UniqueIdentifier>
     </Filter>
@@ -39,6 +36,12 @@
     </Filter>
     <Filter Include="utils">
       <UniqueIdentifier>{af4177d6-905c-43fa-8a8b-2261cf26f10b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="loader">
+      <UniqueIdentifier>{99eb85c3-dbeb-44a5-8e18-477837636a39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="io">
+      <UniqueIdentifier>{b6ae641b-553d-4fbf-a853-c2a8a14918ba}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -137,6 +140,30 @@
     </ClCompile>
     <ClCompile Include="src\utils\messagehandler.cpp">
       <Filter>utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\io\stream.cpp">
+      <Filter>io</Filter>
+    </ClCompile>
+    <ClCompile Include="src\io\memorystream.cpp">
+      <Filter>io</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\bytebuffer.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\mesh.cpp">
+      <Filter>graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\buffer.cpp">
+      <Filter>graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\vertexbuffer.cpp">
+      <Filter>graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\indexbuffer.cpp">
+      <Filter>graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\vertexattribute.h">
+      <Filter>graphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -242,6 +269,30 @@
     </ClInclude>
     <ClInclude Include="src\utils\messagehandler.h">
       <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\io\stream.h">
+      <Filter>io</Filter>
+    </ClInclude>
+    <ClInclude Include="src\io\memorystream.h">
+      <Filter>io</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\bytebuffer.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\mesh.h">
+      <Filter>graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\buffer.h">
+      <Filter>graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\buffertype.h">
+      <Filter>graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\vertexbuffer.h">
+      <Filter>graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\indexbuffer.h">
+      <Filter>graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
