@@ -79,7 +79,6 @@ namespace FireEngine
                     ImGui.ColorPicker4("PickColor##Inspector##Camera#", ref color4);
                     ImGui.EndPopup();
                 }
-
                 color.W = color4.X;
                 color.Z = color4.Y;
                 color.Y = color4.Z;

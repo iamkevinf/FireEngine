@@ -18,15 +18,7 @@ namespace FireEngine
 
 	void Buffer::Fill(void* param, FillFunc fill)
 	{
-		if (dynamic)
-		{
-			auto& buffer = *GetLocalBuffer().get();
-			fill(param, buffer);
-		}
-		else
-		{
-			ByteBuffer buffer(size);
-			fill(param, buffer);
-		}
+		auto& buffer = *GetLocalBuffer().get();
+		fill(param, buffer);
 	}
 }

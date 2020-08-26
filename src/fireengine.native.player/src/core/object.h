@@ -85,7 +85,7 @@ public:																										\
 		}																									\
         virtual std::string GetTypeName() const { return #derived; }										\
 		virtual const std::vector<std::string>& GetClassNames() const { return derived::ClassNames(); }		\
-		virtual void DeepCopy(const Ref<Object>& source);													\
+		virtual void DeepCopy(const std::shared_ptr<IObject>& source);													\
     private:																								\
 		static std::vector<std::string> _class_names;
 

@@ -6,6 +6,8 @@
 
 namespace FireEngine
 {
+	class Renderer;
+
 	class World
 	{
 	public:
@@ -15,6 +17,11 @@ namespace FireEngine
 		static bool Init();
 		static void Fini();
 		static void Tick();
+
+	private:
+		static void FindAllRenders(
+			const std::list<GameObjectPtr>& objs, std::list<Renderer*>& renderers,
+			bool include_inactive, bool include_disable, bool static_only);
 
 	private:
 		static std::list<GameObjectPtr> gameObjects;

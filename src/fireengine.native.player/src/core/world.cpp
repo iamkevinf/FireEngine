@@ -1,6 +1,7 @@
 #include "world.h"
 
 #include "graphics/camera.h"
+#include "graphics/renderer.h"
 
 namespace FireEngine
 {
@@ -96,6 +97,43 @@ namespace FireEngine
 			}
 
 			iter++;
+		}
+
+		if (Renderer::IsRenderersDirty())
+		{
+			Renderer::SetRenderersDirty(false);
+
+			std::list<Renderer*>& renderers = Renderer::GetRenderers();
+			renderers.clear();
+
+			FindAllRenders(gameObjects, renderers, false, false, false);
+		}
+	}
+
+	void World::FindAllRenders(
+		const std::list<GameObjectPtr>& objs, std::list<Renderer*>& renderers,
+		bool include_inactive, bool include_disable, bool static_only)
+	{
+		for (GameObjectPtr obj : objs)
+		{
+			if (obj->deleted)
+				continue;
+
+			if (include_inactive || obj->IsActiveInHierarchy())
+			{
+				if (!static_only || obj->IsStatic())
+				{
+					std::vector<std::shared_ptr<Renderer>> rs;
+					if (!obj->GetComponents<Renderer>(rs))
+						continue;
+
+					for (std::shared_ptr<Renderer>& renderer : rs)
+					{
+						if (include_disable || renderer->IsEnable())
+							renderers.push_back(renderer.get());
+					}
+				}
+			}
 		}
 	}
 }

@@ -6,6 +6,10 @@
 #include "framebuffer.h"
 #include "rendertexture.h"
 #include "renderpass.h"
+#include "renderer.h"
+#include "meshrenderer.h"
+#include "material.h"
+#include "io/memorystream.h"
 
 #include <imgui.h>
 
@@ -24,6 +28,43 @@ namespace FireEngine
 
 	Camera* Camera::s_mainCamera;
 	std::list<Camera*> Camera::s_cameras;
+	
+	struct myvec
+	{
+		float x;
+		float y;
+		float z;
+		uint32_t m_argb;
+	};
+
+	static myvec s_cubeVertices[] =
+	{
+		{-1.0f,  1.0f,  1.0f, 0x01010101 },
+		{ 1.0f,  1.0f,  1.0f, 0xff0101ff },
+		{-1.0f, -1.0f,  1.0f, 0x0101ff01 },
+		{ 1.0f, -1.0f,  1.0f, 0xff01ffff },
+		{-1.0f,  1.0f, -1.0f, 0x01ff0101 },
+		{ 1.0f,  1.0f, -1.0f, 0xffff01ff },
+		{-1.0f, -1.0f, -1.0f, 0xffffff01 },
+		{ 1.0f, -1.0f, -1.0f, 0xffffffff },
+	};
+
+
+	static const uint16_t s_cubeTriList[] =
+	{
+		0, 1, 2, // 0
+		1, 3, 2,
+		4, 6, 5, // 2
+		5, 6, 7,
+		0, 2, 4, // 4
+		4, 2, 6,
+		1, 5, 3, // 6
+		5, 7, 3,
+		0, 4, 1, // 8
+		4, 5, 1,
+		2, 3, 6, // 10
+		6, 3, 7,
+	};
 
 #if Test
 
@@ -101,6 +142,17 @@ namespace FireEngine
 		s_cameras.clear();
 	}
 
+	bool Camera::IsValidCamera(Camera* camera)
+	{
+		for (Camera* v : s_cameras)
+		{
+			if (v == camera)
+				return true;
+		}
+
+		return false;
+	}
+
 	void Camera::PrepareAll()
 	{
 		for (Camera* camera : s_cameras)
@@ -129,8 +181,8 @@ namespace FireEngine
 		//s_mainCamera = nullptr;
 	}
 
-	Camera::Camera() :
-		matrix_dirty(true)
+	Camera::Camera() : matrix_dirty(true)
+		, culling_mask(-1)
 	{
 		s_cameras.push_back(this);
 	}
@@ -156,6 +208,16 @@ namespace FireEngine
 #endif
 	}
 
+	void Camera::SetCullingMask(uint32_t mask)
+	{
+		if (culling_mask != mask)
+		{
+			culling_mask = mask;
+
+			Renderer::SetCullingDirty(this);
+		}
+	}
+
 	void Camera::DeepCopy(const ObjectPtr& source)
 	{
 		IM_ASSERT(0 && "Camera can not DeepCopy!");
@@ -166,9 +228,16 @@ namespace FireEngine
 		return GetGameObject()->IsActiveInHierarchy() && IsEnable();
 	}
 
+	bool Camera::IsCulling(const GameObjectPtr& obj) const
+	{
+		return (GetCullingMask() & (1 << obj->GetLayer())) == 0;
+	}
+
 	void Camera::OnTransformChanged()
 	{
 		matrix_dirty = true;
+
+		Renderer::SetCullingDirty(this);
 	}
 
 
@@ -186,17 +255,13 @@ namespace FireEngine
 				glm::vec4(0, 0, width, height));
 		}
 
-		render_pass->Bind();
-
-		//Renderer::PrepareAllPass();
-
-		render_pass->UnBind();
+		Renderer::PrepareAllPass();
 	}
 
 	void Camera::Render()
 	{
-		bgfx::ViewId viewId = render_pass->Begin(GetClearColor());
-		//Renderer::RenderAllPass();
+		viewId = render_pass->Begin(GetClearColor());
+		Renderer::RenderAllPass();
 
 #if Test
 		glm::vec3 eye = GetTransform()->GetWorldPosition(); //glm::vec3(0.0f, 10.0f, -35.0f);
@@ -251,7 +316,7 @@ namespace FireEngine
 
 		auto render_pass = camera->render_pass;
 		tex.s.handle = render_pass->GetFrameBuffer().color_texture->GetTextureHandle();
-		tex.s.flags = IMGUI_FLAGS_ALPHA_BLEND;
+		tex.s.flags = 1;// IMGUI_FLAGS_ALPHA_BLEND;
 		tex.s.mip = 0;
 		return tex.s.handle;
 	}
@@ -330,6 +395,34 @@ namespace FireEngine
 		CameraPtr camera = GameObject::Create(parentPtr, _name)->AddComponent<Camera>();
 
 		ObjectManager::Register(camera, ObjectType::Component);
+
+		auto meshRenderer = GameObject::Create(parentPtr, "testRenderer")->AddComponent<MeshRenderer>();
+		ObjectManager::Register(meshRenderer, ObjectType::Component);
+
+		ByteBuffer buffer = ByteBuffer(sizeof(s_cubeVertices) + sizeof(s_cubeTriList) + sizeof(int)*2);
+		MemoryStream ms = MemoryStream(buffer);
+		int vc = sizeof(s_cubeVertices) / sizeof(myvec);
+		ms.Write<int>(vc);
+		for (auto iter : s_cubeVertices)
+		{
+			glm::vec3 pos(iter.x, iter.y, iter.z);
+			ms.Write<glm::vec3>(pos);
+			ms.Write<uint32_t>(iter.m_argb);
+		}
+		int ic = sizeof(s_cubeTriList) / sizeof(uint16_t);
+		ms.Write<int>(ic);
+
+		for (auto iter : s_cubeTriList)
+			ms.Write<uint16_t>(iter);
+		ms.Close();
+
+		auto mesh = Mesh::LoadFromMem(buffer, false);
+
+		meshRenderer->SetSharedMesh(mesh);
+
+		std::vector<std::shared_ptr<Material>> mats(1);
+		mats[0] = Material::Create("test_shader");
+		meshRenderer->SetSharedMaterials(mats);
 
 		return camera.get();
 	}

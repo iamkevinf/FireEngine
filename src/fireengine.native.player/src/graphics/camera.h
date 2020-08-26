@@ -10,9 +10,9 @@
 
 #include <list>
 
-#define Test 1
-#if Test
 #include <bgfx/bgfx.h>
+#define Test 0
+#if Test
 #endif
 
 namespace FireEngine
@@ -21,7 +21,8 @@ namespace FireEngine
 	typedef std::weak_ptr<class Camera> CameraWeakPtr;
 
 	class RenderPass;
-	class FrameBuffer;
+	struct FrameBuffer;
+	class GameObject;
 
 	class Camera : public Component
 	{
@@ -33,6 +34,9 @@ namespace FireEngine
 		static void PrepareAll();
 		static void RenderAll();
 		static Camera* Main() { return s_mainCamera; }
+		static bool IsValidCamera(Camera* camera);
+		
+		bgfx::ViewId GetViewID()const { return viewId; }
 
 		CameraClearFlags GetClearFlags() const { return clear_flags; }
 		void SetClearFlags(CameraClearFlags flags) { clear_flags = flags; }
@@ -58,7 +62,11 @@ namespace FireEngine
 		const glm::vec4& GetRect() const { return rect; }
 		void SetRect(const glm::vec4& rect) { this->rect = rect; }
 
+		uint32_t GetCullingMask() const { return culling_mask; }
+		void SetCullingMask(uint32_t mask);
+
 		bool CanRender() const;
+		bool IsCulling(const std::shared_ptr<GameObject>& obj) const;
 
 		const glm::mat4& GetViewMatrix();
 		const glm::mat4& GetProjectionMatrix();
@@ -68,9 +76,7 @@ namespace FireEngine
 		uint32_t GetTargetWidth() const;
 		uint32_t GetTargetHeight() const;
 
-#if Test
 		static bgfx::TextureHandle GetTexture();
-#endif
 
 	protected:
 		virtual void OnTransformChanged() override;
@@ -105,6 +111,9 @@ namespace FireEngine
 		glm::mat4 view_projection_matrix = glm::identity<glm::mat4>();
 
 		std::shared_ptr<RenderPass> render_pass;
+
+		uint32_t culling_mask;
+		bgfx::ViewId viewId;
 	};
 }
 

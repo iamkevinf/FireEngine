@@ -40,4 +40,4 @@ namespace FireEngine
 	extern const uint32_t VERTEX_STRIDE;
 }
 
-#endif // __KGE_GRAPHICS_VERTEX_ATTRIBUTE_H__
+#endif // __VERTEX_ATTRIBUTE_H__

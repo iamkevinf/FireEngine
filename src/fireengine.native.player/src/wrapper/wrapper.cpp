@@ -150,6 +150,7 @@ namespace FireEngine
 #if Test
 		return Camera::GetTexture();
 #else
+		return Camera::GetTexture();
 		return {bgfx::kInvalidHandle};
 #endif
 	}

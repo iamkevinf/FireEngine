@@ -6,8 +6,6 @@
 
 namespace FireEngine
 {
-	RenderPass* RenderPass::s_render_pass_binding;
-
 	std::shared_ptr<RenderPass> RenderPass::Create(
 		std::shared_ptr<RenderTexture> color_texture,
 		std::shared_ptr<RenderTexture> depth_texture,
@@ -41,8 +39,6 @@ namespace FireEngine
 	static bgfx::ViewId s_viewId = -1;
 	bgfx::ViewId RenderPass::Begin(const Color& clear_color)
 	{
-		Bind();
-
 		s_viewId++;
 
 		bgfx::setViewFrameBuffer(s_viewId, frame_buffer_handle);
@@ -82,21 +78,9 @@ namespace FireEngine
 
 	void RenderPass::End()
 	{
-		UnBind();
-
 		s_viewId = -1;
 
 		bgfx::frame();
-	}
-
-	void RenderPass::Bind()
-	{
-		s_render_pass_binding = this;
-	}
-
-	void RenderPass::UnBind()
-	{
-		s_render_pass_binding = nullptr;
 	}
 
 	bgfx::ViewId RenderPass::GetViewId()

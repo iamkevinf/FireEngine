@@ -2,6 +2,8 @@
 
 #include "exportapi.h"
 #include "world.h"
+#include "graphics/renderer.h"
+#include "graphics/layer.h"
 
 namespace FireEngine
 {
@@ -50,8 +52,10 @@ namespace FireEngine
 	}
 
 	GameObject::GameObject(const std::string& name) :deleted(false)
+		, layer((uint32_t)Layer::Default)
 		, active_in_hierarchy(true)
 		, active_self(true)
+		, isstatic(false)
 	{
 		this->name = name;
 	}
@@ -91,8 +95,29 @@ namespace FireEngine
 		{
 			CopyComponent(i);
 		}
+
+		this->SetLayer(src->GetLayer());
+
+		active_in_hierarchy = src->active_in_hierarchy;
+		active_self = src->active_self;
+		deleted = src->deleted;
+		isstatic = src->isstatic;
 	}
 
+
+	void GameObject::SetLayer(uint32_t layer)
+	{
+		if (this->layer != layer)
+		{
+			this->layer = layer;
+
+			auto renderer = GetComponent<Renderer>();
+			if (renderer)
+			{
+				Renderer::ClearPasses();
+			}
+		}
+	}
 
 	void GameObject::SetActive(bool active)
 	{

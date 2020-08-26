@@ -39,6 +39,40 @@ namespace FireEngine
 
 		mesh->dynamic = dynamic;
 
+		mesh->layout
+			.begin()
+			.add(bgfx::Attrib::Enum::Position, 3, bgfx::AttribType::Enum::Float, false)
+			.add(bgfx::Attrib::Enum::Color0, 4, bgfx::AttribType::Enum::Uint8, true)
+			.end();
+
+		return mesh;
+	}
+
+	std::shared_ptr<Mesh> Mesh::LoadFromMem(ByteBuffer data, bool dynamic)
+	{
+		auto mesh = Mesh::Create(dynamic);
+
+		auto ms = MemoryStream(data);
+		int vc = ms.Read<int>();
+		mesh->vertices.resize(vc);
+		mesh->colors.resize(vc);
+		for (int i = 0; i < vc; ++i)
+		{
+			glm::vec3 pos = ms.Read<glm::vec3>();
+			mesh->vertices[i] = pos;
+			uint32_t color = ms.Read<uint32_t>();
+			mesh->colors[i] = color;
+		}
+		int ic = ms.Read<int>();
+		mesh->triangles.resize(ic);
+		for (int i = 0; i < ic; ++i)
+		{
+			uint16_t triangle = ms.Read<uint16_t>();
+			mesh->triangles[i] = triangle;
+		}
+
+		mesh->Tick();
+
 		return mesh;
 	}
 
@@ -57,6 +91,27 @@ namespace FireEngine
 			vertex_buffer = VertexBuffer::Create(buffer_size, dynamic);
 
 		vertex_buffer->Fill(this, Mesh::FillVertexBuffer);
+
+		if (dynamic)
+		{
+			if (!bgfx::isValid(dynamic_vertex_buffer_handle))
+			{
+				dynamic_vertex_buffer_handle = bgfx::createDynamicVertexBuffer(
+					bgfx::makeRef(vertex_buffer->GetLocalBuffer()->Bytes(),
+						vertex_buffer->GetLocalBuffer()->Size()), layout
+				);
+			}
+		}
+		else
+		{
+			if (!bgfx::isValid(vertex_buffer_handle))
+			{
+				vertex_buffer_handle = bgfx::createVertexBuffer(
+					bgfx::makeRef(vertex_buffer->GetLocalBuffer()->Bytes(),
+						vertex_buffer->GetLocalBuffer()->Size()), layout
+				);
+			}
+		}
 	}
 
 	void Mesh::UpdateIndexBuffer()
@@ -68,6 +123,27 @@ namespace FireEngine
 			index_buffer = IndexBuffer::Create(buffer_size, dynamic);
 
 		index_buffer->Fill(this, Mesh::FillIndexBuffer);
+
+		if (dynamic)
+		{
+			if (!bgfx::isValid(dynamic_index_buffer_handle))
+			{
+				dynamic_index_buffer_handle = bgfx::createDynamicIndexBuffer(
+					bgfx::makeRef(index_buffer->GetLocalBuffer()->Bytes(),
+						index_buffer->GetLocalBuffer()->Size())
+				);
+			}
+		}
+		else
+		{
+			if (!bgfx::isValid(index_buffer_handle))
+			{
+				index_buffer_handle = bgfx::createIndexBuffer(
+					bgfx::makeRef(index_buffer->GetLocalBuffer()->Bytes(),
+						index_buffer->GetLocalBuffer()->Size())
+				);
+			}
+		}
 	}
 
 	uint32_t Mesh::VertexBufferSize() const
@@ -91,42 +167,44 @@ namespace FireEngine
 			ms.Write<glm::vec3>(mesh->vertices[i]);
 
 			if (mesh->colors.empty())
-				ms.Write<Color>(Color(1, 1, 1, 1));
+				ms.Write<uint32_t>(1);
 			else
-				ms.Write<Color>(mesh->colors[i]);
+				ms.Write<uint32_t>(mesh->colors[i]);
 
-			if (mesh->uv.empty())
-				ms.Write<glm::vec2>(glm::vec2(0, 0));
-			else
-				ms.Write<glm::vec2>(mesh->uv[i]);
+			//if (mesh->uv.empty())
+			//	ms.Write<glm::vec2>(glm::vec2(0, 0));
+			//else
+			//	ms.Write<glm::vec2>(mesh->uv[i]);
 
-			if (mesh->uv2.empty())
-				ms.Write<glm::vec2>(glm::vec2(0, 0));
-			else
-				ms.Write<glm::vec2>(mesh->uv2[i]);
+			//if (mesh->uv2.empty())
+			//	ms.Write<glm::vec2>(glm::vec2(0, 0));
+			//else
+			//	ms.Write<glm::vec2>(mesh->uv2[i]);
 
-			if (mesh->normals.empty())
-				ms.Write<glm::vec3>(glm::vec3(0, 0, 0));
-			else
-				ms.Write<glm::vec3>(mesh->normals[i]);
+			//if (mesh->normals.empty())
+			//	ms.Write<glm::vec3>(glm::vec3(0, 0, 0));
+			//else
+			//	ms.Write<glm::vec3>(mesh->normals[i]);
 
-			if (mesh->tangents.empty())
-				ms.Write<glm::vec4>(glm::vec4(0, 0, 0, 0));
-			else
-				ms.Write<glm::vec4>(mesh->tangents[i]);
+			//if (mesh->tangents.empty())
+			//	ms.Write<glm::vec4>(glm::vec4(0, 0, 0, 0));
+			//else
+			//	ms.Write<glm::vec4>(mesh->tangents[i]);
 
-			if (mesh->bone_weights.empty())
-				ms.Write<glm::vec4>(glm::vec4(0, 0, 0, 0));
-			else
-				ms.Write<glm::vec4>(mesh->bone_weights[i]);
+			//if (mesh->bone_weights.empty())
+			//	ms.Write<glm::vec4>(glm::vec4(0, 0, 0, 0));
+			//else
+			//	ms.Write<glm::vec4>(mesh->bone_weights[i]);
 
-			if (mesh->bone_indices.empty())
-				ms.Write<glm::vec4>(glm::vec4(0, 0, 0, 0));
-			else
-				ms.Write<glm::vec4>(mesh->bone_indices[i]);
+			//if (mesh->bone_indices.empty())
+			//	ms.Write<glm::vec4>(glm::vec4(0, 0, 0, 0));
+			//else
+			//	ms.Write<glm::vec4>(mesh->bone_indices[i]);
 		}
 
 		ms.Close();
+
+
 	}
 
 	void Mesh::FillIndexBuffer(void* param, const ByteBuffer& buffer)

@@ -1,7 +1,10 @@
 #include "component.h"
 #include "gameobject.h"
 #include "transform.h"
+
 #include "graphics/camera.h"
+#include "graphics/meshrenderer.h"
+
 #include <imgui.h>
 
 namespace FireEngine
@@ -12,6 +15,8 @@ namespace FireEngine
 	{
 		Transform::RegisterComponent();
 		Camera::RegisterComponent();
+
+		MeshRenderer::RegisterComponent();
 	}
 
 	/*static*/void Component::Destroy(std::shared_ptr<Component> com)

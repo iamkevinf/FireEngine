@@ -22,3 +22,4 @@
  - [ ] 分开game和scene，可能需要增加一个scene world，只有一台相机并且无视world中的相机
  - [ ] 导出现有的gameobject transform camera
  - [ ] editor窗口怎么接受鼠标拖拽framebuffer中渲染出来的gizmos？
+ - [ ] mesh material

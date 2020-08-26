@@ -45,6 +45,12 @@ namespace FireEngine
 
 		void SetActive(bool active);
 
+		bool IsStatic() const { return isstatic; }
+		void SetStatic(bool value) { isstatic = value; }
+
+		void SetLayer(uint32_t layer);
+		uint32_t GetLayer() const { return layer; }
+
 	private:
 		GameObject(const std::string& name);
 
@@ -69,10 +75,13 @@ namespace FireEngine
 		std::list<std::shared_ptr<Component>> components;
 		std::list<std::shared_ptr<Component>> components_neo;
 
+		uint32_t layer;
+
 		std::weak_ptr<Transform> transform;
 
 		bool active_in_hierarchy;
 		bool active_self;
+		bool isstatic;
 
 	};
 
