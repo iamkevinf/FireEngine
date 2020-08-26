@@ -21,7 +21,8 @@ namespace FireEngine
 		pass->need_depth = need_depth;
 
 		bgfx::TextureHandle fbtextures[] = { color_texture->GetTextureHandle(), depth_texture->GetTextureHandle() };
-		pass->frame_buffer_handle = bgfx::createFrameBuffer(2, fbtextures, true);
+		pass->frame_buffer_handle = bgfx::createFrameBuffer(1,
+			&(color_texture->GetTextureHandle()), true);
 
 		pass->rect = rect;
 
@@ -38,7 +39,7 @@ namespace FireEngine
 	}
 
 	static bgfx::ViewId s_viewId = -1;
-	void RenderPass::Begin(const Color& clear_color)
+	bgfx::ViewId RenderPass::Begin(const Color& clear_color)
 	{
 		Bind();
 
@@ -74,13 +75,15 @@ namespace FireEngine
 
 		if (flag > 0)
 			bgfx::setViewClear(s_viewId, flag, hexColor);
+		bgfx::touch(s_viewId);
+
+		return s_viewId;
 	}
 
 	void RenderPass::End()
 	{
 		UnBind();
 
-		bgfx::touch(s_viewId);
 		s_viewId = -1;
 
 		bgfx::frame();

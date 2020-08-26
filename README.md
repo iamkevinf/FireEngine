@@ -18,6 +18,7 @@
  - [x] 挂载显示内容在editor窗口从grid开始
  - [x] gameobject component 系统
  - [x] camera
+ - [ ] 四元数 <-> 欧拉角
  - [ ] 分开game和scene，可能需要增加一个scene world，只有一台相机并且无视world中的相机
  - [ ] 导出现有的gameobject transform camera
  - [ ] editor窗口怎么接受鼠标拖拽framebuffer中渲染出来的gizmos？

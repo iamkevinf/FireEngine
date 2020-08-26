@@ -314,20 +314,21 @@ namespace FireEngine.Editor
 
                 if (ImGui.IsWindowFocused() && mainCamera != null)
                 {
-                    //if (ImGui.GetIO().KeysDown[87])
-                    //{
-                    //    Vector3 pos = Vector3.Zero;
-                    //    TransformNative.TransformGetWorldPosition(mainCamera.transformHandle, ref pos);
-                    //    pos.Y++;
-                    //    TransformNative.TransformSetWorldPosition(mainCamera.transformHandle, pos);
-                    //}
-                    //if (ImGui.GetIO().KeysDown[83])
-                    //{
-                    //    Vector3 pos = Vector3.Zero;
-                    //    TransformNative.TransformGetWorldPosition(mainCamera.transformHandle, ref pos);
-                    //    pos.Y--;
-                    //    TransformNative.TransformSetWorldPosition(mainCamera.transformHandle, pos);
-                    //}
+
+                    if (ImGui.GetIO().KeysDown[87])
+                    {
+                        Vector3 pos = Vector3.Zero;
+                        TransformNative.TransformGetWorldPosition(mainCamera.transformHandle, ref pos);
+                        pos.Y++;
+                        TransformNative.TransformSetWorldPosition(mainCamera.transformHandle, pos);
+                    }
+                    if (ImGui.GetIO().KeysDown[83])
+                    {
+                        Vector3 pos = Vector3.Zero;
+                        TransformNative.TransformGetWorldPosition(mainCamera.transformHandle, ref pos);
+                        pos.Y--;
+                        TransformNative.TransformSetWorldPosition(mainCamera.transformHandle, pos);
+                    }
                 }
             }
         }

@@ -2,11 +2,24 @@
 #define __COMPONENT_H__
 
 #include "object.h"
+#include "exportapi.h"
 
 namespace FireEngine
 {
 	class GameObject;
 	class Transform;
+
+	enum class ScriptableFuncType
+	{
+		Awake,
+		Start,
+		Update,
+		LateUpdate,
+		OnEnable,
+		OnDisable
+	};
+
+	typedef void (*ScriptableDelegate)();
 
 	class Component : public IObject
 	{
@@ -34,16 +47,27 @@ namespace FireEngine
 		bool IsComponent(const std::string& type) const;
 
 	protected:
-		virtual void Awake() { }
-		virtual void Start() { }
-		virtual void Update() { }
-		virtual void LateUpdate() { }
-		virtual void OnEnable() { }
-		virtual void OnDisable() { }
+		virtual void Awake() { GComponentCallScriptable(this, ScriptableFuncType::Awake); }
+		virtual void Start() { GComponentCallScriptable(this, ScriptableFuncType::Start); }
+		virtual void Update() { GComponentCallScriptable(this, ScriptableFuncType::Update); }
+		virtual void LateUpdate() { GComponentCallScriptable(this, ScriptableFuncType::LateUpdate); }
+		virtual void OnEnable() { GComponentCallScriptable(this, ScriptableFuncType::OnEnable); }
+		virtual void OnDisable() { GComponentCallScriptable(this, ScriptableFuncType::OnDisable); }
 		virtual void OnTransformChanged() { }
+
+		friend void GComponentCallScriptable(Component* native, ScriptableFuncType type);
+		friend void GComponentRegisterCallScriptable(Component* native,
+			ScriptableFuncType type, ScriptableDelegate delegate);
 
 	private:
 		void Delete();
+
+		ScriptableDelegate delegateAwake = nullptr;
+		ScriptableDelegate delegateStart = nullptr;
+		ScriptableDelegate delegateUpdate = nullptr;
+		ScriptableDelegate delegateLateUpdate = nullptr;
+		ScriptableDelegate delegateOnEnable = nullptr;
+		ScriptableDelegate delegateOnDisable = nullptr;
 
 	protected:
 		std::weak_ptr<GameObject> gameObject;
@@ -54,6 +78,7 @@ namespace FireEngine
 		bool started = false;
 		bool enable = true;
 	};
+
 }
 
 #endif // __COMPONENT_H__

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Text;
 using static FireEngine.GameObjectNative;
 
@@ -9,32 +10,44 @@ namespace FireEngine
     {
         #region Inner
 
-        private GameObjectHandle inner_handle = GameObjectHandle.InValid;
-        private GameObject(GameObjectNative.GameObjectHandle handle)
+        private IntPtr m_nativePtr = IntPtr.Zero;
+        private GameObject(IntPtr native)
         {
-            inner_handle = handle;
+            m_nativePtr = native;
         }
 
-        #endregion
-
-        #region Transform
-
-
-
-        public TransformNative.TransformHandle transformHandle
-        {
-            get
-            {
-                return GameObjectGetTransformHandle(inner_handle);
-            }
-        }
 
         #endregion
 
         public static GameObject Inner_Create(TransformNative.TransformHandle parent, string name)
         {
-            GameObjectHandle handle = GameObjectCreate(parent, name);
-            return new GameObject(handle);
+            return null;
         }
+
+        public static GameObject CreateFromNative(IntPtr native)
+        {
+            return new GameObject(native);
+        }
+
+        private Transform m_innerTransform = null;
+        public Transform transform
+        {
+            get
+            {
+                if (m_innerTransform == null)
+                {
+                    IntPtr transformNative = GameObjectGetTransform(m_nativePtr);
+                    m_innerTransform = Transform.CreateFromNative(transformNative);
+                }
+
+                return m_innerTransform;
+            }
+        }
+
+        #region Native
+        [DllImport(FireEngineNative.FireEngineDllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+        public static extern IntPtr GameObjectGetTransform(IntPtr native);
+
+        #endregion
     }
 }

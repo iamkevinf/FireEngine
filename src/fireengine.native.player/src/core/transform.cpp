@@ -374,19 +374,44 @@ namespace FireEngine
 		mat = pTransform->world_to_local_matrix;
 	}
 
-	EXPORT_API void TransformSetWorldPosition(TransformHandle handle, glm::vec3 pos)
+	EXPORT_API void TransformSetWorldPosition(Transform* native, glm::vec3 pos)
 	{
-		auto object = ObjectManager::Get(handle);
-		Transform* pTransform = (Transform*)object.get();
-		pTransform->SetWorldPosition(pos);
+		if (!native)
+			return;
+		native->SetWorldPosition(pos);
 	}
 
-	EXPORT_API void TransformGetWorldPosition(TransformHandle handle, glm::vec3* pos)
+	EXPORT_API void TransformGetWorldPosition(Transform* native, glm::vec3* pos)
 	{
-		auto object = ObjectManager::Get(handle);
-		Transform* pTransform = (Transform*)object.get();
-		*pos = pTransform->GetWorldPosition();
+		if (!native)
+			return;
+		*pos = native->GetWorldPosition();
+	}
+	EXPORT_API void TransformSetWorldRotation(Transform* native, glm::quat rot)
+	{
+		if (!native)
+			return;
+		native->SetWorldRotation(rot);
 	}
 
+	EXPORT_API void TransformGetWorldRotation(Transform* native, glm::quat* rot)
+	{
+		if (!native)
+			return;
+		*rot = native->GetWorldRotation();
+	}
+	EXPORT_API void TransformSetWorldScale(Transform* native, glm::vec3 scl)
+	{
+		if (!native)
+			return;
+		native->SetWorldScale(scl);
+	}
+
+	EXPORT_API void TransformGetWorldScale(Transform* native, glm::vec3* scl)
+	{
+		if (!native)
+			return;
+		*scl = native->GetWorldScale();
+	}
 
 }

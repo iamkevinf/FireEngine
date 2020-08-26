@@ -195,24 +195,19 @@ namespace FireEngine
 
 	void Camera::Render()
 	{
-		render_pass->Begin(GetClearColor());
-
+		bgfx::ViewId viewId = render_pass->Begin(GetClearColor());
 		//Renderer::RenderAllPass();
 
 #if Test
-
 		glm::vec3 eye = GetTransform()->GetWorldPosition(); //glm::vec3(0.0f, 10.0f, -35.0f);
 
 		glm::mat4 view = glm::lookAt(eye, glm::vec3(0.0f, 0.0f, 0.0f), GetTransform()->GetRight());
 		glm::mat4 proj = GetProjectionMatrix(); // glm::perspective(glm::radians(60.0f), float(1024) / 1024, 0.1f, 100.0f);
 
-		glm::quat rot = GetTransform()->GetWorldRotation();
-
 		//Set view and projection matrix for view 10.
 		{
-			g_time += 0.001f;
+			g_time += 0.01f;
 
-			bgfx::ViewId viewId = render_pass->GetViewId();
 			bgfx::setViewTransform(viewId, &view, &proj);
 
 			for (int i = 0; i < 11; ++i)

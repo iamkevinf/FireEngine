@@ -21,7 +21,7 @@ namespace FireEngine
 
 		virtual ~RenderPass();
 
-		virtual void Begin(const Color& clear_color);
+		virtual bgfx::ViewId Begin(const Color& clear_color);
 		virtual void End();
 
 		void Bind();

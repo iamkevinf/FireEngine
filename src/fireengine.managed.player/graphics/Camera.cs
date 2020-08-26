@@ -11,18 +11,16 @@ namespace FireEngine
     {
         #region Inner
 
-        private IntPtr m_nativePtr = IntPtr.Zero;
         public TransformNative.TransformHandle transformHandle
         {
             get;
             private set;
         }
-        private Camera(IntPtr native)
+        private Camera(IntPtr native) : base(native)
         {
-            m_nativePtr = native;
             transformHandle = CameraGetTransformHandle(native);
         }
-
+  
         #endregion
 
         #region Transform
@@ -32,7 +30,8 @@ namespace FireEngine
         public static Camera Inner_Create(TransformNative.TransformHandle parent, string name)
         {
             IntPtr native = CameraCreate(parent, name);
-            return new Camera(native);
+            Camera camera = new Camera(native);
+            return camera;
         }
 
         uint clearColor
@@ -52,7 +51,6 @@ namespace FireEngine
                 CameraSetClearColor(m_nativePtr, value);
             }
         }
-
 
         public override void OnGUI_Inspector()
         {
@@ -81,6 +79,7 @@ namespace FireEngine
                     ImGui.ColorPicker4("PickColor##Inspector##Camera#", ref color4);
                     ImGui.EndPopup();
                 }
+
                 color.W = color4.X;
                 color.Z = color4.Y;
                 color.Y = color4.Z;

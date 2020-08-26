@@ -351,4 +351,12 @@ namespace FireEngine
 
 		return { kInvalidHandle };
 	}
+
+	EXPORT_API Transform* GameObjectGetTransform(GameObject* native)
+	{
+		if (!native)
+			return nullptr;
+
+		return native->GetTransform().get();
+	}
 }
