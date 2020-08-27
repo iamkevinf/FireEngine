@@ -101,6 +101,11 @@ namespace FireEngine
 						vertex_buffer->GetLocalBuffer()->Size()), layout
 				);
 			}
+
+			bgfx::update(dynamic_vertex_buffer_handle, 0,
+				bgfx::makeRef(vertex_buffer->GetLocalBuffer()->Bytes(),
+					vertex_buffer->GetLocalBuffer()->Size()));
+
 		}
 		else
 		{
@@ -133,6 +138,10 @@ namespace FireEngine
 						index_buffer->GetLocalBuffer()->Size())
 				);
 			}
+
+			bgfx::update(dynamic_index_buffer_handle, 0,
+				bgfx::makeRef(index_buffer->GetLocalBuffer()->Bytes(),
+					index_buffer->GetLocalBuffer()->Size()));
 		}
 		else
 		{

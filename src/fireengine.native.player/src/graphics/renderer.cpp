@@ -257,8 +257,16 @@ namespace FireEngine
 			bgfx::setTransform(&worldMatrix[0][0]);
 
 			// Set vertex and index buffer.
-			bgfx::setVertexBuffer(0, ele.renderer->GetVertexBufferHandle());
-			bgfx::setIndexBuffer(ele.renderer->GetIndexBufferHandle());
+			if (ele.renderer->IsDynamic())
+			{
+				bgfx::setVertexBuffer(0, ele.renderer->GetDynamicVertexBufferHandle());
+				bgfx::setIndexBuffer(ele.renderer->GetDynamicIndexBufferHandle());
+			}
+			else
+			{
+				bgfx::setVertexBuffer(0, ele.renderer->GetVertexBufferHandle());
+				bgfx::setIndexBuffer(ele.renderer->GetIndexBufferHandle());
+			}
 
 			uint64_t state = BGFX_STATE_DEFAULT;
 
@@ -272,7 +280,7 @@ namespace FireEngine
 		DebugDrawEncoder dde;
 		dde.begin(viewId);
 		dde.drawAxis(0, 10, 0, 10);
-		dde.drawGrid(Axis::Y, {0,0,0}, 128, 1.0f);
+		dde.drawGrid(Axis::Y, { 0,0,0 }, 128, 1.0f);
 		dde.end();
 	}
 

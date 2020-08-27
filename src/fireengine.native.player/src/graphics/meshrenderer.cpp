@@ -32,6 +32,21 @@ namespace FireEngine
 		return GetSharedMesh()->GetIndexBufferHandle();
 	}
 
+	bgfx::DynamicVertexBufferHandle MeshRenderer::GetDynamicVertexBufferHandle() const
+	{
+		return GetSharedMesh()->GetDynamicVertexBufferHandle();
+	}
+
+	bgfx::DynamicIndexBufferHandle MeshRenderer::GetDynamicIndexBufferHandle() const
+	{
+		return GetSharedMesh()->GetDynamicIndexBufferHandle();
+	}
+
+	bool MeshRenderer::IsDynamic()const
+	{
+		return GetSharedMesh()->IsDynamic();
+	}
+
 	bool MeshRenderer::IsValidPass(uint32_t material_index) const
 	{
 		if (mesh)
@@ -45,5 +60,10 @@ namespace FireEngine
 		}
 
 		return false;
+	}
+
+	void MeshRenderer::Update()
+	{
+		GetSharedMesh()->Tick();
 	}
 }

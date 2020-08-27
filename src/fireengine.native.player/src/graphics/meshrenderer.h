@@ -14,11 +14,17 @@ namespace FireEngine
 		virtual const IndexBuffer* GetIndexBuffer()const;
 		virtual bgfx::VertexBufferHandle GetVertexBufferHandle()const;
 		virtual bgfx::IndexBufferHandle GetIndexBufferHandle()const;
+		virtual bgfx::DynamicVertexBufferHandle GetDynamicVertexBufferHandle()const;
+		virtual bgfx::DynamicIndexBufferHandle GetDynamicIndexBufferHandle()const;
+		virtual bool IsDynamic()const;
 
 		virtual bool IsValidPass(uint32_t material_index) const;
 
 		void SetSharedMesh(const std::shared_ptr<Mesh>& mesh) { this->mesh = mesh; }
 		const std::shared_ptr<Mesh>& GetSharedMesh() const { return mesh; }
+
+	protected:
+		virtual void Update();
 
 	private:
 		std::shared_ptr<Mesh> mesh;

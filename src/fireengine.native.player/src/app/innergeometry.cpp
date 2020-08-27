@@ -74,7 +74,7 @@ namespace FireEngine
 			ms.Write<uint16_t>(iter);
 		ms.Close();
 
-		auto mesh = Mesh::LoadFromMem(buffer, false);
+		auto mesh = Mesh::LoadFromMem(buffer, true);
 
 		meshRenderer->SetSharedMesh(mesh);
 
