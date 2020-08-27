@@ -912,9 +912,9 @@ int WindowMain(const char16_t* title, void(*OnInit)(), void(*OnGUI)(), void(*OnT
         dt = time - lastTime;
         lastTime = time;
 
+        PlatformFrame(OnGUI);
         OnTick();
         FireEngine::GameView::OnTick(dt);
-        PlatformFrame(OnGUI);
     }
 
     FireEngine::GameView::OnExit();

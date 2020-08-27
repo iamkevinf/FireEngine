@@ -104,6 +104,8 @@ namespace FireEngine
     {
         if (a > b) std::swap(a, b);
     }
+
+
 }
 
 #endif // __MATH_H__

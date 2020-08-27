@@ -19,7 +19,10 @@ namespace FireEngine.Editor
 
         public override void OnGUI()
         {
-            TextureHandle tex = FireEngine.FireEngineNative.feGetGameViewTexture();
+            if (Camera.Main == null)
+                return;
+
+            TextureHandle tex = Camera.Main.frameBufferTexture;
 
             Vector2 contentRegionMax = ImGui.GetWindowContentRegionMax();
             Vector2 contentRegionMin = ImGui.GetWindowContentRegionMin();

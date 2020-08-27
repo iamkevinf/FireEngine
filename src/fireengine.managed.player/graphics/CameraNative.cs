@@ -16,6 +16,12 @@ namespace FireEngine
         public static extern UInt32 CameraGetClearColor(IntPtr native);
         [DllImport(FireEngineNative.FireEngineDllName, CallingConvention = CallingConvention.Cdecl)]
         public static extern void CameraSetClearColor(IntPtr native, UInt32 color);
+        [DllImport(FireEngineNative.FireEngineDllName, CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr CameraGetMainCamera();
+        [DllImport(FireEngineNative.FireEngineDllName, CallingConvention = CallingConvention.Cdecl)]
+        public static extern TextureHandle CameraGetFrameBufferTexture(IntPtr native);
+        
+
 
     }
 }

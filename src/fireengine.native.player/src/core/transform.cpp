@@ -343,6 +343,23 @@ namespace FireEngine
 		return pTransform->name.c_str();
 	}
 
+	EXPORT_API Transform* TransformGetNativeByHandle(TransformHandle handle)
+	{
+		auto object = ObjectManager::Get(handle);
+		Transform* pTransform = (Transform*)object.get();
+		return pTransform;
+	}
+
+	EXPORT_API TransformHandle TransformGetTransformHandle(Transform* transform)
+	{
+		for (auto iter = ObjectManager::objPool.begin(); iter != ObjectManager::objPool.end(); ++iter)
+		{
+			if (iter->second.lock().get() == transform)
+				return { iter->first };
+		}
+
+		return { kInvalidHandle };
+	}
 
 	EXPORT_API void TransformSetActive(TransformHandle handle, ActiveOption active)
 	{

@@ -7,23 +7,19 @@ using static FireEngine.CameraNative;
 
 namespace FireEngine
 {
-    public class Camera : Transform
+    public class Camera : Component
     {
         #region Inner
-
         public TransformNative.TransformHandle transformHandle
         {
             get;
-            private set;
+            protected set;
         }
+
         private Camera(IntPtr native) : base(native)
         {
             transformHandle = CameraGetTransformHandle(native);
         }
-  
-        #endregion
-
-        #region Transform
 
         #endregion
 
@@ -49,6 +45,30 @@ namespace FireEngine
                     return;
 
                 CameraSetClearColor(m_nativePtr, value);
+            }
+        }
+
+        private static Camera s_MainCamera = null;
+        public static Camera Main
+        {
+            get
+            {
+                if(s_MainCamera == null)
+                {
+                    IntPtr native = CameraGetMainCamera();
+
+                    s_MainCamera = native == IntPtr.Zero ? null : new Camera(native);
+                }
+
+                return s_MainCamera;
+            }
+        }
+
+        public TextureHandle frameBufferTexture
+        {
+            get
+            {
+                return CameraGetFrameBufferTexture(m_nativePtr);
             }
         }
 

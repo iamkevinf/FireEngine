@@ -13,6 +13,7 @@ namespace FireEngine
 	{
 		mutex.lock();
 		gameObjects_start.push_back(obj);
+		Renderer::SetCullingDirty(Camera::Main());
 		mutex.unlock();
 	}
 
@@ -21,6 +22,7 @@ namespace FireEngine
 		mutex.lock();
 		for (GameObjectPtr obj : objs)
 			gameObjects_start.push_back(obj);
+		Renderer::SetCullingDirty(Camera::Main());
 		mutex.unlock();
 	}
 

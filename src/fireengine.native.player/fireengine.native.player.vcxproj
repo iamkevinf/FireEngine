@@ -25,7 +25,9 @@
     <ClCompile Include="..\..\3rdparty\imgui_docking\imgui_draw.cpp" />
     <ClCompile Include="..\..\3rdparty\imgui_docking\imgui_widgets.cpp" />
     <ClCompile Include="src\app\app.cpp" />
+    <ClCompile Include="src\app\innergeometry.cpp" />
     <ClCompile Include="src\app\main_shared.cpp" />
+    <ClCompile Include="src\app\quaternion.cpp" />
     <ClCompile Include="src\core\component.cpp" />
     <ClCompile Include="src\core\gameobject.cpp" />
     <ClCompile Include="src\core\object.cpp" />

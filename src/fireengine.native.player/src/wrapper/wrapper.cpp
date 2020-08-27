@@ -145,16 +145,6 @@ namespace FireEngine
 
 	}
 
-	bgfx::TextureHandle feGetGameViewTexture()
-	{
-#if Test
-		return Camera::GetTexture();
-#else
-		return Camera::GetTexture();
-		return {bgfx::kInvalidHandle};
-#endif
-	}
-
 	struct Target
 	{
 	public:

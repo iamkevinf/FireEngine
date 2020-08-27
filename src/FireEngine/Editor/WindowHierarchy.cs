@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using FireEngine;
 using System.Numerics;
+using System.Collections;
 
 namespace FireEngine.Editor
 {
@@ -46,10 +47,29 @@ namespace FireEngine.Editor
         public override void Init()
         {
             Show();
+
+            int count = SceneNative.SceneCount();
+            string _name = "Scene";
+            if (count > 0)
+                _name = string.Format("Scene ({0})", count);
+            SceneNative.SceneCreate(_name);
+
+            SceneNative.SceneHandle handle = SceneNative.SceneFindByIndex(0);
+
+            var root = SceneNative.SceneGetRoot(handle);
+
+            System.Threading.Tasks.Task.Delay(10).ContinueWith(
+                t => OnDelayCallCreateComponent(root));
         }
 
+        void OnDelayCallCreateComponent(TransformNative.TransformHandle root)
+        {
+            var mainCamera = Camera.Inner_Create(root, "Main Camera");
+            AddToPool(mainCamera.transformHandle, mainCamera);
 
-        Camera mainCamera;
+            mainCamera.transform.position = new Vector3(0, 0, -10);
+        }
+
         void OnGUI_RightMenu(TransformNative.TransformHandle handle)
         {
             if (ImGui.MenuItem("Create Scene", !handle.IsValid()))
@@ -79,9 +99,22 @@ namespace FireEngine.Editor
                 GameObject.Inner_Create(handle, _name);
             }
 
+            if(ImGui.BeginMenu("3D Object", handle.IsValid()))
+            {
+                if (ImGui.MenuItem("Cube"))
+                {
+                    IntPtr native = TransformNative.TransformGetNativeByHandle(handle);
+                    IntPtr gameObjectNative = AppNative.InnerGeoCreateCube(native, "Cube");
+                    var gameObject = GameObject.CreateFromNative(gameObjectNative);
+                    AddToPool(gameObject.transform.transformHandle, gameObject.transform);
+                }
+
+                ImGui.EndMenu();
+            }
+
             if (ImGui.MenuItem("Camera", handle.IsValid()))
             {
-                mainCamera = Camera.Inner_Create(handle, "Main Camera");
+                Camera mainCamera = Camera.Inner_Create(handle, "Main Camera");
                 AddToPool(mainCamera.transformHandle, mainCamera);
             }
         }
@@ -311,25 +344,6 @@ namespace FireEngine.Editor
                 }
 
                 ImGui.TreePop();
-
-                if (ImGui.IsWindowFocused() && mainCamera != null)
-                {
-
-                    if (ImGui.GetIO().KeysDown[87])
-                    {
-                        Vector3 pos = Vector3.Zero;
-                        TransformNative.TransformGetWorldPosition(mainCamera.transformHandle, ref pos);
-                        pos.Y++;
-                        TransformNative.TransformSetWorldPosition(mainCamera.transformHandle, pos);
-                    }
-                    if (ImGui.GetIO().KeysDown[83])
-                    {
-                        Vector3 pos = Vector3.Zero;
-                        TransformNative.TransformGetWorldPosition(mainCamera.transformHandle, ref pos);
-                        pos.Y--;
-                        TransformNative.TransformSetWorldPosition(mainCamera.transformHandle, pos);
-                    }
-                }
             }
         }
     }

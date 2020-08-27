@@ -177,6 +177,12 @@
     <ClCompile Include="src\graphics\meshrenderer.cpp">
       <Filter>graphics</Filter>
     </ClCompile>
+    <ClCompile Include="src\app\innergeometry.cpp">
+      <Filter>app</Filter>
+    </ClCompile>
+    <ClCompile Include="src\app\quaternion.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\imgui\imgui_utils.h">

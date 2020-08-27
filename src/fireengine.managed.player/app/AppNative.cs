@@ -38,5 +38,10 @@ namespace FireEngine
         [DllImport(FireEngineNative.FireEngineDllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         public static extern void feFrame_Flush();
 
+        #region Inner Geometry
+        [DllImport(FireEngineNative.FireEngineDllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+        public static extern IntPtr InnerGeoCreateCube(IntPtr parentTransformNative, string name);
+        #endregion
+
     }
 }

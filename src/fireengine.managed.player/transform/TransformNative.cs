@@ -50,6 +50,10 @@ namespace FireEngine
         public static extern void TransformSetWorldPosition(TransformHandle handle, Vector3 pos);
         [DllImport(FireEngineNative.FireEngineDllName, CallingConvention = CallingConvention.Cdecl)]
         public static extern void TransformGetWorldPosition(TransformHandle handle, Vector3* pos);
+        [DllImport(FireEngineNative.FireEngineDllName, CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr TransformGetNativeByHandle(TransformHandle handle);
+        [DllImport(FireEngineNative.FireEngineDllName, CallingConvention = CallingConvention.Cdecl)]
+        public static extern TransformHandle TransformGetTransformHandle(IntPtr native);
 
     }
 }

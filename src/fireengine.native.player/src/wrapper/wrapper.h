@@ -16,8 +16,6 @@ namespace FireEngine
 
 	EXPORT_API void feApp_ShowState();
 
-	EXPORT_API bgfx::TextureHandle feGetGameViewTexture();
-
 	struct Target;
 	struct TargetHandle
 	{

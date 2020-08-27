@@ -9,9 +9,15 @@ namespace FireEngine
 {
     public partial class Transform : Component
     {
+        public TransformNative.TransformHandle transformHandle
+        {
+            get;
+            protected set;
+        }
+
         public Transform(IntPtr native) : base(native)
         {
-
+            transformHandle = TransformNative.TransformGetTransformHandle(native);
         }
 
         public static Transform CreateFromNative(IntPtr native)
@@ -33,7 +39,7 @@ namespace FireEngine
             }
         }
 
-        public Vector4 rotation
+        public Quaternion rotation
         {
             set
             {
@@ -41,7 +47,7 @@ namespace FireEngine
             }
             get
             {
-                Vector4 rot = Vector4.Zero;
+                Quaternion rot = Quaternion.identity;
                 TransformGetWorldRotation(m_nativePtr, ref rot);
                 return rot;
             }
@@ -61,6 +67,48 @@ namespace FireEngine
             }
         }
 
+        public Vector3 localPosition
+        {
+            set
+            {
+                TransformSetLocalPosition(m_nativePtr, value);
+            }
+            get
+            {
+                Vector3 pos = Vector3.Zero;
+                TransformGetLocalPosition(m_nativePtr, ref pos);
+                return pos;
+            }
+        }
+
+        public Quaternion localRotation
+        {
+            set
+            {
+                TransformSetLocalRotation(m_nativePtr, value);
+            }
+            get
+            {
+                Quaternion rot = Quaternion.identity;
+                TransformGetLocalRotation(m_nativePtr, ref rot);
+                return rot;
+            }
+        }
+
+        public Vector3 localScale
+        {
+            set
+            {
+                TransformSetLocalScale(m_nativePtr, value);
+            }
+            get
+            {
+                Vector3 scl = Vector3.Zero;
+                TransformGetLocalScale(m_nativePtr, ref scl);
+                return scl;
+            }
+        }
+
 
         #region Native
         [DllImport(FireEngineNative.FireEngineDllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
@@ -68,13 +116,25 @@ namespace FireEngine
         [DllImport(FireEngineNative.FireEngineDllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         public static extern void TransformSetWorldPosition(IntPtr native, Vector3 pos);
         [DllImport(FireEngineNative.FireEngineDllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
-        public static extern void TransformGetWorldRotation(IntPtr native, ref Vector4 rot);
+        public static extern void TransformGetWorldRotation(IntPtr native, ref Quaternion rot);
         [DllImport(FireEngineNative.FireEngineDllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
-        public static extern void TransformSetWorldRotation(IntPtr native, Vector4 rot);
+        public static extern void TransformSetWorldRotation(IntPtr native, Quaternion rot);
         [DllImport(FireEngineNative.FireEngineDllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         public static extern void TransformGetWorldScale(IntPtr native, ref Vector3 scl);
         [DllImport(FireEngineNative.FireEngineDllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         public static extern void TransformSetWorldScale(IntPtr native, Vector3 scl);
+        [DllImport(FireEngineNative.FireEngineDllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+        public static extern void TransformGetLocalPosition(IntPtr native, ref Vector3 pos);
+        [DllImport(FireEngineNative.FireEngineDllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+        public static extern void TransformSetLocalPosition(IntPtr native, Vector3 pos);
+        [DllImport(FireEngineNative.FireEngineDllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+        public static extern void TransformGetLocalRotation(IntPtr native, ref Quaternion rot);
+        [DllImport(FireEngineNative.FireEngineDllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+        public static extern void TransformSetLocalRotation(IntPtr native, Quaternion rot);
+        [DllImport(FireEngineNative.FireEngineDllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+        public static extern void TransformGetLocalScale(IntPtr native, ref Vector3 scl);
+        [DllImport(FireEngineNative.FireEngineDllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+        public static extern void TransformSetLocalScale(IntPtr native, Vector3 scl);
         #endregion
 
 

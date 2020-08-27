@@ -9,11 +9,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include <list>
-
 #include <bgfx/bgfx.h>
-#define Test 0
-#if Test
-#endif
 
 namespace FireEngine
 {
@@ -76,8 +72,6 @@ namespace FireEngine
 		uint32_t GetTargetWidth() const;
 		uint32_t GetTargetHeight() const;
 
-		static bgfx::TextureHandle GetTexture();
-
 	protected:
 		virtual void OnTransformChanged() override;
 
@@ -87,6 +81,8 @@ namespace FireEngine
 		void Render();
 
 		void UpdateMatrix();
+
+		friend bgfx::TextureHandle GGetFrameBufferTexture(Camera* camera);
 
 	private:
 		static Camera* s_mainCamera;

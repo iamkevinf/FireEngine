@@ -1,6 +1,8 @@
 #include "renderer.h"
 #include "material.h"
 
+#include <debugdraw/debugdraw.h>
+
 #include "camera.h"
 #include "core/gameobject.h"
 
@@ -240,7 +242,7 @@ namespace FireEngine
 			return;
 
 		glm::vec3 eye = cam->GetTransform()->GetWorldPosition(); //glm::vec3(0.0f, 10.0f, -35.0f);
-		glm::mat4 view = glm::lookAt(eye, glm::vec3(0.0f, 0.0f, 0.0f), cam->GetTransform()->GetRight());
+		glm::mat4 view = cam->GetViewMatrix();// glm::lookAt(eye, glm::vec3(0.0f, 0.0f, 0.0f), cam->GetTransform()->GetRight());
 		glm::mat4 proj = cam->GetProjectionMatrix(); // glm::perspective(glm::radians(60.0f), float(1024) / 1024, 0.1f, 100.0f);
 
 		bgfx::ViewId viewId = cam->GetViewID();
@@ -268,6 +270,12 @@ namespace FireEngine
 			// Submit primitive for rendering to view 0.
 			bgfx::submit(viewId, mat->GetShader()->program);
 		}
+
+		DebugDrawEncoder dde;
+		dde.begin(viewId);
+		dde.drawAxis(0, 10, 0, 10);
+		dde.drawGrid(Axis::Y, {0,0,0}, 128, 1.0f);
+		dde.end();
 	}
 
 	Renderer::Renderer()

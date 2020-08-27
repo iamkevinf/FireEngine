@@ -11,7 +11,7 @@ namespace FireEngine
     {
         protected ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags.DefaultOpen;
         Vector3 pos = Vector3.Zero;
-        Vector4 rot = Vector4.Zero;
+        Vector3 rot = Vector3.Zero;
         Vector3 scl = Vector3.One;
 
         protected IntPtr m_nativePtr = IntPtr.Zero;
@@ -20,16 +20,30 @@ namespace FireEngine
 
         }
 
+        private ScriptableCallback cbkAwake = null;
+        private ScriptableCallback cbkStart = null;
+        private ScriptableCallback cbkUpdate = null;
+        private ScriptableCallback cbkLateUpdate = null;
+        private ScriptableCallback cbkOnEnable = null;
+        private ScriptableCallback cbkDisable = null;
+
         public Component(IntPtr native) : this()
         {
             m_nativePtr = native;
 
-            ComponentRegisterCallScriptable(native, ScriptableFuncType.Awake, Awake);
-            ComponentRegisterCallScriptable(native, ScriptableFuncType.Start, Start);
-            ComponentRegisterCallScriptable(native, ScriptableFuncType.Update, Update);
-            ComponentRegisterCallScriptable(native, ScriptableFuncType.LateUpdate, LateUpdate);
-            ComponentRegisterCallScriptable(native, ScriptableFuncType.OnEnable, OnEnable);
-            ComponentRegisterCallScriptable(native, ScriptableFuncType.OnDisable, OnDisable);
+            cbkAwake = new ScriptableCallback(Awake);
+            cbkStart = new ScriptableCallback(Start);
+            cbkUpdate = new ScriptableCallback(Update);
+            cbkLateUpdate = new ScriptableCallback(LateUpdate);
+            cbkOnEnable = new ScriptableCallback(OnEnable);
+            cbkDisable = new ScriptableCallback(OnDisable);
+
+            ComponentRegisterCallScriptable(native, ScriptableFuncType.Awake, cbkAwake);
+            ComponentRegisterCallScriptable(native, ScriptableFuncType.Start, cbkStart);
+            ComponentRegisterCallScriptable(native, ScriptableFuncType.Update, cbkUpdate);
+            ComponentRegisterCallScriptable(native, ScriptableFuncType.LateUpdate, cbkLateUpdate);
+            ComponentRegisterCallScriptable(native, ScriptableFuncType.OnEnable, cbkOnEnable);
+            ComponentRegisterCallScriptable(native, ScriptableFuncType.OnDisable, cbkDisable);
         }
 
         public virtual void OnGUI_Inspector()
@@ -44,10 +58,13 @@ namespace FireEngine
                 ImGui.Text("Position");
 
                 ImGui.SetNextItemWidth(textWidth);
-                rot = gameObject.transform.rotation;
-                ImGui.DragFloat4("##Rotation#Component##Inspector", ref rot); ImGui.SameLine();
-                gameObject.transform.rotation = rot;
+                rot = gameObject.transform.rotation.eulerAngles;
+                ImGui.DragFloat3("##Rotation#Component##Inspector", ref rot); ImGui.SameLine();
+                Quaternion quaternion = Quaternion.identity;
+                quaternion.eulerAngles = rot;
+                gameObject.transform.rotation = quaternion;
                 ImGui.Text("Rotation");
+
 
                 ImGui.SetNextItemWidth(textWidth);
                 scl = gameObject.transform.scale;
@@ -98,6 +115,14 @@ namespace FireEngine
             }
         }
 
+        public Transform transform
+        {
+            get
+            {
+                return gameObject?.transform;
+            }
+        }
+
 
         #region Native
         public enum ScriptableFuncType
@@ -109,9 +134,10 @@ namespace FireEngine
             OnEnable,
             OnDisable
         };
+        public delegate void ScriptableCallback();
 
         [DllImport(FireEngineNative.FireEngineDllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
-        public static extern void ComponentRegisterCallScriptable(IntPtr native, ScriptableFuncType type, Action cbk);
+        public static extern void ComponentRegisterCallScriptable(IntPtr native, ScriptableFuncType type, ScriptableCallback cbk);
 
         [DllImport(FireEngineNative.FireEngineDllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         public static extern IntPtr ComponentGetGameObject(IntPtr native);
