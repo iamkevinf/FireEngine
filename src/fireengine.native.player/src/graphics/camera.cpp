@@ -1,18 +1,24 @@
 #include "camera.h"
 
+#include <imgui.h>
+#include "imgui/imgui_impl_bgfx.h"
+
 #include <glm/gtc/matrix_transform.hpp>
+#include <bx/math.h>
+
 #include "core/transform.h"
 #include "core/gameobject.h"
+
+#include "math/rect.hpp"
+
+#include "io/memorystream.h"
+
 #include "framebuffer.h"
 #include "rendertexture.h"
 #include "renderpass.h"
 #include "renderer.h"
 #include "meshrenderer.h"
 #include "material.h"
-#include "io/memorystream.h"
-
-#include <imgui.h>
-#include "imgui/imgui_impl_bgfx.h"
 
 namespace FireEngine
 {
@@ -124,7 +130,7 @@ namespace FireEngine
 			render_pass = RenderPass::Create(
 				std::shared_ptr<RenderTexture>(color),
 				std::shared_ptr<RenderTexture>(depth), GetClearFlags(), true,
-				glm::vec4(0, 0, width, height));
+				Rect(0, 0, (float)width, (float)height));
 		}
 
 		Renderer::PrepareAllPass();
@@ -150,7 +156,7 @@ namespace FireEngine
 
 		if (!IsOrthographic())
 		{
-			projection_matrix = glm::perspective(GetFieldOfView() * Deg2Rad, width / (float)height, GetClipNear(), GetClipFar());
+			projection_matrix = glm::perspective(glm::radians(GetFieldOfView()), width / (float)height, GetClipNear(), GetClipFar());
 		}
 		else
 		{
@@ -232,7 +238,7 @@ namespace FireEngine
 		return { kInvalidHandle };
 	}
 
-	bgfx::TextureHandle GGetFrameBufferTexture(Camera* camera)
+	size_t GGetFrameBufferTexture(Camera* camera)
 	{
 		if (!camera)
 			return { bgfx::kInvalidHandle };
@@ -242,7 +248,7 @@ namespace FireEngine
 		tex.s.handle = render_pass->GetFrameBuffer().color_texture->GetTextureHandle();
 		tex.s.flags = IMGUI_FLAGS_ALPHA_BLEND;
 		tex.s.mip = 0;
-		return tex.s.handle;
+		return ((uint32_t*)&(tex.s.handle))[0];
 	}
 
 	EXPORT_API Camera* CameraGetMainCamera()
@@ -250,7 +256,7 @@ namespace FireEngine
 		return Camera::Main();
 	}
 
-	EXPORT_API bgfx::TextureHandle CameraGetFrameBufferTexture(Camera* camera)
+	EXPORT_API size_t CameraGetFrameBufferTexture(Camera* camera)
 	{
 		return GGetFrameBufferTexture(camera);
 	}

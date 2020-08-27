@@ -7,7 +7,7 @@
 #include "framebuffer.h"
 #include "color.h"
 #include <bgfx/bgfx.h>
-#include <glm/glm.hpp>
+#include "math/rect.hpp"
 
 namespace FireEngine
 {
@@ -16,7 +16,7 @@ namespace FireEngine
 	public:
 		static std::shared_ptr<RenderPass> Create(std::shared_ptr<RenderTexture> color,
 			std::shared_ptr<RenderTexture> depth,
-			CameraClearFlags clearFlag, bool needDepth, glm::vec4 rect);
+			CameraClearFlags clearFlag, bool needDepth, Rect rect);
 
 		virtual ~RenderPass();
 
@@ -40,7 +40,7 @@ namespace FireEngine
 		bgfx::FrameBufferHandle frame_buffer_handle;
 		CameraClearFlags clear_flag = CameraClearFlags::Color;
 		bool need_depth;
-		glm::vec4 rect;
+		Rect rect;
 	};
 }
 

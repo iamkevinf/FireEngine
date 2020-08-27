@@ -6,6 +6,8 @@
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtx/quaternion.hpp>
 
+#include <bx/math.h>
+
 EXPORT_API void Internal_FromEulerRad_Injected(glm::vec3 euler, glm::quat* ret)
 {
     *ret = glm::quat(euler);

@@ -17,10 +17,9 @@ namespace FireEngine
 		RenderTexture* texture = dynamic_cast<RenderTexture*>(this);
 		RenderTextureFormat texture_format = texture->GetFormat();
 
-		bgfx::TextureFormat::Enum format = bgfx::TextureFormat::RGBA8;
 		if (texture_format == RenderTextureFormat::RGBA8)
 		{
-			format = bgfx::TextureFormat::RGBA8;
+			format = bgfx::TextureFormat::Enum::RGBA8;
 		}
 		else
 		{
@@ -36,7 +35,6 @@ namespace FireEngine
 		RenderTexture* texture = dynamic_cast<RenderTexture*>(this);
 		DepthBuffer depth = texture->GetDepth();
 
-		bgfx::TextureFormat::Enum format = bgfx::TextureFormat::D16;
 		switch (depth)
 		{
 		case DepthBuffer::Depth_16:
@@ -57,7 +55,7 @@ namespace FireEngine
 			break;
 		}
 
-		auto texd16 = bgfx::createTexture2D(width, height, false, 1, format, BGFX_TEXTURE_RT_WRITE_ONLY);
-		return texd16;
+		auto tex = bgfx::createTexture2D(width, height, false, 1, format, BGFX_TEXTURE_RT_WRITE_ONLY);
+		return tex;
 	}
 }

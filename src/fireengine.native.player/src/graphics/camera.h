@@ -82,7 +82,7 @@ namespace FireEngine
 
 		void UpdateMatrix();
 
-		friend bgfx::TextureHandle GGetFrameBufferTexture(Camera* camera);
+		friend size_t GGetFrameBufferTexture(Camera* camera);
 
 	private:
 		static Camera* s_mainCamera;

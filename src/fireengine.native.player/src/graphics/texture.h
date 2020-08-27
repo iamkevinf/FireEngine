@@ -32,6 +32,7 @@ namespace FireEngine
 		uint32_t height = 0;
 		TextureWrapMode wrap_mode;
 		FilterMode filter_mode;
+		bgfx::TextureFormat::Enum format;
 	};
 }
 

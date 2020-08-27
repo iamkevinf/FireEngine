@@ -180,7 +180,7 @@
     <ClCompile Include="src\app\innergeometry.cpp">
       <Filter>app</Filter>
     </ClCompile>
-    <ClCompile Include="src\app\quaternion.cpp">
+    <ClCompile Include="src\math\quaternion.cpp">
       <Filter>math</Filter>
     </ClCompile>
   </ItemGroup>
@@ -326,6 +326,9 @@
     </ClInclude>
     <ClInclude Include="src\graphics\layer.h">
       <Filter>graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\rect.hpp">
+      <Filter>math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -241,19 +241,17 @@ namespace FireEngine
 		if (!cam)
 			return;
 
+		bgfx::ViewId viewId = cam->GetViewID();
 		glm::vec3 eye = cam->GetTransform()->GetWorldPosition(); //glm::vec3(0.0f, 10.0f, -35.0f);
 		glm::mat4 view = cam->GetViewMatrix();// glm::lookAt(eye, glm::vec3(0.0f, 0.0f, 0.0f), cam->GetTransform()->GetRight());
 		glm::mat4 proj = cam->GetProjectionMatrix(); // glm::perspective(glm::radians(60.0f), float(1024) / 1024, 0.1f, 100.0f);
-
-		bgfx::ViewId viewId = cam->GetViewID();
+		bgfx::setViewTransform(viewId, &view, &proj);
 
 		for (auto& ele : pass)
 		{
 			auto& mat = ele.renderer->GetSharedMaterials()[ele.material_index];
 
 			glm::mat4 worldMatrix = ele.renderer->GetTransform()->GetLocal2WorldMatrix();
-
-			bgfx::setViewTransform(viewId, &view, &proj);
 
 			// Set model matrix for rendering.
 			bgfx::setTransform(&worldMatrix[0][0]);

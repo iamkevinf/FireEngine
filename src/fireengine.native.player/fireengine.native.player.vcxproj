@@ -27,7 +27,6 @@
     <ClCompile Include="src\app\app.cpp" />
     <ClCompile Include="src\app\innergeometry.cpp" />
     <ClCompile Include="src\app\main_shared.cpp" />
-    <ClCompile Include="src\app\quaternion.cpp" />
     <ClCompile Include="src\core\component.cpp" />
     <ClCompile Include="src\core\gameobject.cpp" />
     <ClCompile Include="src\core\object.cpp" />
@@ -60,6 +59,7 @@
     <ClCompile Include="src\io\memorystream.cpp" />
     <ClCompile Include="src\io\stream.cpp" />
     <ClCompile Include="src\loader\loader.cpp" />
+    <ClCompile Include="src\math\quaternion.cpp" />
     <ClCompile Include="src\scene\scene.cpp" />
     <ClCompile Include="src\utils\bytebuffer.cpp" />
     <ClCompile Include="src\utils\messagehandler.cpp" />
@@ -110,6 +110,7 @@
     <ClInclude Include="src\io\stream.h" />
     <ClInclude Include="src\loader\loader.h" />
     <ClInclude Include="src\math\math.h" />
+    <ClInclude Include="src\math\rect.hpp" />
     <ClInclude Include="src\scene\scene.h" />
     <ClInclude Include="src\utils\bytebuffer.h" />
     <ClInclude Include="src\utils\messagehandler.h" />
@@ -229,7 +230,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <PreprocessToFile>false</PreprocessToFile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <AdditionalOptions>/D IMGUI_USER_CONFIG=&lt;imgui/imgui_config.h&gt; %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/D IMGUI_USER_CONFIG=&lt;imgui/imgui_config.h&gt; /D GLM_FORCE_LEFT_HANDED %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

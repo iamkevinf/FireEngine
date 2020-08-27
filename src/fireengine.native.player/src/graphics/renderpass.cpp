@@ -10,7 +10,7 @@ namespace FireEngine
 		std::shared_ptr<RenderTexture> color_texture,
 		std::shared_ptr<RenderTexture> depth_texture,
 		CameraClearFlags clear_flag, bool need_depth,
-		glm::vec4 rect)
+		Rect rect)
 	{
 		std::shared_ptr<RenderPass> pass = std::shared_ptr<RenderPass>(new RenderPass());
 		pass->frame_buffer.color_texture = color_texture;
@@ -19,8 +19,7 @@ namespace FireEngine
 		pass->need_depth = need_depth;
 
 		bgfx::TextureHandle fbtextures[] = { color_texture->GetTextureHandle(), depth_texture->GetTextureHandle() };
-		pass->frame_buffer_handle = bgfx::createFrameBuffer(1,
-			&(color_texture->GetTextureHandle()), true);
+		pass->frame_buffer_handle = bgfx::createFrameBuffer(2, fbtextures, true);
 
 		pass->rect = rect;
 
@@ -42,7 +41,8 @@ namespace FireEngine
 		s_viewId++;
 
 		bgfx::setViewFrameBuffer(s_viewId, frame_buffer_handle);
-		bgfx::setViewRect(s_viewId, rect.x, rect.y, rect.z, rect.w);
+		bgfx::setViewRect(s_viewId, (uint16_t)rect.x, (uint16_t)rect.y,
+			(uint16_t)rect.width, (uint16_t)rect.height);
 
 		uint16_t flag = 0;
 		Color clearColor = clear_color;
@@ -55,7 +55,7 @@ namespace FireEngine
 
 		case CameraClearFlags::Color:
 		{
-			flag |= BGFX_CLEAR_COLOR;
+			flag |= (BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH);
 			break;
 		}
 		case CameraClearFlags::Depth:
