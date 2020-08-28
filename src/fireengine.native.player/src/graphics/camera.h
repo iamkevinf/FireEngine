@@ -63,6 +63,8 @@ namespace FireEngine
 
 		bool CanRender() const;
 		bool IsCulling(const std::shared_ptr<GameObject>& obj) const;
+		void SetDebug(uint32_t debug) { this->debug = debug; }
+		uint32_t GetDebug()const { return debug; }
 
 		const glm::mat4& GetViewMatrix();
 		const glm::mat4& GetProjectionMatrix();
@@ -110,6 +112,8 @@ namespace FireEngine
 
 		uint32_t culling_mask;
 		bgfx::ViewId viewId;
+
+		uint32_t debug = BGFX_DEBUG_NONE;
 	};
 }
 

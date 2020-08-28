@@ -17,5 +17,7 @@ namespace FireEngine
 
         [DllImport(FireEngineDllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         public static extern void igSetIMAssertHacker(delegateIMAssertHacker callback);
+        [DllImport(FireEngineDllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+        public static extern void febgfxSetDebug(UInt32 debug, bool debugGame);
     }
 }

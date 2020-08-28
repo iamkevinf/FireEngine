@@ -46,7 +46,7 @@ namespace FireEngine
 			uint32_t count;
 		};
 
-		std::vector<uint16_t> triangles;
+		std::vector<uint32_t> triangles;
 		std::vector<SubMesh> submeshes;
 		std::vector<glm::mat4> bind_poses;
 

@@ -245,6 +245,14 @@ namespace FireEngine
 		fviewid = -1;
 	}
 
+	EXPORT_API void febgfxSetDebug(uint32_t debug, bool debugGame)
+	{
+		if (debugGame)
+			Camera::Main()->SetDebug(debug);
+		else
+			bgfx::setDebug(debug);
+	}
+
 
 }
 

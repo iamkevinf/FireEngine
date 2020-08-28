@@ -7,6 +7,8 @@
 #include "graphics/material.h"
 #include "graphics/meshrenderer.h"
 
+#include "loader/loader.h"
+
 namespace FireEngine
 {
 	struct myvec
@@ -30,7 +32,7 @@ namespace FireEngine
 	};
 
 
-	static const uint16_t s_cubeTriList[] =
+	static const uint32_t s_cubeTriList[] =
 	{
 		0, 1, 2, // 0
 		1, 3, 2,
@@ -74,14 +76,17 @@ namespace FireEngine
 			ms.Write<glm::vec4>({ 0,0,0,0 });
 		}
 
-		int ic = sizeof(s_cubeTriList) / sizeof(uint16_t);
+		int ic = sizeof(s_cubeTriList) / sizeof(uint32_t);
 		ms.Write<int>(ic);
 
 		for (auto iter : s_cubeTriList)
-			ms.Write<uint16_t>(iter);
+			ms.Write<uint32_t>(iter);
 		ms.Close();
 
-		auto mesh = Mesh::LoadFromMem(buffer, false);
+		//auto mesh = Mesh::LoadFromMem(buffer, false);
+		auto mesh = Mesh::Create();
+		//loadMesh("mesh/nanosuit/nanosuit.obj", mesh);
+		loadMesh("mesh/cube/cube.obj", mesh);
 
 		meshRenderer->SetSharedMesh(mesh);
 

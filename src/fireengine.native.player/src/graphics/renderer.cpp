@@ -281,6 +281,8 @@ namespace FireEngine
 		dde.begin(viewId);
 		dde.drawGrid(Axis::Y, { 0,0,0 }, 128, 1.0f);
 		dde.end();
+
+		bgfx::setDebug(cam->GetDebug());
 	}
 
 	Renderer::Renderer()

@@ -3,11 +3,15 @@
 
 #include <bgfx/bgfx.h>
 #include <bimg/bimg.h>
+#include <memory>
 
 namespace FireEngine
 {
+	class Mesh;
+
 	bgfx::TextureHandle loadTexture(const char* _name, uint64_t _flags = BGFX_TEXTURE_NONE | BGFX_SAMPLER_NONE, uint8_t _skip = 0, bgfx::TextureInfo* _info = NULL, bimg::Orientation::Enum* _orientation = NULL);
 	bgfx::ShaderHandle loadShader(const char* name);
+	void loadMesh(const char* path, std::shared_ptr<Mesh> mesh);
 }; // end of namespace RC
 
 #endif //__LOADER_H__

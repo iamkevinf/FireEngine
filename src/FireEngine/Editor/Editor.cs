@@ -53,7 +53,7 @@ namespace FireEngine.Editor
         }
 
         iWindowAttribute attr_about = null;
-        iWindowAttribute[] windows;
+        iWindowAttribute attr_debug = null;
         void _OnCreateWindow()
         {
             WindowManager.Add("Game", new WindowGameView());
@@ -64,7 +64,8 @@ namespace FireEngine.Editor
             Debug.SetLogger(logger);
 
             attr_about = WindowManager.Add("About", new WindowAbout(), false, false, false);
-            windows = WindowManager.GetAllWindowAttributes();
+            attr_debug = WindowManager.Add("Debug", new WIndowDebug(), false, false, false);
+            WindowManager.GetAllWindowAttributes();
         }
 
         void _OnCreateMenu()
@@ -75,6 +76,11 @@ namespace FireEngine.Editor
             {
                 WindowManager.ShowWindow(attr_about.UUID);
             });
+            menu.CreateMenuEvent("Help/Debug", () =>
+            {
+                WindowManager.ShowWindow(attr_debug.UUID);
+            });
+
         }
 
         void OnGUI()
@@ -153,7 +159,7 @@ namespace FireEngine.Editor
 
         void OnTick()
         {
-            foreach (var win in windows)
+            foreach (var win in WindowManager.GetAllWindowAttributes())
             {
                 win.window.OnTick();
             }
@@ -175,7 +181,7 @@ namespace FireEngine.Editor
 
         void OnMenuGUI_WindowsView()
         {
-            foreach (var attr in windows)
+            foreach (var attr in WindowManager.GetAllWindowAttributes())
             {
                 iWindow window = attr.window;
                 bool visible = attr.visible;
@@ -220,7 +226,7 @@ namespace FireEngine.Editor
 
         void DrawWindows()
         {
-            foreach (var win in windows)
+            foreach (var win in WindowManager.GetAllWindowAttributes())
             {
                 if (win.visible)
                 {

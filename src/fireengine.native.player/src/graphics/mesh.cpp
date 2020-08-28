@@ -91,7 +91,7 @@ namespace FireEngine
 		mesh->triangles.resize(ic);
 		for (int i = 0; i < ic; ++i)
 		{
-			uint16_t triangle = ms.Read<uint16_t>();
+			uint32_t triangle = ms.Read<uint32_t>();
 			mesh->triangles[i] = triangle;
 		}
 
@@ -173,7 +173,7 @@ namespace FireEngine
 			{
 				index_buffer_handle = bgfx::createIndexBuffer(
 					bgfx::makeRef(index_buffer->GetLocalBuffer()->Bytes(),
-						index_buffer->GetLocalBuffer()->Size())
+						index_buffer->GetLocalBuffer()->Size()), BGFX_BUFFER_INDEX32
 				);
 			}
 		}
@@ -186,7 +186,7 @@ namespace FireEngine
 
 	uint32_t Mesh::IndexBufferSize() const
 	{
-		return (uint32_t)triangles.size() * sizeof(uint16_t);
+		return (uint32_t)triangles.size() * sizeof(uint32_t);
 	}
 
 	void Mesh::FillVertexBuffer(void* param, const ByteBuffer& buffer)
@@ -205,7 +205,7 @@ namespace FireEngine
 				ms.Write<glm::vec2>(mesh->uv[i]);
 
 			if (mesh->colors.empty())
-				ms.Write<uint32_t>(1);
+				ms.Write<uint32_t>(0xffffffff);
 			else
 				ms.Write<uint32_t>(mesh->colors[i]);
 

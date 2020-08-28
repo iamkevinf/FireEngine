@@ -1,7 +1,15 @@
 #include "loader.h"
-#include "../filesystem/FileSystem.h"
 
 #include <bimg/decode.h>
+
+#include "assimp/Importer.hpp"
+#include "assimp/scene.h"
+#include "assimp/postprocess.h"
+
+#include "filesystem/FileSystem.h"
+
+#include "graphics/mesh.h"
+
 
 namespace FireEngine
 {
@@ -158,6 +166,149 @@ namespace FireEngine
 	bgfx::ShaderHandle loadShader(const char* name)
 	{
 		return _loadShader(getFileReader(), name);
+	}
+
+	void _processMesh(aiMesh* mesh, const aiScene* scene, uint32_t subMeshCount, std::shared_ptr<Mesh> myMesh)
+	{
+		auto verticesNum = mesh->mNumVertices;
+		uint32_t offset = 0;
+		if (subMeshCount > 0)
+		{
+			Mesh::SubMesh subMesh;
+			subMesh.count = subMeshCount;
+			subMesh.start = myMesh->vertices.size();
+			myMesh->submeshes.push_back(subMesh);
+			offset = subMesh.start;
+			verticesNum += offset;
+		}
+
+		myMesh->vertices.resize(verticesNum);
+		myMesh->uv.resize(verticesNum);
+		myMesh->colors.resize(verticesNum);
+		myMesh->uv2.resize(verticesNum);
+		myMesh->normals.resize(verticesNum);
+		myMesh->tangents.resize(verticesNum);
+		myMesh->bone_weights.resize(verticesNum);
+		myMesh->bone_indices.resize(verticesNum);
+
+
+		for (int i = 0; i < mesh->mNumVertices; ++i)
+		{
+			auto index = i + offset;
+			myMesh->vertices[index].x = mesh->mVertices[i].x;
+			myMesh->vertices[index].y = mesh->mVertices[i].y;
+			myMesh->vertices[index].z = mesh->mVertices[i].z;
+
+			if (mesh->mTextureCoords[0])
+			{
+				myMesh->uv[index].x = mesh->mTextureCoords[0][i].x;
+				myMesh->uv[index].y = mesh->mTextureCoords[0][i].y;
+			}
+			else
+			{
+				myMesh->uv[index] = { 0,0 };
+			}
+
+			if (mesh->mColors[0])
+			{
+				Color color(mesh->mColors[0][i].r, mesh->mColors[0][i].g, mesh->mColors[0][i].b, mesh->mColors[0][i].a);
+				myMesh->colors[index] = color.GetHex();
+			}
+			else
+			{
+				myMesh->colors[index] = 0xffffffff;
+			}
+
+			if (mesh->mTextureCoords[1])
+			{
+				myMesh->uv2[index].x = mesh->mTextureCoords[1][i].x;
+				myMesh->uv2[index].y = mesh->mTextureCoords[1][i].y;
+			}
+			else
+			{
+				myMesh->uv2[index] = { 0,0 };
+			}
+
+			if (mesh->HasNormals())
+			{
+				myMesh->normals[index].x = mesh->mNormals[i].x;
+				myMesh->normals[index].y = mesh->mNormals[i].y;
+				myMesh->normals[index].z = mesh->mNormals[i].z;
+			}
+			else
+			{
+				myMesh->normals[index] = { 0,0,0 };
+			}
+
+			if (mesh->mTangents)
+			{
+				myMesh->tangents[index].x = mesh->mTangents[i].x;
+				myMesh->tangents[index].y = mesh->mTangents[i].y;
+				myMesh->tangents[index].z = mesh->mTangents[i].z;
+				myMesh->tangents[index].w = 0;
+
+			}
+			else
+			{
+				myMesh->tangents[index] = { 0,0,0,0 };
+			}
+
+			if (mesh->mBones)
+			{
+				for (auto j = 0; j < mesh->mBones[i]->mNumWeights; ++j)
+				{
+					if (j <= 3)
+					{
+						myMesh->bone_weights[index][j] = mesh->mBones[i]->mWeights[0].mWeight;
+						myMesh->bone_weights[index][j] = mesh->mBones[i]->mWeights[0].mVertexId;
+					}
+				}
+			}
+			else
+			{
+				myMesh->bone_weights[index] = { 0,0,0,0 };
+				myMesh->bone_indices[index] = { 0,0,0,0 };
+			}
+
+		}
+
+		for (auto i = 0; i < mesh->mNumFaces; i++)
+		{
+			auto index = i + offset;
+			aiFace face = mesh->mFaces[i];
+			// retrieve all indices of the face and store them in the indices vector
+			for (unsigned int j = 0; j < face.mNumIndices; j++)
+				myMesh->triangles.push_back(face.mIndices[j]);
+		}
+
+	}
+
+	void _processNode(aiNode* node, const aiScene* scene, uint32_t childrenIdx, std::shared_ptr<Mesh> myMesh)
+	{
+		for (auto i = 0; i < node->mNumMeshes; ++i)
+		{
+			aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
+			_processMesh(mesh, scene, childrenIdx + i, myMesh);
+		}
+
+		for (auto i = 0; i < node->mNumChildren; ++i)
+		{
+			_processNode(node->mChildren[i], scene, childrenIdx + i, myMesh);
+		}
+	}
+
+	void loadMesh(const char* path, std::shared_ptr<Mesh> mesh)
+	{
+		Assimp::Importer importer;
+		const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
+		if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
+		{
+			return;
+		}
+
+		std::string strPath(path);
+		std::string directory = strPath.substr(0, strPath.find_last_of('/'));
+		_processNode(scene->mRootNode, scene, 0, mesh);
 	}
 
 } // end of namespace FireEngine

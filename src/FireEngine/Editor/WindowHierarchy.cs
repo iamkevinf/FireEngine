@@ -211,8 +211,8 @@ namespace FireEngine.Editor
                 if (!selected)
                 {
                     bool clicked = ImGui.IsItemClicked();
-                    bool focused = childCount == 0 ? ImGui.IsItemFocused() : ImGui.IsItemHovered();
-                    if (clicked || focused)
+                    //bool focused = childCount == 0 ? ImGui.IsItemFocused() : ImGui.IsItemHovered();
+                    if (clicked)
                     {
                         curSelectedTransform = item;
                         curSelectedScene = SceneNative.SceneHandle.InValid;
@@ -315,8 +315,8 @@ namespace FireEngine.Editor
                     if (!selected)
                     {
                         bool clicked = ImGui.IsItemClicked();
-                        bool focused = childCount == 0 ? ImGui.IsItemFocused() : ImGui.IsItemHovered();
-                        if (clicked || focused)
+                        //bool focused = childCount == 0 ? ImGui.IsItemFocused() : ImGui.IsItemHovered();
+                        if (clicked)
                         {
                             curSelectedScene = handle;
                             curSelectedTransform = TransformNative.TransformHandle.InValid;
