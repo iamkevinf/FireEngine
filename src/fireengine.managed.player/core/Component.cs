@@ -65,7 +65,6 @@ namespace FireEngine
                 gameObject.transform.rotation = quaternion;
                 ImGui.Text("Rotation");
 
-
                 ImGui.SetNextItemWidth(textWidth);
                 scl = gameObject.transform.scale;
                 ImGui.DragFloat3("##Scale##Component##Inspector", ref scl); ImGui.SameLine();

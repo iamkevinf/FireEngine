@@ -1147,7 +1147,8 @@ namespace ImGuiNET
             byte* native_text_end = null;
             byte hide_text_after_double_hash = 0;
             float wrap_width = -1.0f;
-            Vector2 ret = ImGuiNative.igCalcTextSize(native_text, native_text_end, hide_text_after_double_hash, wrap_width);
+            Vector2 ret = Vector2.Zero;
+            ImGuiNative.igCalcTextSize(ref ret, native_text, native_text_end, hide_text_after_double_hash, wrap_width);
             if (text_byteCount > Util.StackAllocationSizeLimit)
             {
                 Util.Free(native_text);

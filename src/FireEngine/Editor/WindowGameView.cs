@@ -1,28 +1,23 @@
 ﻿using ImGuiNET;
 using System;
-using System.Collections.Generic;
 using System.Numerics;
-using System.Text;
+using FireEditor;
 
 namespace FireEngine.Editor
 {
-    class WindowGameView : WindowBase
+    class WindowGameView : iWindow
     {
-        public override string title => "Game";
-        public override bool isInWIndowList => true;
-        public override bool canDock => true;
-
-        public override void Init()
+        public void Init()
         {
-            Show();
         }
 
-        public override void OnGUI()
+        public void OnGUI()
         {
             if (Camera.Main == null)
                 return;
 
-            TextureHandle tex = Camera.Main.frameBufferTexture;
+            IntPtr tex = Camera.Main.frameBufferTexture;
+
 
             Vector2 contentRegionMax = ImGui.GetWindowContentRegionMax();
             Vector2 contentRegionMin = ImGui.GetWindowContentRegionMin();
@@ -56,7 +51,20 @@ namespace FireEngine.Editor
                 end.Y = bgn.Y + contentHeightNeo;
             }
 
-            ImGui.GetWindowDrawList().AddImage((IntPtr)tex.idx, bgn, end, new Vector2(0, 1), new Vector2(1, 0));
+            ImGui.Image(tex, end - bgn);
+            //ImGui.GetWindowDrawList().AddImage(tex, bgn, end, new Vector2(0, 1), new Vector2(0, 1));
+        }
+
+        public void OnHide()
+        {
+        }
+
+        public void OnShow()
+        {
+        }
+
+        public void OnTick()
+        {
         }
     }
 }

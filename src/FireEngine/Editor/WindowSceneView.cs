@@ -1,17 +1,12 @@
-﻿using ImGuiNET;
+﻿using FireEditor;
+using ImGuiNET;
 using System;
-using System.Collections.Generic;
 using System.Numerics;
-using System.Text;
 
 namespace FireEngine.Editor
 {
-    public class WindowSceneView : WindowBase
+    public class WindowSceneView : iWindow
     {
-        public override string title => "Scene";
-        public override bool isInWIndowList => true;
-        public override bool canDock => true;
-
         private Vector2 size;
         AppNative.TargetHandle target = new AppNative.TargetHandle();
         IntPtr targetTexture = IntPtr.Zero;
@@ -19,12 +14,11 @@ namespace FireEngine.Editor
         int targetH;
         public static uint s_clearColor = 0x314D79FF;
 
-        public override void Init()
+        public void Init()
         {
-            Show();
         }
 
-        public override void OnGUI()
+        public void OnGUI()
         {
             Vector2 canvas_sz = ImGui.GetContentRegionAvail();
 
@@ -36,7 +30,7 @@ namespace FireEngine.Editor
             }
         }
 
-        public override void OnTick()
+        public void OnTick()
         {
             var w = (int)size.X;
             var h = (int)size.Y;
@@ -60,6 +54,14 @@ namespace FireEngine.Editor
             AppNative.feFrame_Clear(s_clearColor, true, true);
             AppNative.feFrame_Flush();
 
+        }
+
+        public void OnShow()
+        {
+        }
+
+        public void OnHide()
+        {
         }
     }
 }

@@ -175,6 +175,23 @@ namespace FireEngine
 			return a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w;
 		}
 
+
+		private static bool IsEqualUsingDot(float dot)
+		{
+			return dot > 0.999999f;
+		}
+
+		public static bool operator ==(Quaternion lhs, Quaternion rhs)
+		{
+			return Quaternion.IsEqualUsingDot(Quaternion.Dot(lhs, rhs));
+		}
+
+		public static bool operator !=(Quaternion lhs, Quaternion rhs)
+		{
+			return !(lhs == rhs);
+		}
+
+
 		[DllImport(FireEngineNative.FireEngineDllName, CallingConvention = CallingConvention.Cdecl)]
 		public static extern void Internal_ToEulerRad_Injected(Quaternion euler, ref Vector3 ret);
 		[DllImport(FireEngineNative.FireEngineDllName, CallingConvention = CallingConvention.Cdecl)]

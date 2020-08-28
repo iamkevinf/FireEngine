@@ -19,7 +19,7 @@ namespace FireEngine
         [DllImport(FireEngineNative.FireEngineDllName, CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr CameraGetMainCamera();
         [DllImport(FireEngineNative.FireEngineDllName, CallingConvention = CallingConvention.Cdecl)]
-        public static extern TextureHandle CameraGetFrameBufferTexture(IntPtr native);
+        public static extern IntPtr CameraGetFrameBufferTexture(IntPtr native);
         
 
 

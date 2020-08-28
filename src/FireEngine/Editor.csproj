@@ -12,13 +12,14 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\..\3rdparty\DotNetCorePlugins\src\Plugins\McMaster.NETCore.Plugins.csproj" />
+    <ProjectReference Include="..\fireengine.managed.editor\FireEditor.csproj" />
     <ProjectReference Include="..\fireengine.managed.player\FireEngine.csproj" />
     <ProjectReference Include="..\fireengine.native.player\fireengine.native.player.vcxproj" />
   </ItemGroup>
-
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="COPY  &quot;$(SolutionDir)bin\$(ConfigurationName)\*.*&quot; &quot;$(OutDir)\*&quot;&#xD;&#xA;" />
-  </Target>
 </Project>

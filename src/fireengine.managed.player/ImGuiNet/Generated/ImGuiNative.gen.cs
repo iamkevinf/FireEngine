@@ -60,8 +60,8 @@ namespace ImGuiNET
         public static extern float igCalcItemWidth();
         [DllImport(ImGuiDllName, CallingConvention = CallingConvention.Cdecl)]
         public static extern void igCalcListClipping(int items_count, float items_height, int* out_items_display_start, int* out_items_display_end);
-        [DllImport(ImGuiDllName, CallingConvention = CallingConvention.Cdecl, EntryPoint = "igCalcTextSize_nonUDT2")]
-        public static extern Vector2 igCalcTextSize(byte* text, byte* text_end, byte hide_text_after_double_hash, float wrap_width);
+        [DllImport(ImGuiDllName, CallingConvention = CallingConvention.Cdecl)]
+        public static extern void igCalcTextSize(ref Vector2 ret, byte* text, byte* text_end, byte hide_text_after_double_hash, float wrap_width);
         [DllImport(ImGuiDllName, CallingConvention = CallingConvention.Cdecl)]
         public static extern void igCaptureKeyboardFromApp(byte want_capture_keyboard_value);
         [DllImport(ImGuiDllName, CallingConvention = CallingConvention.Cdecl)]

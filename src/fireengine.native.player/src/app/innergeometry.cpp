@@ -57,7 +57,7 @@ namespace FireEngine
 		auto meshRenderer = gameObject->AddComponent<MeshRenderer>();
 		ObjectManager::Register(meshRenderer, ObjectType::Component);
 
-		ByteBuffer buffer = ByteBuffer(sizeof(s_cubeVertices) + sizeof(s_cubeTriList) + sizeof(int) * 2);
+		ByteBuffer buffer = ByteBuffer(92 * 8 + sizeof(s_cubeTriList) + sizeof(int) * 2);
 		MemoryStream ms = MemoryStream(buffer);
 		int vc = sizeof(s_cubeVertices) / sizeof(myvec);
 		ms.Write<int>(vc);
@@ -65,8 +65,15 @@ namespace FireEngine
 		{
 			glm::vec3 pos(iter.x, iter.y, iter.z);
 			ms.Write<glm::vec3>(pos);
+			ms.Write<glm::vec2>({ 0,0 });
 			ms.Write<uint32_t>(iter.m_argb);
+			ms.Write<glm::vec2>({ 0,0 });
+			ms.Write<glm::vec3>({ 0,0,0 });
+			ms.Write<glm::vec4>({ 0,0,0,0 });
+			ms.Write<glm::vec4>({ 0,0,0,0 });
+			ms.Write<glm::vec4>({ 0,0,0,0 });
 		}
+
 		int ic = sizeof(s_cubeTriList) / sizeof(uint16_t);
 		ms.Write<int>(ic);
 
@@ -74,7 +81,7 @@ namespace FireEngine
 			ms.Write<uint16_t>(iter);
 		ms.Close();
 
-		auto mesh = Mesh::LoadFromMem(buffer, true);
+		auto mesh = Mesh::LoadFromMem(buffer, false);
 
 		meshRenderer->SetSharedMesh(mesh);
 

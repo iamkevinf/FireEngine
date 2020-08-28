@@ -1,4 +1,5 @@
-$input a_position, a_color0, a_normal
+$input a_position, a_texcoord0, a_color0, a_texcoord1, a_normal, a_tangent, a_weight, a_indices
+
 $output v_color0, v_normal0
 
 #include <bgfx_shader.sh>

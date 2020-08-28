@@ -242,9 +242,9 @@ namespace FireEngine
 			return;
 
 		bgfx::ViewId viewId = cam->GetViewID();
-		glm::vec3 eye = cam->GetTransform()->GetWorldPosition(); //glm::vec3(0.0f, 10.0f, -35.0f);
-		glm::mat4 view = cam->GetViewMatrix();// glm::lookAt(eye, glm::vec3(0.0f, 0.0f, 0.0f), cam->GetTransform()->GetRight());
-		glm::mat4 proj = cam->GetProjectionMatrix(); // glm::perspective(glm::radians(60.0f), float(1024) / 1024, 0.1f, 100.0f);
+		glm::vec3 eye = cam->GetTransform()->GetWorldPosition();
+		glm::mat4 view = cam->GetViewMatrix();
+		glm::mat4 proj = cam->GetProjectionMatrix();
 		bgfx::setViewTransform(viewId, &view, &proj);
 
 		for (auto& ele : pass)
@@ -279,7 +279,6 @@ namespace FireEngine
 
 		DebugDrawEncoder dde;
 		dde.begin(viewId);
-		dde.drawAxis(0, 10, 0, 10);
 		dde.drawGrid(Axis::Y, { 0,0,0 }, 128, 1.0f);
 		dde.end();
 	}

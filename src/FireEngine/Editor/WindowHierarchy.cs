@@ -1,19 +1,15 @@
 ﻿using ImGuiNET;
 using System;
-using System.Collections.Generic;
-using System.Text;
-using FireEngine;
-using System.Numerics;
 using System.Collections;
+using System.Collections.Generic;
+using System.Numerics;
+using FireEngine;
+using FireEditor;
 
 namespace FireEngine.Editor
 {
-    class WindowHierarchy : WindowBase
+    class WindowHierarchy : iWindow
     {
-        public override string title => "Hierachy";
-        public override bool isInWIndowList => true;
-        public override bool canDock => true;
-
         ImGuiTreeNodeFlags flagsBase = ImGuiTreeNodeFlags.DefaultOpen
             | ImGuiTreeNodeFlags.OpenOnArrow;
 
@@ -44,10 +40,8 @@ namespace FireEngine.Editor
             return ret;
         }
 
-        public override void Init()
+        public void Init()
         {
-            Show();
-
             int count = SceneNative.SceneCount();
             string _name = "Scene";
             if (count > 0)
@@ -245,10 +239,8 @@ namespace FireEngine.Editor
 
         bool renameing = false;
         string neo_name = "";
-        public override void OnGUI()
+        public void OnGUI()
         {
-            base.OnGUI();
-
             int count = SceneNative.SceneCount();
 
             if (ImGui.BeginPopupContextWindow("SceneMenu", ImGuiMouseButton.Right))
@@ -345,6 +337,18 @@ namespace FireEngine.Editor
 
                 ImGui.TreePop();
             }
+        }
+
+        public void OnTick()
+        {
+        }
+
+        public void OnShow()
+        {
+        }
+
+        public void OnHide()
+        {
         }
     }
 }

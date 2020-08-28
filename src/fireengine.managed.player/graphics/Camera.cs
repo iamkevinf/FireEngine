@@ -64,7 +64,7 @@ namespace FireEngine
             }
         }
 
-        public TextureHandle frameBufferTexture
+        public IntPtr frameBufferTexture
         {
             get
             {

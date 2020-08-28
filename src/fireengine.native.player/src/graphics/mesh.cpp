@@ -42,7 +42,13 @@ namespace FireEngine
 		mesh->layout
 			.begin()
 			.add(bgfx::Attrib::Enum::Position, 3, bgfx::AttribType::Enum::Float, false)
+			.add(bgfx::Attrib::Enum::TexCoord0, 2, bgfx::AttribType::Enum::Float, false)
 			.add(bgfx::Attrib::Enum::Color0, 4, bgfx::AttribType::Enum::Uint8, true)
+			.add(bgfx::Attrib::Enum::TexCoord1, 2, bgfx::AttribType::Enum::Float, true)
+			.add(bgfx::Attrib::Enum::Normal, 3, bgfx::AttribType::Enum::Float, false)
+			.add(bgfx::Attrib::Enum::Tangent, 4, bgfx::AttribType::Enum::Float, false)
+			.add(bgfx::Attrib::Enum::Weight, 4, bgfx::AttribType::Enum::Float, false)
+			.add(bgfx::Attrib::Enum::Indices, 4, bgfx::AttribType::Enum::Float, false)
 			.end();
 
 		return mesh;
@@ -55,13 +61,31 @@ namespace FireEngine
 		auto ms = MemoryStream(data);
 		int vc = ms.Read<int>();
 		mesh->vertices.resize(vc);
+		mesh->uv.resize(vc);
 		mesh->colors.resize(vc);
+		mesh->uv2.resize(vc);
+		mesh->normals.resize(vc);
+		mesh->tangents.resize(vc);
+		mesh->bone_indices.resize(vc);
+		mesh->bone_weights.resize(vc);
 		for (int i = 0; i < vc; ++i)
 		{
 			glm::vec3 pos = ms.Read<glm::vec3>();
 			mesh->vertices[i] = pos;
+			glm::vec2 uv = ms.Read<glm::vec2>();
+			mesh->uv[i] = uv;
 			uint32_t color = ms.Read<uint32_t>();
 			mesh->colors[i] = color;
+			glm::vec2 uv2 = ms.Read<glm::vec2>();
+			mesh->uv2[i] = uv2;
+			glm::vec3 normals = ms.Read<glm::vec3>();
+			mesh->normals[i] = normals;
+			glm::vec4 tangents = ms.Read<glm::vec4>();
+			mesh->tangents[i] = tangents;
+			glm::vec4 bone_weights = ms.Read<glm::vec4>();
+			mesh->bone_weights[i] = bone_weights;
+			glm::vec4 bone_indices = ms.Read<glm::vec4>();
+			mesh->bone_indices[i] = bone_indices;
 		}
 		int ic = ms.Read<int>();
 		mesh->triangles.resize(ic);
@@ -175,40 +199,40 @@ namespace FireEngine
 		{
 			ms.Write<glm::vec3>(mesh->vertices[i]);
 
+			if (mesh->uv.empty())
+				ms.Write<glm::vec2>(glm::vec2(0, 0));
+			else
+				ms.Write<glm::vec2>(mesh->uv[i]);
+
 			if (mesh->colors.empty())
 				ms.Write<uint32_t>(1);
 			else
 				ms.Write<uint32_t>(mesh->colors[i]);
 
-			//if (mesh->uv.empty())
-			//	ms.Write<glm::vec2>(glm::vec2(0, 0));
-			//else
-			//	ms.Write<glm::vec2>(mesh->uv[i]);
+			if (mesh->uv2.empty())
+				ms.Write<glm::vec2>(glm::vec2(0, 0));
+			else
+				ms.Write<glm::vec2>(mesh->uv2[i]);
 
-			//if (mesh->uv2.empty())
-			//	ms.Write<glm::vec2>(glm::vec2(0, 0));
-			//else
-			//	ms.Write<glm::vec2>(mesh->uv2[i]);
+			if (mesh->normals.empty())
+				ms.Write<glm::vec3>(glm::vec3(0, 0, 0));
+			else
+				ms.Write<glm::vec3>(mesh->normals[i]);
 
-			//if (mesh->normals.empty())
-			//	ms.Write<glm::vec3>(glm::vec3(0, 0, 0));
-			//else
-			//	ms.Write<glm::vec3>(mesh->normals[i]);
+			if (mesh->tangents.empty())
+				ms.Write<glm::vec4>(glm::vec4(0, 0, 0, 0));
+			else
+				ms.Write<glm::vec4>(mesh->tangents[i]);
 
-			//if (mesh->tangents.empty())
-			//	ms.Write<glm::vec4>(glm::vec4(0, 0, 0, 0));
-			//else
-			//	ms.Write<glm::vec4>(mesh->tangents[i]);
+			if (mesh->bone_weights.empty())
+				ms.Write<glm::vec4>(glm::vec4(0, 0, 0, 0));
+			else
+				ms.Write<glm::vec4>(mesh->bone_weights[i]);
 
-			//if (mesh->bone_weights.empty())
-			//	ms.Write<glm::vec4>(glm::vec4(0, 0, 0, 0));
-			//else
-			//	ms.Write<glm::vec4>(mesh->bone_weights[i]);
-
-			//if (mesh->bone_indices.empty())
-			//	ms.Write<glm::vec4>(glm::vec4(0, 0, 0, 0));
-			//else
-			//	ms.Write<glm::vec4>(mesh->bone_indices[i]);
+			if (mesh->bone_indices.empty())
+				ms.Write<glm::vec4>(glm::vec4(0, 0, 0, 0));
+			else
+				ms.Write<glm::vec4>(mesh->bone_indices[i]);
 		}
 
 		ms.Close();

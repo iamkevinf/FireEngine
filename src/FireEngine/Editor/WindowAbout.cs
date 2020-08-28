@@ -1,21 +1,15 @@
 ﻿using ImGuiNET;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using FireEditor;
 
 namespace FireEngine.Editor
 {
-    class WindowAbout : WindowBase
+    class WindowAbout : FireEditor.iWindow
     {
-        public override void Init()
+        public void Init()
         {
-            visible = false;
         }
 
-        public override string title => "about";
-
-
-        public override void OnGUI()
+        public void OnGUI()
         {
             var fonts = ImGui.GetIO().Fonts.Fonts;
             for (var i = 0; i < fonts.Size; i++)
@@ -32,9 +26,17 @@ namespace FireEngine.Editor
                 }
                 ImGui.PopFont();
             }
+        }
 
-            if (ImGui.Button("close me!"))
-                Hide();
+        public void OnTick()
+        {
+        }
+
+        public void OnShow()
+        {
+        }
+        public void OnHide()
+        {
         }
     }
 }

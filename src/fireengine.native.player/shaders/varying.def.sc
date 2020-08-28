@@ -4,7 +4,6 @@ vec4 v_color1    : COLOR1    = vec4(1.0, 0.0, 0.0, 1.0);
 vec3 v_normal0   : NORMAL0;
 vec2 v_texcoord0 : TEXCOORD0;
 vec2 v_texcoord1 : TEXCOORD1;
-vec2 v_texcoord7 : TEXCOORD7;
 
 vec3 a_position  : POSITION;
 vec4 a_color0    : COLOR0;
@@ -17,8 +16,8 @@ vec3 a_bitangent : BITANGENT;
 vec3 a_color2    : COLOR2;
 vec3 a_color3    : COLOR3;
 
-vec3 a_indices   : INDICES;
-vec3 a_weight    : WEIGHT;
+vec3 a_indices   : BLENDINDICES;
+vec3 a_weight    : BLENDWEIGHT;
 
 vec2 a_texcoord0 : TEXCOORD0;
 vec2 a_texcoord1 : TEXCOORD1;

@@ -1,4 +1,5 @@
-﻿using ImGuiNET;
+﻿using FireEditor;
+using ImGuiNET;
 using System;
 using System.Collections.Generic;
 using System.Numerics;
@@ -8,43 +9,62 @@ namespace FireEngine.Editor
 {
     class Editor
     {
+        static bool bLoading = true;
+
         static bool bShowDemo = false;
         static bool bShowState = false;
         static bool bShowFont = false;
-        Dictionary<Type, iWindow> windows = new Dictionary<Type, iWindow>();
         Menu menu = new Menu();
 
         public void Run()
         {
-            AppNative.feApp_MainLoop("FireEngine DotNetCore", OnInit, OnGUI, OnTick, OnExit);
+            AppNative.feApp_MainLoop("FireEngine", OnInit, OnGUI, OnTick, OnExit);
         }
 
         void OnInit()
         {
-            _OnInitFont();
+            Loading();
 
             _OnCreateWindow();
 
             _OnCreateMenu();
         }
 
-        void _OnInitFont()
+        private Queue<Action> mainthreadAction = new Queue<Action>();
+
+        void Loading()
         {
-            ImGuiIOPtr io = ImGui.GetIO();
-            ImFontPtr defaultFont = io.Fonts.AddFontDefault();
-            ImFontPtr font = io.Fonts.AddFontFromFileTTF(
-                "fonts/AlibabaPH-Regular.otf", 16f, null, io.Fonts.GetGlyphRangesChineseFull());
-            io.SetFontDefault(defaultFont);
+            bLoading = true;
+            System.Threading.ThreadPool.QueueUserWorkItem((e) =>
+            {
+                var io = ImGui.GetIO();
+                ImFontPtr font = io.Fonts.AddFontFromFileTTF(
+                                "fonts/AlibabaPH-Regular.otf", 16f, null, io.Fonts.GetGlyphRangesChineseFull());
+
+                mainthreadAction.Enqueue(() =>
+                {
+                    var oldfont = io.Fonts;
+                    io.SetFontDefault(font);
+
+                    bLoading = false;
+                });
+
+            });
         }
 
+        iWindowAttribute attr_about = null;
+        iWindowAttribute[] windows;
         void _OnCreateWindow()
         {
-            CreateWindow(typeof(WindowGameView));
-            CreateWindow(typeof(WindowSceneView));
-            CreateWindow(typeof(WindowInspector));
-            CreateWindow(typeof(WindowHierarchy));
-            var logger = CreateWindow(typeof(WindowConsole)) as iLogger;
+            WindowManager.Add("Game", new WindowGameView());
+            WindowManager.Add("Scene", new WindowSceneView());
+            WindowManager.Add("Inspector", new WindowInspector());
+            WindowManager.Add("Hierarchy", new WindowHierarchy());
+            var logger = WindowManager.Add("Console", new WindowConsole()).window as iLogger;
             Debug.SetLogger(logger);
+
+            attr_about = WindowManager.Add("About", new WindowAbout(), false, false, false);
+            windows = WindowManager.GetAllWindowAttributes();
         }
 
         void _OnCreateMenu()
@@ -53,36 +73,50 @@ namespace FireEngine.Editor
             menu.CreateMenuGUI("Windows/Views", OnMenuGUI_WindowsView);
             menu.CreateMenuEvent("Help/About", () =>
             {
-                CreateWindow(typeof(WindowAbout)).Show();
+                WindowManager.ShowWindow(attr_about.UUID);
             });
         }
 
         void OnGUI()
         {
+            if (bLoading)
+                DrawLoading();
+            else
+                DrawEditor();
+        }
+
+        void DrawLoading()
+        {
+            var viewport = ImGui.GetMainViewport();
+            ImGui.SetNextWindowPos(viewport.Pos);
+            ImGui.SetNextWindowSize(viewport.Size);
+            ImGui.SetNextWindowViewport(viewport.ID);
+            ImGui.PushStyleVar(ImGuiStyleVar.WindowRounding, 0.0f);
+            ImGui.PushStyleVar(ImGuiStyleVar.WindowBorderSize, 0.0f);
+            ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, System.Numerics.Vector2.Zero);
+            ImGuiWindowFlags window_flags = ImGuiWindowFlags.NoDocking;
+            window_flags |= ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove;
+            window_flags |= ImGuiWindowFlags.NoBringToFrontOnFocus | ImGuiWindowFlags.NoNavFocus;
+
+            if (ImGui.Begin("loading", window_flags))
+            {
+
+                ImGui.Text("loading...");
+
+                ImGui.PopStyleVar();
+                ImGui.PopStyleVar();
+                ImGui.PopStyleVar();
+
+                ImGui.End();
+            }
+
+        }
+
+        void DrawEditor()
+        {
             DrawDock();
 
-            //simple window system
-            foreach (var win in windows.Values)
-            {
-                if (win.visible)
-                {
-                    bool open = true;
-                    ImGuiWindowFlags flag = ImGuiWindowFlags.NoCollapse;
-                    if (!win.canDock) flag |= ImGuiWindowFlags.NoDocking;
-                    ImGui.SetNextWindowSizeConstraints(Vector2.One * 100, Vector2.One * 10240);
-                    if (ImGui.Begin(win.title, ref open, flag))
-                    {
-                        if (open == false)
-                        {
-                            win.Hide();
-                            ImGui.End();
-                            continue;
-                        }
-                        win.OnGUI();
-                    }
-                    ImGui.End();
-                }
-            }
+            DrawWindows();
 
             //simple menu system
             if (ImGui.BeginMainMenuBar())
@@ -119,10 +153,13 @@ namespace FireEngine.Editor
 
         void OnTick()
         {
-            foreach (var win in windows.Values)
+            foreach (var win in windows)
             {
-                win.OnTick();
+                win.window.OnTick();
             }
+
+            while (mainthreadAction.Count > 0)
+                mainthreadAction.Dequeue()();
         }
 
         void OnExit()
@@ -138,18 +175,18 @@ namespace FireEngine.Editor
 
         void OnMenuGUI_WindowsView()
         {
-            foreach (var iter in windows)
+            foreach (var attr in windows)
             {
-                iWindow window = iter.Value;
-                bool visible = window.visible;
-                if (window.isInWIndowList && ImGui.MenuItem(window.title, "", ref visible))
+                iWindow window = attr.window;
+                bool visible = attr.visible;
+                if (attr.register2menu && ImGui.MenuItem(attr.title, "", ref visible))
                 {
-                    if (visible != window.visible)
+                    if (visible != attr.visible)
                     {
                         if (visible)
-                            window.Show();
+                            WindowManager.ShowWindow(attr.UUID);
                         else
-                            window.Hide();
+                            WindowManager.CloseWindow(attr.UUID);
                     }
                 }
             }
@@ -181,20 +218,29 @@ namespace FireEngine.Editor
 
         }
 
-        public iWindow CreateWindow(Type type)
+        void DrawWindows()
         {
-            if (windows.TryGetValue(type, out iWindow win))
-                return win;
-
-            if (type.GetInterface(typeof(iWindow).FullName) == null)
-                return null;
-
-            var ctor = type.GetConstructor(new Type[0]);
-
-            var nwin = ctor.Invoke(null) as iWindow;
-            windows[type] = nwin;
-            return nwin;
+            foreach (var win in windows)
+            {
+                if (win.visible)
+                {
+                    bool open = true;
+                    ImGuiWindowFlags flag = ImGuiWindowFlags.NoCollapse;
+                    if (!win.canDock) flag |= ImGuiWindowFlags.NoDocking;
+                    ImGui.SetNextWindowSizeConstraints(Vector2.One * 100, Vector2.One * 10240);
+                    if (ImGui.Begin(win.title, ref open, flag))
+                    {
+                        if (open == false)
+                        {
+                            WindowManager.CloseWindow(win.UUID);
+                            ImGui.End();
+                            continue;
+                        }
+                        win.window.OnGUI();
+                    }
+                    ImGui.End();
+                }
+            }
         }
-
     }
 }

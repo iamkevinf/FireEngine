@@ -1,4 +1,5 @@
-﻿using ImGuiNET;
+﻿using FireEditor;
+using ImGuiNET;
 using System;
 using System.Collections.Generic;
 using System.Numerics;
@@ -6,24 +7,29 @@ using System.Text;
 
 namespace FireEngine.Editor
 {
-    class WindowInspector : WindowBase
+    class WindowInspector : iWindow
     {
-        public override void Init()
+        public void Init()
         {
-            Show();
         }
 
-        public override bool isInWIndowList => true;
-
-        public override bool canDock => true;
-
-        public override string title => "Inspector";
-
-        public override void OnGUI()
+        public void OnGUI()
         {
             var comp = WindowHierarchy.GetComponentSelected();
             if (comp != null)
                 comp.OnGUI_Inspector();
+        }
+
+        public void OnHide()
+        {
+        }
+
+        public void OnShow()
+        {
+        }
+
+        public void OnTick()
+        {
         }
     }
 }

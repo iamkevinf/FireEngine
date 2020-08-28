@@ -3,15 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Numerics;
 using System.Text;
+using FireEditor;
 
 namespace FireEngine.Editor
 {
-    class WindowConsole : WindowBase, iLogger
+    class WindowConsole : iWindow, iLogger
     {
-        public override string title => "Console";
-        public override bool isInWIndowList => true;
-        public override bool canDock => true;
-
         enum LogLevel
         {
             Log,
@@ -28,14 +25,12 @@ namespace FireEngine.Editor
         List<LogNode> logs = new List<LogNode>();
 
 
-        public override void Init()
+        public void Init()
         {
             unsafe
             {
                 FireEngineNative.SetIMAssertHacker(OnIMGUIAsset);
             }
-
-            Show();
         }
 
         unsafe void OnIMGUIAsset(char* expr, char* filename, int line)
@@ -99,18 +94,17 @@ namespace FireEngine.Editor
 
         bool bEnableT = true, bEnableW = true, bEnableE = true;
         Vector2 pos = Vector2.Zero;
-        public override void OnGUI()
+        public void OnGUI()
         {
-            base.OnGUI();
-
             if (ImGui.Button("Clear"))
             {
                 logs.Clear();
             }
 
             int beginPosX = 30;
-            int widthToggle = 32;
-            int widthText = 10;
+            float widthToggle = 32 + ImGui.CalcTextSize("E").X;
+            float widthText = 10 + ImGui.CalcTextSize("E").X;
+
             ImGui.SameLine(ImGui.GetWindowContentRegionMax().X - beginPosX);
             ImGui.ToggleButton("E", ref bEnableE);
             ImGui.SameLine(ImGui.GetWindowContentRegionMax().X - beginPosX - widthText);
@@ -174,6 +168,18 @@ namespace FireEngine.Editor
                 ImGui.SetScrollHereY(1.0f);
 
             ImGui.EndChild();
+        }
+
+        public void OnTick()
+        {
+        }
+
+        public void OnShow()
+        {
+        }
+
+        public void OnHide()
+        {
         }
     }
 }
