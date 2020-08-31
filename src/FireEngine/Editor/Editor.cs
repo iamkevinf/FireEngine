@@ -185,8 +185,27 @@ namespace FireEngine.Editor
             {
             }
 
-            Debug.LogFormat("{0} {1}", rt.ToString(), path);
+        }
 
+        void FileOpenProject()
+        {
+            string path = "";
+
+            string curPath = System.IO.Directory.GetCurrentDirectory();
+
+            var rt = nfdnative.NFD_PickFolder(curPath, ref path);
+            if (rt == nfdnative.nfdresult.NFD_OKAY)
+            {
+                try
+                {
+                    Project.Open(path);
+                }
+                catch (Exception e)
+                {
+                    Debug.LogErrorFormat("打开项目失败 {0}", e.ToString());
+                }
+
+            }
         }
 
         void OnMenuGUI_FileMenu()
@@ -194,6 +213,10 @@ namespace FireEngine.Editor
             if (ImGui.MenuItem("CreateProject"))
             {
                 FileCreateProject();
+            }
+            else if (ImGui.MenuItem("OpenProject"))
+            {
+                FileOpenProject();
             }
         }
 
