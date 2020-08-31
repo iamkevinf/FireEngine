@@ -1,38 +1,66 @@
 ﻿using ImGuiNET;
 using FireEditor;
+using System;
 
 namespace FireEngine.Editor
 {
     class WindowProject : FireEditor.iWindow
     {
+        private ImGuiTreeNodeFlags baseFlag = ImGuiTreeNodeFlags.None;
+        private iSelectable curSelected = null;
+        private bool clicked = false;
         public void Init()
         {
         }
 
-        private ImGuiTreeNodeFlags baseFlag = ImGuiTreeNodeFlags.None;
+        void _OnGUI_Selected(Path path, iSelectable selectable, Action<iSelectable> cbk = null)
+        {
+            bool isPath = selectable is Path;
+            string label = string.Format("{0}##Project_{1}_{2}",
+                selectable.name, isPath ? "Path" : "File", path.name);
+            bool isSelected = curSelected == selectable;
+
+            ImGuiTreeNodeFlags flag = baseFlag
+                | (isPath ? ImGuiTreeNodeFlags.None : ImGuiTreeNodeFlags.Leaf)
+                | (isSelected ? ImGuiTreeNodeFlags.Selected : ImGuiTreeNodeFlags.None);
+
+            if (ImGui.TreeNodeEx(label, flag))
+            {
+                if (cbk != null)
+                    cbk(selectable);
+
+                ImGui.TreePop();
+            }
+
+            if(ImGui.IsItemClicked())
+            {
+                if(!clicked && curSelected != selectable)
+                {
+                    curSelected = selectable;
+                    Selector.Select(selectable);
+                }
+
+                clicked = true;
+            }
+        }
+
         void _OnGUI_Path(Path path)
         {
-            for(int i = 0; i < path.paths?.Length; ++i)
+            for (int i = 0; i < path.paths?.Length; ++i)
             {
                 Path elePath = path.paths[i];
-                string label = string.Format("{0}##Project_Path_{1}", elePath.name, path.name);
-                if (ImGui.TreeNodeEx(label, baseFlag))
-                {
-                    _OnGUI_Path(elePath);
 
-                    ImGui.TreePop();
-                }
+                _OnGUI_Selected(path, elePath, (selectable)=>
+                {
+                    _OnGUI_Path(selectable as Path);
+                });
 
             }
 
-            for(int i = 0; i < path.files?.Length; ++i)
+            for (int i = 0; i < path.files?.Length; ++i)
             {
                 File eleFile = path.files[i];
-                string label = string.Format("{0}##Project_File_{1}", eleFile.name, path.name);
-                if (ImGui.TreeNodeEx(label, baseFlag | ImGuiTreeNodeFlags.Leaf))
-                {
-                    ImGui.TreePop();
-                }
+                _OnGUI_Selected(path, eleFile);
             }
         }
 
@@ -41,6 +69,7 @@ namespace FireEngine.Editor
             if (Project.current == null)
                 return;
 
+            clicked = false;
             _OnGUI_Path(Project.current.root);
         }
 

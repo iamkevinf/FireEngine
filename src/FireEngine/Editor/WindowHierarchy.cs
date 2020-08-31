@@ -249,7 +249,7 @@ namespace FireEngine.Editor
                 ImGui.EndPopup();
             }
 
-            if (ImGui.TreeNodeEx("Scenes##Hierachy", flagsBase))
+            //if (ImGui.TreeNodeEx("Scenes##Hierachy", flagsBase))
             {
                 bool selected = false;
                 for (int i = 0; i < count; ++i)
@@ -269,7 +269,7 @@ namespace FireEngine.Editor
 
                     if (renameing && curSelectedScene == handle)
                         label = string.Format("###_{0}", label);
-                    if (ImGui.TreeNodeEx(label, flags))
+                    if (ImGui.CollapsingHeader(label, flags))
                     {
 
                         if (renameing && curSelectedScene == handle)
@@ -302,7 +302,7 @@ namespace FireEngine.Editor
 
                         bool breakif = !OnGUI_TransformTree(root, i, ref selected);
 
-                        ImGui.TreePop();
+                        //ImGui.TreePop();
 
                         if (dragdroped || breakif)
                             break;
@@ -335,7 +335,7 @@ namespace FireEngine.Editor
                     }
                 }
 
-                ImGui.TreePop();
+                //ImGui.TreePop();
             }
         }
 
