@@ -14,7 +14,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="bgfx\" />
+    <Folder Include="wrap\bgfx\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace FireEngine.Editor
 {
-    class WIndowDebug : iWindow
+    class WindowDebug : iWindow
     {
         uint debug = (uint)bgfx.Debug.BGFX_DEBUG_NONE;
         private bool debugGame = false;

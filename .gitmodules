@@ -14,3 +14,6 @@
 [submodule "3rdparty/DotNetCorePlugins"]
 	path = 3rdparty/DotNetCorePlugins
 	url = https://github.com/natemcmaster/DotNetCorePlugins.git
+[submodule "3rdparty/nativefiledialog"]
+	path = 3rdparty/nativefiledialog
+	url = https://github.com/mlabbe/nativefiledialog

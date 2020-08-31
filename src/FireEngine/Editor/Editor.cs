@@ -48,7 +48,6 @@ namespace FireEngine.Editor
 
                     bLoading = false;
                 });
-
             });
         }
 
@@ -60,16 +59,18 @@ namespace FireEngine.Editor
             WindowManager.Add("Scene", new WindowSceneView());
             WindowManager.Add("Inspector", new WindowInspector());
             WindowManager.Add("Hierarchy", new WindowHierarchy());
+            WindowManager.Add("Project", new WindowProject());
             var logger = WindowManager.Add("Console", new WindowConsole()).window as iLogger;
             Debug.SetLogger(logger);
 
             attr_about = WindowManager.Add("About", new WindowAbout(), false, false, false);
-            attr_debug = WindowManager.Add("Debug", new WIndowDebug(), false, false, false);
+            attr_debug = WindowManager.Add("Debug", new WindowDebug(), false, false, false);
             WindowManager.GetAllWindowAttributes();
         }
 
         void _OnCreateMenu()
         {
+            menu.CreateMenuGUI("File", OnMenuGUI_FileMenu);
             menu.CreateMenuGUI("Test/test secondary menu", OnMenuGUI_TestSecondaryMenu);
             menu.CreateMenuGUI("Windows/Views", OnMenuGUI_WindowsView);
             menu.CreateMenuEvent("Help/About", () =>
@@ -171,6 +172,29 @@ namespace FireEngine.Editor
         void OnExit()
         {
 
+        }
+
+        void FileCreateProject()
+        {
+            string path = "";
+
+            string curPath = System.IO.Directory.GetCurrentDirectory();
+
+            var rt = nfdnative.NFD_PickFolder(curPath, ref path);
+            if (rt == nfdnative.nfdresult.NFD_OKAY)
+            {
+            }
+
+            Debug.LogFormat("{0} {1}", rt.ToString(), path);
+
+        }
+
+        void OnMenuGUI_FileMenu()
+        {
+            if (ImGui.MenuItem("CreateProject"))
+            {
+                FileCreateProject();
+            }
         }
 
         void OnMenuGUI_TestSecondaryMenu()
