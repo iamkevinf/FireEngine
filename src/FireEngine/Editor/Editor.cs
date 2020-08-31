@@ -183,6 +183,9 @@ namespace FireEngine.Editor
             var rt = nfdnative.NFD_PickFolder(curPath, ref path);
             if (rt == nfdnative.nfdresult.NFD_OKAY)
             {
+                var ret = Project.Create(path);
+                if (ret == Project.ProjectCreateResult.NotEmpty)
+                    Debug.LogError("directory is not empty");
             }
 
         }
@@ -210,6 +213,7 @@ namespace FireEngine.Editor
 
         void OnMenuGUI_FileMenu()
         {
+            ImGui.Separator();
             if (ImGui.MenuItem("CreateProject"))
             {
                 FileCreateProject();
@@ -218,6 +222,7 @@ namespace FireEngine.Editor
             {
                 FileOpenProject();
             }
+            ImGui.Separator();
         }
 
         void OnMenuGUI_TestSecondaryMenu()
