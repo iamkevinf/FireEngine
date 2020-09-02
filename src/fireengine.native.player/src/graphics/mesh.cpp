@@ -91,11 +91,67 @@ namespace FireEngine
 		mesh->triangles.resize(ic);
 		for (int i = 0; i < ic; ++i)
 		{
-			uint32_t triangle = ms.Read<uint32_t>();
+			uint32_t triangle = ms.Read<uint16_t>();
 			mesh->triangles[i] = triangle;
 		}
 
 		mesh->Tick();
+
+		const bgfx::Memory* vertexData = bgfx::makeRef
+		(
+			mesh->vertex_buffer->GetLocalBuffer()->Bytes(),
+			mesh->vertex_buffer->GetSize()
+		);
+
+		if (dynamic)
+		{
+			mesh->dynamic_vertex_buffer_handle = bgfx::createDynamicVertexBuffer
+			(
+				vertexData,
+				mesh->layout
+			);
+		}
+		else
+		{
+
+			mesh->vertex_buffer_handle = bgfx::createVertexBuffer
+			(
+				vertexData,
+				mesh->layout
+			);
+		}
+
+		int sc = ms.Read<int>();
+		for (int i = 0; i < sc; ++i)
+		{
+			SubMesh subMesh;
+			subMesh.start = ms.Read<uint32_t>();
+			subMesh.count = ms.Read<uint32_t>();
+			mesh->submeshes.push_back(subMesh);
+
+			const bgfx::Memory* indexData = bgfx::makeRef
+			(
+				mesh->index_buffer->GetLocalBuffer()->Bytes()
+				+ subMesh.start * sizeof(uint16_t),
+				subMesh.count * sizeof(uint16_t)
+			);
+
+			if (dynamic)
+			{
+				mesh->dynamic_index_buffer_handle.push_back
+				(
+					bgfx::createDynamicIndexBuffer(indexData)
+				);
+			}
+			else
+			{
+				mesh->index_buffer_handle.push_back
+				(
+					bgfx::createIndexBuffer(indexData)
+				);
+			}
+		}
+
 
 		return mesh;
 	}
@@ -118,28 +174,9 @@ namespace FireEngine
 
 		if (dynamic)
 		{
-			if (!bgfx::isValid(dynamic_vertex_buffer_handle))
-			{
-				dynamic_vertex_buffer_handle = bgfx::createDynamicVertexBuffer(
-					bgfx::makeRef(vertex_buffer->GetLocalBuffer()->Bytes(),
-						vertex_buffer->GetLocalBuffer()->Size()), layout
-				);
-			}
-
-			bgfx::update(dynamic_vertex_buffer_handle, 0,
-				bgfx::makeRef(vertex_buffer->GetLocalBuffer()->Bytes(),
-					vertex_buffer->GetLocalBuffer()->Size()));
-
-		}
-		else
-		{
-			if (!bgfx::isValid(vertex_buffer_handle))
-			{
-				vertex_buffer_handle = bgfx::createVertexBuffer(
-					bgfx::makeRef(vertex_buffer->GetLocalBuffer()->Bytes(),
-						vertex_buffer->GetLocalBuffer()->Size()), layout
-				);
-			}
+			const bgfx::Memory* data = bgfx::makeRef(vertex_buffer->GetLocalBuffer()->Bytes(),
+				vertex_buffer->GetLocalBuffer()->Size());
+			bgfx::update(dynamic_vertex_buffer_handle, 0, data);
 		}
 	}
 
@@ -155,27 +192,9 @@ namespace FireEngine
 
 		if (dynamic)
 		{
-			if (!bgfx::isValid(dynamic_index_buffer_handle))
-			{
-				dynamic_index_buffer_handle = bgfx::createDynamicIndexBuffer(
-					bgfx::makeRef(index_buffer->GetLocalBuffer()->Bytes(),
-						index_buffer->GetLocalBuffer()->Size())
-				);
-			}
-
-			bgfx::update(dynamic_index_buffer_handle, 0,
-				bgfx::makeRef(index_buffer->GetLocalBuffer()->Bytes(),
-					index_buffer->GetLocalBuffer()->Size()));
-		}
-		else
-		{
-			if (!bgfx::isValid(index_buffer_handle))
-			{
-				index_buffer_handle = bgfx::createIndexBuffer(
-					bgfx::makeRef(index_buffer->GetLocalBuffer()->Bytes(),
-						index_buffer->GetLocalBuffer()->Size()), BGFX_BUFFER_INDEX32
-				);
-			}
+			const bgfx::Memory* data = bgfx::makeRef(index_buffer->GetLocalBuffer()->Bytes(),
+				index_buffer->GetLocalBuffer()->Size());
+			bgfx::update(dynamic_index_buffer_handle[0], 0, data);
 		}
 	}
 
@@ -186,7 +205,7 @@ namespace FireEngine
 
 	uint32_t Mesh::IndexBufferSize() const
 	{
-		return (uint32_t)triangles.size() * sizeof(uint32_t);
+		return (uint32_t)triangles.size() * sizeof(uint16_t);
 	}
 
 	void Mesh::FillVertexBuffer(void* param, const ByteBuffer& buffer)

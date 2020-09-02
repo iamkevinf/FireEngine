@@ -10,6 +10,9 @@
 #include <glm/glm.hpp>
 #include <bgfx/bgfx.h>
 
+struct aiMesh;
+struct aiScene;
+
 namespace FireEngine
 {
 	class Mesh : public IObject
@@ -23,9 +26,9 @@ namespace FireEngine
 		const std::shared_ptr<VertexBuffer>& GetVertexBuffer()const { return vertex_buffer; }
 		const std::shared_ptr<IndexBuffer>& GetIndexBuffer()const { return index_buffer; }
 		bgfx::VertexBufferHandle GetVertexBufferHandle()const { return vertex_buffer_handle; }
-		bgfx::IndexBufferHandle GetIndexBufferHandle()const { return index_buffer_handle; }
 		bgfx::DynamicVertexBufferHandle GetDynamicVertexBufferHandle()const { return dynamic_vertex_buffer_handle; }
-		bgfx::DynamicIndexBufferHandle GetDynamicIndexBufferHandle()const { return dynamic_index_buffer_handle; }
+		bgfx::IndexBufferHandle GetIndexBufferHandle(int index)const { return index_buffer_handle[index]; }
+		bgfx::DynamicIndexBufferHandle GetDynamicIndexBufferHandle(int index)const { return dynamic_index_buffer_handle[index]; }
 
 		void GetIndexRange(uint32_t submesh_index, uint32_t& start, uint32_t& count);
 
@@ -46,7 +49,7 @@ namespace FireEngine
 			uint32_t count;
 		};
 
-		std::vector<uint32_t> triangles;
+		std::vector<uint16_t> triangles;
 		std::vector<SubMesh> submeshes;
 		std::vector<glm::mat4> bind_poses;
 
@@ -65,13 +68,18 @@ namespace FireEngine
 		std::shared_ptr<VertexBuffer> vertex_buffer;
 		std::shared_ptr<IndexBuffer> index_buffer;
 
-		bgfx::VertexBufferHandle vertex_buffer_handle = {bgfx::kInvalidHandle };
-		bgfx::IndexBufferHandle index_buffer_handle = { bgfx::kInvalidHandle };
+		bgfx::VertexBufferHandle vertex_buffer_handle = {bgfx::kInvalidHandle};
 		bgfx::DynamicVertexBufferHandle dynamic_vertex_buffer_handle = { bgfx::kInvalidHandle };
-		bgfx::DynamicIndexBufferHandle dynamic_index_buffer_handle = { bgfx::kInvalidHandle };
+		std::vector<bgfx::IndexBufferHandle> index_buffer_handle;
+		std::vector<bgfx::DynamicIndexBufferHandle> dynamic_index_buffer_handle;
 		bgfx::VertexLayout layout;
 
 		bool dynamic;
+
+		friend void _processMesh(aiMesh* mesh, const aiScene* scene, uint32_t subMeshCount, std::shared_ptr<Mesh> myMesh);
+		friend void loadMesh(const char* path, std::shared_ptr<Mesh> mesh);
+
+
 
 	};
 }

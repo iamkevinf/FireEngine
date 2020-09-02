@@ -27,9 +27,9 @@ namespace FireEngine
 		return GetSharedMesh()->GetVertexBufferHandle();
 	}
 
-	bgfx::IndexBufferHandle MeshRenderer::GetIndexBufferHandle() const
+	bgfx::IndexBufferHandle MeshRenderer::GetIndexBufferHandle(int index) const
 	{
-		return GetSharedMesh()->GetIndexBufferHandle();
+		return GetSharedMesh()->GetIndexBufferHandle(index);
 	}
 
 	bgfx::DynamicVertexBufferHandle MeshRenderer::GetDynamicVertexBufferHandle() const
@@ -37,9 +37,9 @@ namespace FireEngine
 		return GetSharedMesh()->GetDynamicVertexBufferHandle();
 	}
 
-	bgfx::DynamicIndexBufferHandle MeshRenderer::GetDynamicIndexBufferHandle() const
+	bgfx::DynamicIndexBufferHandle MeshRenderer::GetDynamicIndexBufferHandle(int index) const
 	{
-		return GetSharedMesh()->GetDynamicIndexBufferHandle();
+		return GetSharedMesh()->GetDynamicIndexBufferHandle(index);
 	}
 
 	bool MeshRenderer::IsDynamic()const

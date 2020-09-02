@@ -21,18 +21,47 @@ namespace FireEngine
 
 	static myvec s_cubeVertices[] =
 	{
-		{-1.0f,  1.0f,  1.0f, 0x01010101 },
-		{ 1.0f,  1.0f,  1.0f, 0xff0101ff },
-		{-1.0f, -1.0f,  1.0f, 0x0101ff01 },
+		//{-1.0f,  1.0f,  1.0f, 0x01010101 },
+		//{ 1.0f,  1.0f,  1.0f, 0xff0101ff },
+		//{-1.0f, -1.0f,  1.0f, 0x0101ff01 },
+		//{ 1.0f, -1.0f,  1.0f, 0xff01ffff },
+		//{-1.0f,  1.0f, -1.0f, 0x01ff0101 },
+		//{ 1.0f,  1.0f, -1.0f, 0xffff01ff },
+		//{-1.0f, -1.0f, -1.0f, 0xffffff01 },
+		//{ 1.0f, -1.0f, -1.0f, 0xffffffff },
+
+
+		//{1.5f + -1.0f,  1.0f,  1.0f, 0xffffffff },
+		//{1.5f +  1.0f,  1.0f,  1.0f, 0xffffffff },
+		//{1.5f + -1.0f, -1.0f,  1.0f, 0xffffffff },
+		//{1.5f +  1.0f, -1.0f,  1.0f, 0xffffffff },
+		//{1.5f + -1.0f,  1.0f, -1.0f, 0xffffffff },
+		//{1.5f +  1.0f,  1.0f, -1.0f, 0xffffffff },
+		//{1.5f + -1.0f, -1.0f, -1.0f, 0xffffffff },
+		//{1.5f +  1.0f, -1.0f, -1.0f, 0xffffffff },
+
+		{ 1.0f,  1.0f, -1.0f, 0x01010101 },
+		{ 1.0f, -1.0f, -1.0f, 0xff0101ff },
+		{ 1.0f,  1.0f,  1.0f, 0x0101ff01 },
 		{ 1.0f, -1.0f,  1.0f, 0xff01ffff },
 		{-1.0f,  1.0f, -1.0f, 0x01ff0101 },
-		{ 1.0f,  1.0f, -1.0f, 0xffff01ff },
-		{-1.0f, -1.0f, -1.0f, 0xffffff01 },
-		{ 1.0f, -1.0f, -1.0f, 0xffffffff },
+		{-1.0f, -1.0f, -1.0f, 0xffff01ff },
+		{-1.0f,  1.0f,  1.0f, 0xffffff01 },
+		{-1.0f, -1.0f,  1.0f, 0xffffffff },
+
+
+		{2 +  1.0f,  1.0f, -1.0f, 0x01010101/2 },
+		{2 +  1.0f, -1.0f, -1.0f, 0xff0101ff/2 },
+		{2 +  1.0f,  1.0f,  1.0f, 0x0101ff01/2 },
+		{2 +  1.0f, -1.0f,  1.0f, 0xff01ffff/2 },
+		{2 + -1.0f,  1.0f, -1.0f, 0x01ff0101/2 },
+		{2 + -1.0f, -1.0f, -1.0f, 0xffff01ff/2 },
+		{2 + -1.0f,  1.0f,  1.0f, 0xffffff01/2 },
+		{2 + -1.0f, -1.0f,  1.0f, 0xffffffff/2 },
 	};
 
 
-	static const uint32_t s_cubeTriList[] =
+	static const uint16_t s_cubeTriList[] =
 	{
 		0, 1, 2, // 0
 		1, 3, 2,
@@ -46,6 +75,19 @@ namespace FireEngine
 		4, 5, 1,
 		2, 3, 6, // 10
 		6, 3, 7,
+
+		0 + 8, 1 + 8, 2 + 8, // 0
+		1 + 8, 3 + 8, 2 + 8,
+		4 + 8, 6 + 8, 5 + 8, // 2
+		5 + 8, 6 + 8, 7 + 8,
+		0 + 8, 2 + 8, 4 + 8, // 4
+		4 + 8, 2 + 8, 6 + 8,
+		1 + 8, 5 + 8, 3 + 8, // 6
+		5 + 8, 7 + 8, 3 + 8,
+		0 + 8, 4 + 8, 1 + 8, // 8
+		4 + 8, 5 + 8, 1 + 8,
+		2 + 8, 3 + 8, 6 + 8, // 10
+		6 + 8, 3 + 8, 7 + 8,
 	};
 
 	EXPORT_API GameObject* InnerGeoCreateCube(Transform* parent, const char16_t* name)
@@ -59,7 +101,7 @@ namespace FireEngine
 		auto meshRenderer = gameObject->AddComponent<MeshRenderer>();
 		ObjectManager::Register(meshRenderer, ObjectType::Component);
 
-		ByteBuffer buffer = ByteBuffer(92 * 8 + sizeof(s_cubeTriList) + sizeof(int) * 2);
+		ByteBuffer buffer = ByteBuffer(92 * 16 + sizeof(s_cubeTriList) + sizeof(int) * 3 + sizeof(Mesh::SubMesh) * 2);
 		MemoryStream ms = MemoryStream(buffer);
 		int vc = sizeof(s_cubeVertices) / sizeof(myvec);
 		ms.Write<int>(vc);
@@ -76,22 +118,33 @@ namespace FireEngine
 			ms.Write<glm::vec4>({ 0,0,0,0 });
 		}
 
-		int ic = sizeof(s_cubeTriList) / sizeof(uint32_t);
+		int ic = sizeof(s_cubeTriList) / sizeof(uint16_t);
 		ms.Write<int>(ic);
 
 		for (auto iter : s_cubeTriList)
-			ms.Write<uint32_t>(iter);
+			ms.Write<uint16_t>(iter);
+
+		int sc = 2;
+		ms.Write<int>(sc);
+		ms.Write<Mesh::SubMesh>({  0, 36 });
+		ms.Write<Mesh::SubMesh>({ 36, 36 });
 		ms.Close();
 
 		//auto mesh = Mesh::LoadFromMem(buffer, false);
 		auto mesh = Mesh::Create();
-		//loadMesh("mesh/nanosuit/nanosuit.obj", mesh);
-		loadMesh("mesh/cube/cube.obj", mesh);
+		//loadMesh("mesh/Human.fbx", mesh);
+		//loadMesh("mesh/untitled.obj", mesh);
+		loadMesh("mesh/nanosuit/nanosuit.obj", mesh);
+		//loadMesh("mesh/cube/cube.obj", mesh);
 
 		meshRenderer->SetSharedMesh(mesh);
 
-		std::vector<std::shared_ptr<Material>> mats(1);
-		mats[0] = Material::Create("Default-Material");
+		size_t size = mesh->submeshes.size();
+		if (size == 0)
+			size = 1;
+		std::vector<std::shared_ptr<Material>> mats(size);
+		for(int i = 0; i < mats.size(); ++i)
+			mats[i] = Material::Create("Default-Material");
 		meshRenderer->SetSharedMaterials(mats);
 
 		return gameObject.get();

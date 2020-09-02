@@ -260,12 +260,12 @@ namespace FireEngine
 			if (ele.renderer->IsDynamic())
 			{
 				bgfx::setVertexBuffer(0, ele.renderer->GetDynamicVertexBufferHandle());
-				bgfx::setIndexBuffer(ele.renderer->GetDynamicIndexBufferHandle());
+				bgfx::setIndexBuffer(ele.renderer->GetDynamicIndexBufferHandle(ele.material_index));
 			}
 			else
 			{
 				bgfx::setVertexBuffer(0, ele.renderer->GetVertexBufferHandle());
-				bgfx::setIndexBuffer(ele.renderer->GetIndexBufferHandle());
+				bgfx::setIndexBuffer(ele.renderer->GetIndexBufferHandle(ele.material_index));
 			}
 
 			uint64_t state = BGFX_STATE_DEFAULT;

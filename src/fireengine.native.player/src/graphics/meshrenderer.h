@@ -13,9 +13,9 @@ namespace FireEngine
 		virtual const VertexBuffer* GetVertexBuffer()const;
 		virtual const IndexBuffer* GetIndexBuffer()const;
 		virtual bgfx::VertexBufferHandle GetVertexBufferHandle()const;
-		virtual bgfx::IndexBufferHandle GetIndexBufferHandle()const;
 		virtual bgfx::DynamicVertexBufferHandle GetDynamicVertexBufferHandle()const;
-		virtual bgfx::DynamicIndexBufferHandle GetDynamicIndexBufferHandle()const;
+		virtual bgfx::IndexBufferHandle GetIndexBufferHandle(int index)const;
+		virtual bgfx::DynamicIndexBufferHandle GetDynamicIndexBufferHandle(int index)const;
 		virtual bool IsDynamic()const;
 
 		virtual bool IsValidPass(uint32_t material_index) const;

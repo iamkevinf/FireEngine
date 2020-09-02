@@ -170,117 +170,109 @@ namespace FireEngine
 
 	void _processMesh(aiMesh* mesh, const aiScene* scene, uint32_t subMeshCount, std::shared_ptr<Mesh> myMesh)
 	{
+		auto offset = myMesh->vertices.size();
 		auto verticesNum = mesh->mNumVertices;
-		uint32_t offset = 0;
-		if (subMeshCount > 0)
-		{
-			Mesh::SubMesh subMesh;
-			subMesh.count = subMeshCount;
-			subMesh.start = myMesh->vertices.size();
-			myMesh->submeshes.push_back(subMesh);
-			offset = subMesh.start;
-			verticesNum += offset;
-		}
-
-		myMesh->vertices.resize(verticesNum);
-		myMesh->uv.resize(verticesNum);
-		myMesh->colors.resize(verticesNum);
-		myMesh->uv2.resize(verticesNum);
-		myMesh->normals.resize(verticesNum);
-		myMesh->tangents.resize(verticesNum);
-		myMesh->bone_weights.resize(verticesNum);
-		myMesh->bone_indices.resize(verticesNum);
-
 
 		for (int i = 0; i < mesh->mNumVertices; ++i)
 		{
-			auto index = i + offset;
-			myMesh->vertices[index].x = mesh->mVertices[i].x;
-			myMesh->vertices[index].y = mesh->mVertices[i].y;
-			myMesh->vertices[index].z = mesh->mVertices[i].z;
-
-			if (mesh->mTextureCoords[0])
+			auto index = i;
+			if(mesh->HasPositions())
 			{
-				myMesh->uv[index].x = mesh->mTextureCoords[0][i].x;
-				myMesh->uv[index].y = mesh->mTextureCoords[0][i].y;
+				auto tmp = mesh->mVertices[i];
+				myMesh->vertices.push_back({ tmp.x, tmp.y, tmp.z });
+			}
+
+			if (mesh->HasTextureCoords(0))
+			{
+				auto tmp = mesh->mTextureCoords[0][i];
+				myMesh->uv.push_back({ tmp.x, tmp.y });
 			}
 			else
 			{
-				myMesh->uv[index] = { 0,0 };
+				myMesh->uv.push_back({ 0,0 });
 			}
 
-			if (mesh->mColors[0])
+			if (mesh->HasVertexColors(0))
 			{
 				Color color(mesh->mColors[0][i].r, mesh->mColors[0][i].g, mesh->mColors[0][i].b, mesh->mColors[0][i].a);
-				myMesh->colors[index] = color.GetHex();
+				myMesh->colors.push_back(color.GetHex());
 			}
 			else
 			{
-				myMesh->colors[index] = 0xffffffff;
+				myMesh->colors.push_back(0xffffffff);
 			}
 
-			if (mesh->mTextureCoords[1])
+			if (mesh->HasTextureCoords(1))
 			{
-				myMesh->uv2[index].x = mesh->mTextureCoords[1][i].x;
-				myMesh->uv2[index].y = mesh->mTextureCoords[1][i].y;
+				auto tmp = mesh->mTextureCoords[1][i];
+				myMesh->uv2.push_back({ tmp.x, tmp.y });
 			}
 			else
 			{
-				myMesh->uv2[index] = { 0,0 };
+				myMesh->uv2.push_back({ 0,0 });
 			}
 
 			if (mesh->HasNormals())
 			{
-				myMesh->normals[index].x = mesh->mNormals[i].x;
-				myMesh->normals[index].y = mesh->mNormals[i].y;
-				myMesh->normals[index].z = mesh->mNormals[i].z;
+				auto tmp = mesh->mNormals[i];
+				myMesh->normals.push_back({ tmp.x, tmp.y, tmp.z });
 			}
 			else
 			{
-				myMesh->normals[index] = { 0,0,0 };
+				myMesh->normals.push_back({ 0,0,0});
+
 			}
 
-			if (mesh->mTangents)
+			if (mesh->HasTangentsAndBitangents())
 			{
-				myMesh->tangents[index].x = mesh->mTangents[i].x;
-				myMesh->tangents[index].y = mesh->mTangents[i].y;
-				myMesh->tangents[index].z = mesh->mTangents[i].z;
-				myMesh->tangents[index].w = 0;
-
+				auto tmp = mesh->mTangents[i];
+				myMesh->tangents.push_back({ tmp.x, tmp.y, tmp.z, 0 });
 			}
 			else
 			{
-				myMesh->tangents[index] = { 0,0,0,0 };
+				myMesh->tangents.push_back({ 0,0,0,0 });
 			}
 
-			if (mesh->mBones)
+			if (mesh->HasBones())
 			{
 				for (auto j = 0; j < mesh->mBones[i]->mNumWeights; ++j)
 				{
 					if (j <= 3)
 					{
-						myMesh->bone_weights[index][j] = mesh->mBones[i]->mWeights[0].mWeight;
-						myMesh->bone_weights[index][j] = mesh->mBones[i]->mWeights[0].mVertexId;
+						auto tmp1x = mesh->mBones[i]->mWeights[0].mWeight;
+						auto tmp1y = mesh->mBones[i]->mWeights[1].mWeight;
+						auto tmp1z = mesh->mBones[i]->mWeights[2].mWeight;
+						auto tmp1w = mesh->mBones[i]->mWeights[3].mWeight;
+
+						auto tmp2x = mesh->mBones[i]->mWeights[0].mVertexId;
+						auto tmp2y = mesh->mBones[i]->mWeights[1].mVertexId;
+						auto tmp2z = mesh->mBones[i]->mWeights[2].mVertexId;
+						auto tmp2w = mesh->mBones[i]->mWeights[3].mVertexId;
+
+
+						myMesh->bone_weights.push_back({tmp1x, tmp1y, tmp1z, tmp1w });
+						myMesh->bone_indices.push_back({ tmp2x, tmp2y, tmp2z, tmp2w });
 					}
 				}
 			}
 			else
 			{
-				myMesh->bone_weights[index] = { 0,0,0,0 };
-				myMesh->bone_indices[index] = { 0,0,0,0 };
+				myMesh->bone_weights.push_back({ 0,0,0,0 });
+				myMesh->bone_indices.push_back({ 0,0,0,0 });
 			}
 
 		}
-
+		Mesh::SubMesh subMesh;
+		subMesh.start = myMesh->triangles.size();
 		for (auto i = 0; i < mesh->mNumFaces; i++)
 		{
-			auto index = i + offset;
 			aiFace face = mesh->mFaces[i];
 			// retrieve all indices of the face and store them in the indices vector
 			for (unsigned int j = 0; j < face.mNumIndices; j++)
-				myMesh->triangles.push_back(face.mIndices[j]);
+				myMesh->triangles.push_back(offset + face.mIndices[j]);
 		}
-
+		subMesh.count = myMesh->triangles.size() - subMesh.start;
+		myMesh->submeshes.push_back(subMesh);
 	}
 
 	void _processNode(aiNode* node, const aiScene* scene, uint32_t childrenIdx, std::shared_ptr<Mesh> myMesh)
@@ -300,15 +292,88 @@ namespace FireEngine
 	void loadMesh(const char* path, std::shared_ptr<Mesh> mesh)
 	{
 		Assimp::Importer importer;
-		const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
+		const aiScene* scene = importer.ReadFile(path,
+			aiProcess_JoinIdenticalVertices |		// join identical vertices/ optimize indexing
+			aiProcess_ValidateDataStructure |		// perform a full validation of the loader's output
+			aiProcess_ImproveCacheLocality |		// improve the cache locality of the output vertices
+			aiProcess_RemoveRedundantMaterials |	// remove redundant materials
+			aiProcess_GenUVCoords |					// convert spherical, cylindrical, box and planar mapping to proper UVs
+			aiProcess_TransformUVCoords |			// pre-process UV transformations (scaling, translation ...)
+			//aiProcess_FindInstances |				// search for instanced meshes and remove them by references to one master
+			aiProcess_LimitBoneWeights |			// limit bone weights to 4 per vertex
+			aiProcess_OptimizeMeshes |				// join small meshes, if possible;
+			//aiProcess_PreTransformVertices |
+			aiProcess_GenSmoothNormals |			// generate smooth normal vectors if not existing
+			aiProcess_SplitLargeMeshes |			// split large, unrenderable meshes into sub-meshes
+			aiProcess_Triangulate |					// triangulate polygons with more than 3 edges
+			aiProcess_CalcTangentSpace |
+			aiProcess_ConvertToLeftHanded |			// convert everything to D3D left handed space
+			aiProcess_SortByPType);
 		if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 		{
+			printf(importer.GetErrorString());
 			return;
 		}
 
 		std::string strPath(path);
 		std::string directory = strPath.substr(0, strPath.find_last_of('/'));
 		_processNode(scene->mRootNode, scene, 0, mesh);
+
+		mesh->Tick();
+
+		const bgfx::Memory* vertexData = bgfx::makeRef
+		(
+			mesh->vertex_buffer->GetLocalBuffer()->Bytes(),
+			mesh->vertex_buffer->GetSize()
+		);
+
+		if (mesh->dynamic)
+		{
+			mesh->dynamic_vertex_buffer_handle = bgfx::createDynamicVertexBuffer
+			(
+				vertexData,
+				mesh->layout
+			);
+		}
+		else
+		{
+
+			mesh->vertex_buffer_handle = bgfx::createVertexBuffer
+			(
+				vertexData,
+				mesh->layout
+			);
+		}
+
+		for (int i = 0; i < mesh->submeshes.size(); ++i)
+		{
+			Mesh::SubMesh subMesh = mesh->submeshes[i];
+
+			const bgfx::Memory* indexData = bgfx::makeRef
+			(
+				mesh->index_buffer->GetLocalBuffer()->Bytes()
+				+ subMesh.start * sizeof(uint16_t),
+				subMesh.count * sizeof(uint16_t)
+			);
+
+			if (mesh->dynamic)
+			{
+				mesh->dynamic_index_buffer_handle.push_back
+				(
+					bgfx::createDynamicIndexBuffer(indexData)
+				);
+			}
+			else
+			{
+				mesh->index_buffer_handle.push_back
+				(
+					bgfx::createIndexBuffer(indexData)
+				);
+			}
+		}
+
+		if (mesh->submeshes.size() == 1)
+			mesh->submeshes.resize(0);
 	}
 
 } // end of namespace FireEngine
