@@ -101,6 +101,7 @@ namespace FireEngine
 		GameObject,
 		Transform,
 		Component,
+		Asset,
 		Max,
 	};
 

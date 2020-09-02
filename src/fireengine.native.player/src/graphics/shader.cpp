@@ -15,11 +15,30 @@ namespace FireEngine
 			return iter->second;
 
 		std::shared_ptr<Shader> shader(new Shader());
+		ObjectManager::Register(shader, ObjectType::Asset);
 		s_hash2shader[hashcode] = shader;
 
 		shader->vs = loadShader("vs_buildin");
 		shader->ps = loadShader("fs_buildin");
-		shader->program = bgfx::createProgram(shader->vs, shader->ps, true);
+
+		shader->name = shadername;
+		shader->pass.name = shadername;
+		shader->pass.program = bgfx::createProgram(shader->vs, shader->ps, true);
+
+		bgfx::UniformHandle handlearray[256];
+		int countVS = bgfx::getShaderUniforms(shader->vs, handlearray, 256);
+		int countFS = bgfx::getShaderUniforms(shader->ps, handlearray + countVS, 256 - countVS);
+		bgfx::UniformInfo info;
+		for (auto i = 0; i < countVS + countFS; i++)
+		{
+			bgfx::getUniformInfo(handlearray[i], info);
+			Uniform uniform;
+			uniform.name = info.name;
+			uniform.handle = handlearray[i];
+			uniform.num = info.num;
+			uniform.type = info.type;
+			shader->pass.unoforms.push_back(uniform);
+		}
 
 		return shader;
 	}

@@ -2,8 +2,6 @@ $input v_color0, v_normal0
 
 #include <bgfx_shader.sh>
 
-uniform vec4 twh;
-
 void main()
 {
     vec3 light_position = vec3(10.0, 10.0, -15.0);

@@ -5,6 +5,7 @@
 
 #include "camera.h"
 #include "core/gameobject.h"
+#include "utils/time.h"
 
 namespace FireEngine
 {
@@ -219,8 +220,6 @@ namespace FireEngine
 
 	void Renderer::PreparePass(std::list<MaterialPass>& pass)
 	{
-		auto& first = pass.front();
-		auto& shader = first.renderer->GetSharedMaterials()[first.material_index]->GetShader();
 	}
 
 	void Renderer::RenderAllPass()
@@ -229,9 +228,25 @@ namespace FireEngine
 		auto cam = Camera::Main();
 		auto& passes = s_passes[cam].list;
 
-		for (auto& i : passes)
+
+		for (auto& pass : passes)
 		{
-			Renderer::CommitPass(cam, i);
+			auto& first = pass.front();
+			auto& shader = first.renderer->GetSharedMaterials()[first.material_index]->GetShader();
+
+			int old_id = -1;
+			for (auto& i : pass)
+			{
+				auto& mat = i.renderer->GetSharedMaterials()[i.material_index];
+				auto mat_id = mat->objectID;
+
+				if (old_id == -1 || old_id != mat_id)
+				{
+					mat->UpdateUniforms(0);
+				}
+			}
+
+			Renderer::CommitPass(cam, pass);
 		}
 
 	}
@@ -274,7 +289,9 @@ namespace FireEngine
 			bgfx::setState(state);
 
 			// Submit primitive for rendering to view 0.
-			bgfx::submit(viewId, mat->GetShader()->program);
+			bgfx::submit(viewId, mat->GetShader()->pass.program);
+
+			//mat->SetVector("u_time", {Time::GetDeltaTime(), 0, 0, 0});
 		}
 
 		DebugDrawEncoder dde;

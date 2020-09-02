@@ -10,6 +10,7 @@ namespace FireEngine.Editor
     {
         uint debug = (uint)bgfx.Debug.BGFX_DEBUG_NONE;
         private bool debugGame = false;
+
         public void Init()
         {
         }
