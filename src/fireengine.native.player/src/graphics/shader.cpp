@@ -37,7 +37,7 @@ namespace FireEngine
 			uniform.handle = handlearray[i];
 			uniform.num = info.num;
 			uniform.type = info.type;
-			shader->pass.unoforms.push_back(uniform);
+			shader->pass.uniforms.push_back(uniform);
 		}
 
 		return shader;

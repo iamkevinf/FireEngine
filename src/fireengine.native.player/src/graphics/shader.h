@@ -19,7 +19,7 @@ namespace FireEngine
 	{
 		std::string name;
 		bgfx::ProgramHandle program;
-		std::vector<Uniform> unoforms;
+		std::vector<Uniform> uniforms;
 	};
 
 	class Shader : public IObject

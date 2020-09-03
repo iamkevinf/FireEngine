@@ -36,6 +36,8 @@ namespace FireEngine
 		bgfx::TextureInfo info;
 		ByteBuffer buffer;
 		auto handle = loadTexture(file.c_str(), 0, 0, &info, nullptr, &buffer);
+		if (!bgfx::isValid(handle))
+			return nullptr;
 
 		texture = Texture2D::Create(info.width, info.height, info.format,
 			wrap_mode, filter_mode, info.numMips > 1, buffer);

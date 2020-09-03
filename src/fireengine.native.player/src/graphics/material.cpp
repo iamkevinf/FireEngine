@@ -48,7 +48,7 @@ namespace FireEngine
 	void Material::SetUniform(uint32_t pass_index, const std::string& name, void* data)
 	{
 		ShaderPass pass = shader->pass;
-		for (Uniform& uniform : pass.unoforms)
+		for (Uniform& uniform : pass.uniforms)
 		{
 			if (uniform.name == name)
 			{
@@ -60,7 +60,7 @@ namespace FireEngine
 	void Material::SetUniformTexture(uint32_t pass_index, const std::string& name, uint8_t idx, const std::shared_ptr<Texture2D>& texture)
 	{
 		ShaderPass pass = shader->pass;
-		for (Uniform& uniform : pass.unoforms)
+		for (Uniform& uniform : pass.uniforms)
 		{
 			if (uniform.name == name)
 			{

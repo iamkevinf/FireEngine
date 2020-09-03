@@ -12,6 +12,7 @@
 
 struct aiMesh;
 struct aiScene;
+class Material;
 
 namespace FireEngine
 {
@@ -33,6 +34,13 @@ namespace FireEngine
 		void GetIndexRange(uint32_t submesh_index, uint32_t& start, uint32_t& count);
 
 		bool IsDynamic()const { return dynamic; }
+
+		bgfx::VertexBufferHandle& GetVertexBufferHandleRef(){return vertex_buffer_handle;}
+		bgfx::DynamicVertexBufferHandle& GetDynamicVertexBufferHandleRef() { return dynamic_vertex_buffer_handle; }
+		std::vector<bgfx::IndexBufferHandle>& GetIndexBufferHandleRef() { return index_buffer_handle; }
+		std::vector<bgfx::DynamicIndexBufferHandle>& GetDynamicIndexBufferHandleRef() { return dynamic_index_buffer_handle; }
+		bgfx::VertexLayout GetLayout()const { return layout; }
+
 
 		std::vector<glm::vec3> vertices;
 		std::vector<glm::vec2> uv;
@@ -75,12 +83,6 @@ namespace FireEngine
 		bgfx::VertexLayout layout;
 
 		bool dynamic;
-
-		friend void _processMesh(aiMesh* mesh, const aiScene* scene, uint32_t subMeshCount, std::shared_ptr<Mesh> myMesh);
-		friend void loadMesh(const char* path, std::shared_ptr<Mesh> mesh);
-
-
-
 	};
 }
 

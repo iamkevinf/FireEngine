@@ -9,6 +9,10 @@
 #include "filesystem/FileSystem.h"
 
 #include "graphics/mesh.h"
+#include "graphics/texture2d.h"
+#include "graphics/material.h"
+
+#include "math/math.h"
 
 
 namespace FireEngine
@@ -172,15 +176,35 @@ namespace FireEngine
 		return _loadShader(getFileReader(), name);
 	}
 
-	void _processMesh(aiMesh* mesh, const aiScene* scene, uint32_t subMeshCount, std::shared_ptr<Mesh> myMesh)
+	std::vector<std::shared_ptr<Texture2D>> loadMaterialTextures(aiString directory, aiMaterial* mat, aiTextureType type)
+	{
+		std::vector<std::shared_ptr<Texture2D>> textures;
+		for (unsigned int i = 0; i < mat->GetTextureCount(type); i++)
+		{
+			aiString str;
+			mat->GetTexture(type, i, &str);
+			aiString path;
+			path.Append(directory.C_Str());
+			path.Append("/");
+			path.Append(str.C_Str());
+			{
+				// if texture hasn't been loaded already, load it
+				std::shared_ptr<Texture2D> texture = Texture2D::LoadFromFile(path.C_Str());
+				if (texture)
+					textures.push_back(texture);
+			}
+		}
+		return textures;
+	}
+
+	void _processMesh(aiString directory, aiMesh* mesh, const aiScene* scene, uint32_t subMeshCount, std::shared_ptr<Mesh> myMesh, std::shared_ptr<Material> myMat)
 	{
 		auto offset = myMesh->vertices.size();
 		auto verticesNum = mesh->mNumVertices;
 
-		for (int i = 0; i < mesh->mNumVertices; ++i)
+		for (uint32_t i = 0; i < mesh->mNumVertices; ++i)
 		{
-			auto index = i;
-			if(mesh->HasPositions())
+			if (mesh->HasPositions())
 			{
 				auto tmp = mesh->mVertices[i];
 				myMesh->vertices.push_back({ tmp.x, tmp.y, tmp.z });
@@ -223,7 +247,7 @@ namespace FireEngine
 			}
 			else
 			{
-				myMesh->normals.push_back({ 0,0,0});
+				myMesh->normals.push_back({ 0,0,0 });
 
 			}
 
@@ -237,63 +261,92 @@ namespace FireEngine
 				myMesh->tangents.push_back({ 0,0,0,0 });
 			}
 
-			//if (mesh->HasBones())
-			//{
-			//	for (auto j = 0; j < mesh->mBones[i]->mNumWeights; ++j)
-			//	{
-			//		if (j <= 3)
-			//		{
-			//			auto tmp1x = mesh->mBones[i]->mWeights[0].mWeight;
-			//			auto tmp1y = mesh->mBones[i]->mWeights[1].mWeight;
-			//			auto tmp1z = mesh->mBones[i]->mWeights[2].mWeight;
-			//			auto tmp1w = mesh->mBones[i]->mWeights[3].mWeight;
+			if (mesh->HasBones())
+			{
+				glm::vec4 wights{};
+				glm::vec4 indices{};
 
-			//			auto tmp2x = mesh->mBones[i]->mWeights[0].mVertexId;
-			//			auto tmp2y = mesh->mBones[i]->mWeights[1].mVertexId;
-			//			auto tmp2z = mesh->mBones[i]->mWeights[2].mVertexId;
-			//			auto tmp2w = mesh->mBones[i]->mWeights[3].mVertexId;
+				int currentbone = 0;
+				for (uint32_t boneindex = 0; boneindex < mesh->mNumBones; boneindex++)
+				{
+					for (uint32_t weightindex = 0; weightindex < mesh->mBones[boneindex]->mNumWeights; weightindex++)
+					{
+						if (mesh->mBones[boneindex]->mWeights[weightindex].mVertexId == i)
+						{
+							float weight = mesh->mBones[boneindex]->mWeights[weightindex].mWeight;
+							if (currentbone == 4)
+							{
+								break;
+							}
 
+							wights[currentbone] = weight;
+							indices[currentbone] = (float)boneindex;
+							currentbone++;
+						}
+					}
+				}
 
-			//			myMesh->bone_weights.push_back({tmp1x, tmp1y, tmp1z, tmp1w });
-			//			myMesh->bone_indices.push_back({ tmp2x, tmp2y, tmp2z, tmp2w });
-			//		}
-			//	}
-			//}
-			//else
+				myMesh->bone_weights.push_back(wights);
+				myMesh->bone_indices.push_back(indices);
+			}
+			else
 			{
 				myMesh->bone_weights.push_back({ 0,0,0,0 });
 				myMesh->bone_indices.push_back({ 0,0,0,0 });
 			}
 
 		}
+
 		Mesh::SubMesh subMesh;
-		subMesh.start = myMesh->triangles.size();
-		for (auto i = 0; i < mesh->mNumFaces; i++)
+		subMesh.start = (uint32_t)myMesh->triangles.size();
+		for (uint32_t i = 0; i < mesh->mNumFaces; i++)
 		{
 			aiFace face = mesh->mFaces[i];
 			// retrieve all indices of the face and store them in the indices vector
 			for (unsigned int j = 0; j < face.mNumIndices; j++)
-				myMesh->triangles.push_back(offset + face.mIndices[j]);
+				myMesh->triangles.push_back((uint16_t)offset + face.mIndices[j]);
 		}
-		subMesh.count = myMesh->triangles.size() - subMesh.start;
+		subMesh.count = (uint32_t)myMesh->triangles.size() - subMesh.start;
 		myMesh->submeshes.push_back(subMesh);
+
+
+		aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
+		// 1. diffuse maps
+		auto diffuseMaps = loadMaterialTextures(directory, material, aiTextureType_DIFFUSE);
+		auto uniformsize = myMat->GetShader()->pass.uniforms.size();
+
+		auto texture_index = 0;
+		for (auto uniform_index = 0; uniform_index < uniformsize; ++uniform_index)
+		{
+			auto uniform = myMat->GetShader()->pass.uniforms[uniform_index];
+			if (uniform.type == bgfx::UniformType::Sampler)
+			{
+				if (texture_index == diffuseMaps.size())
+					break;
+				myMat->SetTexture(uniform.name, diffuseMaps[texture_index]);
+				texture_index++;
+			}
+
+		}
 	}
 
-	void _processNode(aiNode* node, const aiScene* scene, uint32_t childrenIdx, std::shared_ptr<Mesh> myMesh)
+	void _processNode(aiString directory, aiNode* node, const aiScene* scene, uint32_t childrenIdx, std::shared_ptr<Mesh> myMesh, std::vector<std::shared_ptr<Material>>& myMats)
 	{
-		for (auto i = 0; i < node->mNumMeshes; ++i)
+		for (uint32_t i = 0; i < node->mNumMeshes; ++i)
 		{
 			aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-			_processMesh(mesh, scene, childrenIdx + i, myMesh);
+			auto myMat = Material::Create("Default-Material");
+			_processMesh(directory, mesh, scene, childrenIdx + i, myMesh, myMat);
+			myMats.push_back(myMat);
 		}
 
-		for (auto i = 0; i < node->mNumChildren; ++i)
+		for (uint32_t i = 0; i < node->mNumChildren; ++i)
 		{
-			_processNode(node->mChildren[i], scene, childrenIdx + i, myMesh);
+			_processNode(directory, node->mChildren[i], scene, childrenIdx + i, myMesh, myMats);
 		}
 	}
 
-	void loadMesh(const char* path, std::shared_ptr<Mesh> mesh)
+	void loadMesh(const char* path, std::shared_ptr<Mesh> mesh, std::vector<std::shared_ptr<Material>>& mats)
 	{
 		Assimp::Importer importer;
 		const aiScene* scene = importer.ReadFile(path,
@@ -321,31 +374,31 @@ namespace FireEngine
 
 		std::string strPath(path);
 		std::string directory = strPath.substr(0, strPath.find_last_of('/'));
-		_processNode(scene->mRootNode, scene, 0, mesh);
+		_processNode(aiString(directory.c_str()), scene->mRootNode, scene, 0, mesh, mats);
 
 		mesh->Tick();
 
 		const bgfx::Memory* vertexData = bgfx::makeRef
 		(
-			mesh->vertex_buffer->GetLocalBuffer()->Bytes(),
-			mesh->vertex_buffer->GetSize()
+			mesh->GetVertexBuffer()->GetLocalBuffer()->Bytes(),
+			mesh->GetVertexBuffer()->GetSize()
 		);
 
-		if (mesh->dynamic)
+		if (mesh->IsDynamic())
 		{
-			mesh->dynamic_vertex_buffer_handle = bgfx::createDynamicVertexBuffer
+			mesh->GetDynamicVertexBufferHandleRef() = bgfx::createDynamicVertexBuffer
 			(
 				vertexData,
-				mesh->layout
+				mesh->GetLayout()
 			);
 		}
 		else
 		{
 
-			mesh->vertex_buffer_handle = bgfx::createVertexBuffer
+			mesh->GetVertexBufferHandleRef() = bgfx::createVertexBuffer
 			(
 				vertexData,
-				mesh->layout
+				mesh->GetLayout()
 			);
 		}
 
@@ -355,21 +408,21 @@ namespace FireEngine
 
 			const bgfx::Memory* indexData = bgfx::makeRef
 			(
-				mesh->index_buffer->GetLocalBuffer()->Bytes()
+				mesh->GetIndexBuffer()->GetLocalBuffer()->Bytes()
 				+ subMesh.start * sizeof(uint16_t),
 				subMesh.count * sizeof(uint16_t)
 			);
 
-			if (mesh->dynamic)
+			if (mesh->IsDynamic())
 			{
-				mesh->dynamic_index_buffer_handle.push_back
+				mesh->GetDynamicIndexBufferHandleRef().push_back
 				(
 					bgfx::createDynamicIndexBuffer(indexData)
 				);
 			}
 			else
 			{
-				mesh->index_buffer_handle.push_back
+				mesh->GetIndexBufferHandleRef().push_back
 				(
 					bgfx::createIndexBuffer(indexData)
 				);

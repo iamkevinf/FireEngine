@@ -21,5 +21,5 @@ void main()
 	vec4 color2 = texture2D(s_texColor2, v_texcoord0);
     vec4 tmp = color * color2;
 
-    gl_FragColor = vec4(tmp.xyzw);// * (ambient + diffuse), 1.0);
+    gl_FragColor = vec4(color.xyzw);// * (ambient + diffuse), 1.0);
 }

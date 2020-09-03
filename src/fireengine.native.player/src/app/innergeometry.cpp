@@ -131,34 +131,17 @@ namespace FireEngine
 		ms.Write<Mesh::SubMesh>({ 36, 36 });
 		ms.Close();
 
+		std::vector<std::shared_ptr<Material>> mats;
+
 		//auto mesh = Mesh::LoadFromMem(buffer, false);
 		auto mesh = Mesh::Create();
-		//loadMesh("mesh/Human.fbx", mesh);
-		//loadMesh("mesh/untitled.obj", mesh);
-		loadMesh("mesh/nanosuit/nanosuit.obj", mesh);
-		//loadMesh("mesh/cube/cube.obj", mesh);
+		//loadMesh("mesh/Human.fbx", mesh, mats, mats);
+		//loadMesh("mesh/untitled.obj", mesh, mats);
+		loadMesh("mesh/nanosuit/nanosuit.obj", mesh, mats);
+		//loadMesh("mesh/cube/cube.obj", mesh, mats);
 
 		meshRenderer->SetSharedMesh(mesh);
-
-		size_t size = mesh->submeshes.size();
-		if (size == 0)
-			size = 1;
-		std::vector<std::shared_ptr<Material>> mats(size);
-		for (int i = 0; i < mats.size(); ++i)
-		{
-			mats[i] = Material::Create("Default-Material");
-
-			//mats[i]->SetVector("u_time", {Time::GetDeltaTime(), 0, 0, 0});
-			auto s_tex = Texture2D::LoadFromFile("textures/fieldstone-rgba.dds");
-			if (s_tex)
-				mats[i]->SetTexture("s_texColor", s_tex);
-			auto s_tex2 = Texture2D::LoadFromFile("mesh/nanosuit/arm_dif.png");
-			if (s_tex2)
-				mats[i]->SetTexture("s_texColor2", s_tex2);
-		}
 		meshRenderer->SetSharedMaterials(mats);
-
-		std::shared_ptr<Texture2D> s_tex;
 
 		return gameObject.get();
 	}
