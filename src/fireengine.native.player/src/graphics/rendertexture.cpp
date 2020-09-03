@@ -16,6 +16,15 @@ namespace FireEngine
 
 	}
 
+	void RenderTexture::SelfFini()
+	{
+		if (bgfx::isValid(texture_handle))
+		{
+			bgfx::destroy(texture_handle);
+			texture_handle = BGFX_INVALID_HANDLE;
+		}
+	}
+
 
 	std::shared_ptr<RenderTexture> RenderTexture::GetTemporary(uint32_t width, uint32_t height,
 		RenderTextureFormat format, DepthBuffer depth, FilterMode filter_mode)

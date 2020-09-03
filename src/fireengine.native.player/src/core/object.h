@@ -130,8 +130,6 @@ namespace FireEngine
 		static ObjectPtr GetRef(uint16_t objectId);
 		static ObjectPtr Get(ObjectHandle handle);
 		static TransformPtr Get(TransformHandle handle);
-
-
 	public:
 		static std::map<uint16_t, ObjectWeakPtr> objPool;
 		static uint16_t s_cur;

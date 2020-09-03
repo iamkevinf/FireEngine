@@ -84,6 +84,10 @@ namespace FireEngine
 
 	Camera::~Camera()
 	{
+		if (frame_buffer)
+		{
+			frame_buffer->Fini();
+		}
 	}
 
 	void Camera::SetCullingMask(uint32_t mask)

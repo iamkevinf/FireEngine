@@ -918,8 +918,8 @@ int WindowMain(const char16_t* title, void(*OnInit)(), void(*OnGUI)(), void(*OnT
     }
 
     FireEngine::GameView::OnExit();
-    PlatformFinalize();
     OnExit();
+    PlatformFinalize();
 
     ::DestroyWindow(hwnd);
     ::UnregisterClass(wc.lpszClassName, wc.hInstance);

@@ -22,6 +22,7 @@ namespace FireEngine
 		static std::shared_ptr<Mesh> Create(bool dynamic = false);
 		static std::shared_ptr<Mesh> LoadFromMem(ByteBuffer data, bool dynamic = false);
 
+		virtual ~Mesh();
 		void Tick();
 
 		const std::shared_ptr<VertexBuffer>& GetVertexBuffer()const { return vertex_buffer; }

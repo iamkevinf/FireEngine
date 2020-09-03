@@ -33,6 +33,12 @@ namespace FireEngine
 
 	RenderPass::~RenderPass()
 	{
+		if (bgfx::isValid(frame_buffer_handle))
+		{
+			bgfx::destroy(frame_buffer_handle);
+			frame_buffer_handle = BGFX_INVALID_HANDLE;
+		}
+		frame_buffer.Fini();
 	}
 
 	static bgfx::ViewId s_viewId = -1;

@@ -11,6 +11,7 @@ namespace FireEngine
 	class Texture : public IObject
 	{
 	public:
+		virtual ~Texture();
 		uint32_t GetWidth()const { return width; }
 		uint32_t GetHeight()const { return height; }
 		TextureWrapMode GetWrapMode() const { return wrap_mode; }

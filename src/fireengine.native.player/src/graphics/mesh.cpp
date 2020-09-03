@@ -156,6 +156,36 @@ namespace FireEngine
 		return mesh;
 	}
 
+	Mesh::~Mesh()
+	{
+		if (bgfx::isValid(vertex_buffer_handle))
+		{
+			bgfx::destroy(vertex_buffer_handle);
+			vertex_buffer_handle = BGFX_INVALID_HANDLE;
+		}
+		if (bgfx::isValid(dynamic_vertex_buffer_handle))
+		{
+			bgfx::destroy(dynamic_vertex_buffer_handle);
+			dynamic_vertex_buffer_handle = BGFX_INVALID_HANDLE;
+		}
+		for (auto& ele : index_buffer_handle)
+		{
+			if (bgfx::isValid(ele))
+			{
+				bgfx::destroy(ele);
+				ele = BGFX_INVALID_HANDLE;
+			}
+		}
+		for (auto& ele : dynamic_index_buffer_handle)
+		{
+			if (bgfx::isValid(ele))
+			{
+				bgfx::destroy(ele);
+				ele = BGFX_INVALID_HANDLE;
+			}
+		}
+	}
+
 	void Mesh::Tick()
 	{
 		UpdateVertexBuffer();

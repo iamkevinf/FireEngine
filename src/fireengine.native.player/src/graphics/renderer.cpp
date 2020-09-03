@@ -296,6 +296,15 @@ namespace FireEngine
 	Renderer::~Renderer()
 	{
 		SetRenderersDirty(true);
+		for (auto& mat : shared_materials)
+		{
+			if (bgfx::isValid(mat->GetShader()->pass.program))
+			{
+				bgfx::destroy(mat->GetShader()->pass.program);
+				mat->GetShader()->pass.program = BGFX_INVALID_HANDLE;
+			}
+		}
+		shared_materials.clear();
 	}
 
 	void Renderer::Start()

@@ -27,6 +27,7 @@ namespace FireEngine
 	class Shader : public IObject
 	{
 	public:
+		virtual ~Shader();
 		static std::shared_ptr<Shader> Create(const std::string& shadername);
 
 		bgfx::ShaderHandle vs;

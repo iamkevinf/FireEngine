@@ -10,6 +10,15 @@
 
 namespace FireEngine
 {
+	Texture::~Texture()
+	{
+		if (bgfx::isValid(texture_handle))
+		{
+			bgfx::destroy(texture_handle);
+			texture_handle = BGFX_INVALID_HANDLE;
+		}
+	}
+
 	void Texture::UpdateSampler()
 	{
 	}

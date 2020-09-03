@@ -44,4 +44,13 @@ namespace FireEngine
 
 		return shader;
 	}
+
+	Shader::~Shader()
+	{
+		//if (bgfx::isValid(pass.program))
+		//{
+		//	bgfx::destroy(pass.program);
+		//	pass.program = BGFX_INVALID_HANDLE;
+		//}
+	}
 }
