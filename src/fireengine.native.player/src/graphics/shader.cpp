@@ -1,5 +1,6 @@
 #include "shader.h"
 #include "loader/loader.h"
+#include "renderstate.h"
 
 namespace FireEngine
 {
@@ -24,6 +25,7 @@ namespace FireEngine
 		shader->name = shadername;
 		shader->pass.name = shadername;
 		shader->pass.program = bgfx::createProgram(shader->vs, shader->ps, true);
+		shader->pass.rs = RenderState::defaultRenderState;
 
 		bgfx::UniformHandle handlearray[256];
 		int countVS = bgfx::getShaderUniforms(shader->vs, handlearray, 256);

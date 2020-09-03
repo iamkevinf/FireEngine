@@ -274,17 +274,8 @@ namespace FireEngine
 			if (old_id == -1 || old_id != mat_id)
 				mat->UpdateUniforms(0);
 
-			uint64_t state = 0 \
-				| BGFX_STATE_WRITE_RGB 
-				| BGFX_STATE_WRITE_A 
-				| BGFX_STATE_WRITE_Z 
-				| BGFX_STATE_DEPTH_TEST_LESS 
-				| BGFX_STATE_CULL_CCW 
-				| BGFX_STATE_MSAA;
-
-
 			// Set render states.
-			bgfx::setState(state);
+			bgfx::setState(mat->GetShader()->pass.rs.GetState());
 
 			// Submit primitive for rendering to view 0.
 			bgfx::submit(viewId, mat->GetShader()->pass.program);

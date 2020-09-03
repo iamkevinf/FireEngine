@@ -42,6 +42,7 @@
     <ClCompile Include="src\graphics\meshrenderer.cpp" />
     <ClCompile Include="src\graphics\renderer.cpp" />
     <ClCompile Include="src\graphics\renderpass.cpp" />
+    <ClCompile Include="src\graphics\renderstate.cpp" />
     <ClCompile Include="src\graphics\rendertexture.cpp" />
     <ClCompile Include="src\graphics\shader.cpp" />
     <ClCompile Include="src\graphics\texture.cpp" />
@@ -92,6 +93,7 @@
     <ClInclude Include="src\graphics\meshrenderer.h" />
     <ClInclude Include="src\graphics\renderer.h" />
     <ClInclude Include="src\graphics\renderpass.h" />
+    <ClInclude Include="src\graphics\renderstate.h" />
     <ClInclude Include="src\graphics\rendertexture.h" />
     <ClInclude Include="src\graphics\rendertextureformat.h" />
     <ClInclude Include="src\graphics\shader.h" />

@@ -2,6 +2,7 @@
 #define __SHADER_H__
 
 #include "core/object.h"
+#include "renderstate.h"
 
 #include <bgfx/bgfx.h>
 
@@ -20,6 +21,7 @@ namespace FireEngine
 		std::string name;
 		bgfx::ProgramHandle program;
 		std::vector<Uniform> uniforms;
+		RenderState rs;
 	};
 
 	class Shader : public IObject
@@ -29,7 +31,6 @@ namespace FireEngine
 
 		bgfx::ShaderHandle vs;
 		bgfx::ShaderHandle ps;
-		//bgfx::ProgramHandle program;
 
 		// 暂时先只支持一个pass
 		ShaderPass pass;
