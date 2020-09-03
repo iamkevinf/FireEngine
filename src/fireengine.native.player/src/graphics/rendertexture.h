@@ -25,7 +25,6 @@ namespace FireEngine
 
 		RenderTextureFormat GetFormat()const { return format; }
 		DepthBuffer GetDepth() const { return depth; }
-		bgfx::TextureHandle GetTextureHandle()const { return texture_handle; }
 
 	protected:
 		void SetFormat(RenderTextureFormat format) { this->format = format; }
@@ -46,7 +45,6 @@ namespace FireEngine
 
 		DepthBuffer depth;
 		RenderTextureFormat format;
-		bgfx::TextureHandle texture_handle;
 	};
 }
 

@@ -45,6 +45,7 @@
     <ClCompile Include="src\graphics\rendertexture.cpp" />
     <ClCompile Include="src\graphics\shader.cpp" />
     <ClCompile Include="src\graphics\texture.cpp" />
+    <ClCompile Include="src\graphics\texture2d.cpp" />
     <ClCompile Include="src\graphics\vertexattribute.h" />
     <ClCompile Include="src\graphics\vertexbuffer.cpp" />
     <ClCompile Include="src\imgui\ImCurveEdit.cpp" />
@@ -95,6 +96,7 @@
     <ClInclude Include="src\graphics\rendertextureformat.h" />
     <ClInclude Include="src\graphics\shader.h" />
     <ClInclude Include="src\graphics\texture.h" />
+    <ClInclude Include="src\graphics\texture2d.h" />
     <ClInclude Include="src\graphics\texturewrapmode.h" />
     <ClInclude Include="src\graphics\vertexbuffer.h" />
     <ClInclude Include="src\imgui\ImCurveEdit.h" />

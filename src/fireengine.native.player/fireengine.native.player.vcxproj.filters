@@ -177,6 +177,9 @@
     <ClCompile Include="src\math\quaternion.cpp">
       <Filter>math</Filter>
     </ClCompile>
+    <ClCompile Include="src\graphics\texture2d.cpp">
+      <Filter>graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\imgui\imgui_utils.h">
@@ -323,6 +326,9 @@
     </ClInclude>
     <ClInclude Include="src\math\rect.hpp">
       <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\texture2d.h">
+      <Filter>graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

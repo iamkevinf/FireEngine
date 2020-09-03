@@ -3,6 +3,8 @@
 #include "rendertexture.h"
 #include "rendertextureformat.h"
 
+#include "texture2d.h"
+
 #include <bgfx/bgfx.h>
 #include <imgui.h>
 

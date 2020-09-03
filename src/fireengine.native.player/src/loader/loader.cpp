@@ -20,7 +20,7 @@ namespace FireEngine
 		bimg::imageFree(imageContainer);
 	}
 
-	bgfx::TextureHandle _loadTexture(bx::FileReaderI* _reader, const char* _filePath, uint64_t _flags, uint8_t _skip, bgfx::TextureInfo* _info, bimg::Orientation::Enum* _orientation)
+	bgfx::TextureHandle _loadTexture(bx::FileReaderI* _reader, const char* _filePath, uint64_t _flags, uint8_t _skip, bgfx::TextureInfo* _info, bimg::Orientation::Enum* _orientation, ByteBuffer* pOutMem)
 	{
 		BX_UNUSED(_skip);
 		bgfx::TextureHandle handle = BGFX_INVALID_HANDLE;
@@ -44,6 +44,10 @@ namespace FireEngine
 					, imageReleaseCb
 					, imageContainer
 				);
+
+				if (pOutMem != NULL)
+					pOutMem->ReSet(mem->size, mem->data);
+
 				FileSystem::getInstance()->unload(data);
 
 				if (imageContainer->m_cubeMap)
@@ -107,9 +111,9 @@ namespace FireEngine
 	}
 
 
-	bgfx::TextureHandle loadTexture(const char* _name, uint64_t _flags, uint8_t _skip, bgfx::TextureInfo* _info, bimg::Orientation::Enum* _orientation)
+	bgfx::TextureHandle loadTexture(const char* _name, uint64_t _flags, uint8_t _skip, bgfx::TextureInfo* _info, bimg::Orientation::Enum* _orientation, ByteBuffer* mem)
 	{
-		return _loadTexture(getFileReader(), _name, _flags, _skip, _info, _orientation);
+		return _loadTexture(getFileReader(), _name, _flags, _skip, _info, _orientation, mem);
 	}
 
 	static const bgfx::Memory* loadMem(bx::FileReaderI* _reader, const char* _filePath)
@@ -233,29 +237,29 @@ namespace FireEngine
 				myMesh->tangents.push_back({ 0,0,0,0 });
 			}
 
-			if (mesh->HasBones())
-			{
-				for (auto j = 0; j < mesh->mBones[i]->mNumWeights; ++j)
-				{
-					if (j <= 3)
-					{
-						auto tmp1x = mesh->mBones[i]->mWeights[0].mWeight;
-						auto tmp1y = mesh->mBones[i]->mWeights[1].mWeight;
-						auto tmp1z = mesh->mBones[i]->mWeights[2].mWeight;
-						auto tmp1w = mesh->mBones[i]->mWeights[3].mWeight;
+			//if (mesh->HasBones())
+			//{
+			//	for (auto j = 0; j < mesh->mBones[i]->mNumWeights; ++j)
+			//	{
+			//		if (j <= 3)
+			//		{
+			//			auto tmp1x = mesh->mBones[i]->mWeights[0].mWeight;
+			//			auto tmp1y = mesh->mBones[i]->mWeights[1].mWeight;
+			//			auto tmp1z = mesh->mBones[i]->mWeights[2].mWeight;
+			//			auto tmp1w = mesh->mBones[i]->mWeights[3].mWeight;
 
-						auto tmp2x = mesh->mBones[i]->mWeights[0].mVertexId;
-						auto tmp2y = mesh->mBones[i]->mWeights[1].mVertexId;
-						auto tmp2z = mesh->mBones[i]->mWeights[2].mVertexId;
-						auto tmp2w = mesh->mBones[i]->mWeights[3].mVertexId;
+			//			auto tmp2x = mesh->mBones[i]->mWeights[0].mVertexId;
+			//			auto tmp2y = mesh->mBones[i]->mWeights[1].mVertexId;
+			//			auto tmp2z = mesh->mBones[i]->mWeights[2].mVertexId;
+			//			auto tmp2w = mesh->mBones[i]->mWeights[3].mVertexId;
 
 
-						myMesh->bone_weights.push_back({tmp1x, tmp1y, tmp1z, tmp1w });
-						myMesh->bone_indices.push_back({ tmp2x, tmp2y, tmp2z, tmp2w });
-					}
-				}
-			}
-			else
+			//			myMesh->bone_weights.push_back({tmp1x, tmp1y, tmp1z, tmp1w });
+			//			myMesh->bone_indices.push_back({ tmp2x, tmp2y, tmp2z, tmp2w });
+			//		}
+			//	}
+			//}
+			//else
 			{
 				myMesh->bone_weights.push_back({ 0,0,0,0 });
 				myMesh->bone_indices.push_back({ 0,0,0,0 });

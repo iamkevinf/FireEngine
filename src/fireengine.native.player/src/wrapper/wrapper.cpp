@@ -22,9 +22,9 @@ namespace FireEngine
 		return SetWindowTitle(title);
 	}
 
-	bgfx::TextureHandle feLoadTexture(const char* _name, uint64_t _flags, uint8_t _skip, bgfx::TextureInfo* _info, bimg::Orientation::Enum* _orientation)
+	bgfx::TextureHandle feLoadTexture(const char* _name, uint64_t _flags, uint8_t _skip, bgfx::TextureInfo* _info, bimg::Orientation::Enum* _orientation, ByteBuffer* mem)
 	{
-		return loadTexture(_name, _flags, _skip, _info, _orientation);
+		return loadTexture(_name, _flags, _skip, _info, _orientation, mem);
 	}
 
 	bgfx::ShaderHandle feLoadShader(const char* name)

@@ -1,5 +1,6 @@
 #include "renderer.h"
 #include "material.h"
+#include "texture2d.h"
 
 #include <debugdraw/debugdraw.h>
 
@@ -224,28 +225,12 @@ namespace FireEngine
 
 	void Renderer::RenderAllPass()
 	{
-
 		auto cam = Camera::Main();
 		auto& passes = s_passes[cam].list;
 
 
 		for (auto& pass : passes)
 		{
-			auto& first = pass.front();
-			auto& shader = first.renderer->GetSharedMaterials()[first.material_index]->GetShader();
-
-			int old_id = -1;
-			for (auto& i : pass)
-			{
-				auto& mat = i.renderer->GetSharedMaterials()[i.material_index];
-				auto mat_id = mat->objectID;
-
-				if (old_id == -1 || old_id != mat_id)
-				{
-					mat->UpdateUniforms(0);
-				}
-			}
-
 			Renderer::CommitPass(cam, pass);
 		}
 
@@ -261,6 +246,8 @@ namespace FireEngine
 		glm::mat4 view = cam->GetViewMatrix();
 		glm::mat4 proj = cam->GetProjectionMatrix();
 		bgfx::setViewTransform(viewId, &view, &proj);
+
+		int old_id = -1;
 
 		for (auto& ele : pass)
 		{
@@ -283,6 +270,10 @@ namespace FireEngine
 				bgfx::setIndexBuffer(ele.renderer->GetIndexBufferHandle(ele.material_index));
 			}
 
+			auto mat_id = mat->objectID;
+			if (old_id == -1 || old_id != mat_id)
+				mat->UpdateUniforms(0);
+
 			uint64_t state = BGFX_STATE_DEFAULT;
 
 			// Set render states.
@@ -290,8 +281,6 @@ namespace FireEngine
 
 			// Submit primitive for rendering to view 0.
 			bgfx::submit(viewId, mat->GetShader()->pass.program);
-
-			//mat->SetVector("u_time", {Time::GetDeltaTime(), 0, 0, 0});
 		}
 
 		DebugDrawEncoder dde;

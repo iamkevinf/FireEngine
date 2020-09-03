@@ -21,6 +21,7 @@ namespace FireEngine
 		uint8_t& operator[](int index);
 		const uint8_t& operator[](int index)const;
 
+		void ReSet(int size, uint8_t* bytes) { this->size = size; this->bytes = bytes; }
 	private:
 		void Free();
 

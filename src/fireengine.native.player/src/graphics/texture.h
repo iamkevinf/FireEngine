@@ -19,8 +19,9 @@ namespace FireEngine
 		void SetFilterMode(FilterMode mode) { filter_mode = mode; }
 		void UpdateSampler();
 
-	protected:
+		bgfx::TextureHandle GetTextureHandle()const { return texture_handle; }
 
+	protected:
 		bgfx::TextureHandle CreateColorRenderTexture();
 		bgfx::TextureHandle CreateDepthRenderTexture();
 
@@ -33,6 +34,7 @@ namespace FireEngine
 		TextureWrapMode wrap_mode;
 		FilterMode filter_mode;
 		bgfx::TextureFormat::Enum format;
+		bgfx::TextureHandle texture_handle;
 	};
 }
 

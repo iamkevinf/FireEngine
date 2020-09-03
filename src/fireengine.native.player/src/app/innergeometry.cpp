@@ -6,6 +6,7 @@
 
 #include "graphics/material.h"
 #include "graphics/meshrenderer.h"
+#include "graphics/texture2d.h"
 
 #include "loader/loader.h"
 
@@ -143,9 +144,21 @@ namespace FireEngine
 		if (size == 0)
 			size = 1;
 		std::vector<std::shared_ptr<Material>> mats(size);
-		for(int i = 0; i < mats.size(); ++i)
+		for (int i = 0; i < mats.size(); ++i)
+		{
 			mats[i] = Material::Create("Default-Material");
+
+			//mats[i]->SetVector("u_time", {Time::GetDeltaTime(), 0, 0, 0});
+			auto s_tex = Texture2D::LoadFromFile("textures/fieldstone-rgba.dds");
+			if (s_tex)
+				mats[i]->SetTexture("s_texColor", s_tex);
+			auto s_tex2 = Texture2D::LoadFromFile("mesh/nanosuit/arm_dif.png");
+			if (s_tex2)
+				mats[i]->SetTexture("s_texColor2", s_tex2);
+		}
 		meshRenderer->SetSharedMaterials(mats);
+
+		std::shared_ptr<Texture2D> s_tex;
 
 		return gameObject.get();
 	}
