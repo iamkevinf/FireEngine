@@ -30,6 +30,7 @@ namespace FireEngine.Editor
             unsafe
             {
                 FireEngineNative.SetIMAssertHacker(OnIMGUIAsset);
+                FireEngineNative.SetOnEngineLogHacker(OnLogEngine);
             }
         }
 
@@ -38,6 +39,15 @@ namespace FireEngine.Editor
             LogNode node;
             node.level = LogLevel.Log;
             node.str = string.Format("IMGuiLog: (file:{0}, line:{1}): {2}",
+                new string(filename), line, new string(expr));
+
+            logs.Add(node);
+        }
+        unsafe void OnLogEngine(char* expr, char* filename, int line, int level)
+        {
+            LogNode node;
+            node.level = (LogLevel)level;
+            node.str = string.Format("(file:{0}, line:{1}): {2}",
                 new string(filename), line, new string(expr));
 
             logs.Add(node);

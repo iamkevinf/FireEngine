@@ -77,7 +77,7 @@ namespace FireEngine
 	void Transform::SetLocalRotation(const glm::quat& rotation)
 	{
 		glm::quat r = rotation;
-		glm::normalize(r);
+		r = glm::normalize(r);
 
 		if (local_rotation != r)
 		{

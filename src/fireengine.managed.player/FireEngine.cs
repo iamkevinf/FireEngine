@@ -44,5 +44,10 @@ namespace FireEngine
             igSetIMAssertHacker(callback);
         }
 
+        public static void SetOnEngineLogHacker(LogHacker callback)
+        {
+            feSetOnLogHacker(callback);
+        }
+
     }
 }

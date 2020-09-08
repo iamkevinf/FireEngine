@@ -3,6 +3,7 @@
 #include "core/gameobject.h"
 
 #include "io/memorystream.h"
+#include "io/parseshader.h"
 
 #include "graphics/material.h"
 #include "graphics/meshrenderer.h"

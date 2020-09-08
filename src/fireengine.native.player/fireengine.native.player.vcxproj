@@ -58,12 +58,15 @@
     <ClCompile Include="src\imgui\imgui_wrapper.cpp" />
     <ClCompile Include="src\imgui\ImSequencer.cpp" />
     <ClCompile Include="src\io\memorystream.cpp" />
+    <ClCompile Include="src\io\parseshader.cpp" />
     <ClCompile Include="src\io\stream.cpp" />
     <ClCompile Include="src\loader\loader.cpp" />
     <ClCompile Include="src\math\quaternion.cpp" />
     <ClCompile Include="src\scene\scene.cpp" />
     <ClCompile Include="src\utils\bytebuffer.cpp" />
+    <ClCompile Include="src\utils\log.cpp" />
     <ClCompile Include="src\utils\messagehandler.cpp" />
+    <ClCompile Include="src\utils\string_tool.cpp" />
     <ClCompile Include="src\utils\time.cpp" />
     <ClCompile Include="src\wrapper\wrapper.cpp" />
   </ItemGroup>
@@ -110,13 +113,16 @@
     <ClInclude Include="src\imgui\imgui_wrapper.h" />
     <ClInclude Include="src\imgui\ImSequencer.h" />
     <ClInclude Include="src\io\memorystream.h" />
+    <ClInclude Include="src\io\parseshader.h" />
     <ClInclude Include="src\io\stream.h" />
     <ClInclude Include="src\loader\loader.h" />
     <ClInclude Include="src\math\math.h" />
     <ClInclude Include="src\math\rect.hpp" />
     <ClInclude Include="src\scene\scene.h" />
     <ClInclude Include="src\utils\bytebuffer.h" />
+    <ClInclude Include="src\utils\log.h" />
     <ClInclude Include="src\utils\messagehandler.h" />
+    <ClInclude Include="src\utils\string_tool.h" />
     <ClInclude Include="src\utils\time.h" />
     <ClInclude Include="src\wrapper\wrapper.h" />
   </ItemGroup>

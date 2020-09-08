@@ -53,11 +53,11 @@ namespace FireEngine
 	private:
 		FileSystem();
 		virtual ~FileSystem();
-
 	public:
-		static void* load(bx::FileReaderI* _reader, bx::AllocatorI* _allocator, const char* _filePath, uint32_t* _size);
-		static void* load(const char* _filePath, uint32_t* _size = NULL);
-		static void unload(void* _ptr);
+
+		void* load(bx::FileReaderI* _reader, bx::AllocatorI* _allocator, const char* _filePath, uint32_t* _size);
+		void* load(const char* _filePath, uint32_t* _size = NULL);
+		void unload(void* _ptr);
 
 		static FileSystem* getInstance();
 

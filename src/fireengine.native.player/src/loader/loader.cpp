@@ -137,7 +137,7 @@ namespace FireEngine
 	}
 
 
-	bgfx::ShaderHandle _loadShader(bx::FileReaderI* _reader, const char* _name)
+	bgfx::ShaderHandle _loadShader(bx::FileReaderI* _reader, const char* prefix, const char* _name)
 	{
 		char filePath[512];
 
@@ -161,7 +161,8 @@ namespace FireEngine
 			break;
 		}
 
-		bx::strCopy(filePath, BX_COUNTOF(filePath), shaderPath);
+		bx::strCopy(filePath, BX_COUNTOF(filePath), prefix);
+		bx::strCat(filePath, BX_COUNTOF(filePath), shaderPath);
 		bx::strCat(filePath, BX_COUNTOF(filePath), _name);
 		bx::strCat(filePath, BX_COUNTOF(filePath), ".bin");
 
@@ -171,9 +172,9 @@ namespace FireEngine
 		return handle;
 	}
 
-	bgfx::ShaderHandle loadShader(const char* name)
+	bgfx::ShaderHandle loadShader(const char* name, const char* prefix)
 	{
-		return _loadShader(getFileReader(), name);
+		return _loadShader(getFileReader(), prefix, name);
 	}
 
 	std::vector<std::shared_ptr<Texture2D>> loadMaterialTextures(aiString directory, aiMaterial* mat, aiTextureType type)
@@ -335,7 +336,7 @@ namespace FireEngine
 		for (uint32_t i = 0; i < node->mNumMeshes; ++i)
 		{
 			aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-			auto myMat = Material::Create("Default-Material");
+			auto myMat = Material::Create("default-mat.mat");
 			_processMesh(directory, mesh, scene, childrenIdx + i, myMesh, myMat);
 			myMats.push_back(myMat);
 		}

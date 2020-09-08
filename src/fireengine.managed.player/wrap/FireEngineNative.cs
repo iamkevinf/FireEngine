@@ -14,10 +14,14 @@ namespace FireEngine
 
 
         public unsafe delegate void delegateIMAssertHacker(char* _expr, char* filename, int line);
+        public unsafe delegate void LogHacker(char* _expr, char* filename, int line, int level);
 
         [DllImport(FireEngineDllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         public static extern void igSetIMAssertHacker(delegateIMAssertHacker callback);
         [DllImport(FireEngineDllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         public static extern void febgfxSetDebug(UInt32 debug, bool debugGame);
+        [DllImport(FireEngineDllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+        public static extern void feSetOnLogHacker(LogHacker callback);
+
     }
 }

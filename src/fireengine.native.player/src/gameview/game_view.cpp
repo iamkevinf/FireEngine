@@ -31,6 +31,7 @@ namespace FireEngine
 		IM_ASSERT(World::Init() && "World Init Error");
 
 		ddInit();
+
 	}
 
 	void GameView::OnGui()

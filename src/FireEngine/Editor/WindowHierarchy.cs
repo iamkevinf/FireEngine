@@ -52,7 +52,7 @@ namespace FireEngine.Editor
 
             var root = SceneNative.SceneGetRoot(handle);
 
-            System.Threading.Tasks.Task.Delay(10).ContinueWith(
+            System.Threading.Tasks.Task.Delay(100).ContinueWith(
                 t => OnDelayCallCreateComponent(root));
         }
 

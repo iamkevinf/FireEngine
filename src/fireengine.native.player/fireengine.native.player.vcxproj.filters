@@ -183,6 +183,15 @@
     <ClCompile Include="src\graphics\renderstate.cpp">
       <Filter>graphics</Filter>
     </ClCompile>
+    <ClCompile Include="src\io\parseshader.cpp">
+      <Filter>io</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\log.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\string_tool.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\imgui\imgui_utils.h">
@@ -335,6 +344,15 @@
     </ClInclude>
     <ClInclude Include="src\graphics\renderstate.h">
       <Filter>graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\io\parseshader.h">
+      <Filter>io</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\log.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\string_tool.h">
+      <Filter>utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

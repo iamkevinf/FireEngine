@@ -68,11 +68,11 @@ namespace FireEngine
 		glm::mat4 world_to_local_matrix = glm::identity<glm::mat4>();
 
 		glm::vec3  local_position = glm::vec3(0, 0, 0);
-		glm::quat  local_rotation = glm::quat(0, 0, 0, 1);
+		glm::quat  local_rotation = glm::quat(1, 0, 0, 0);
 		glm::vec3  local_scale = glm::vec3(1, 1, 1);
 
 		glm::vec3 world_position = glm::vec3(0, 0, 0);
-		glm::quat world_rotation = glm::quat(0, 0, 0, 1);
+		glm::quat world_rotation = glm::quat(1, 0, 0, 0);
 		glm::vec3 world_scale = glm::vec3(1, 1, 1);
 
 		bool delty = true;

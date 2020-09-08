@@ -27,9 +27,9 @@ namespace FireEngine
 		return loadTexture(_name, _flags, _skip, _info, _orientation, mem);
 	}
 
-	bgfx::ShaderHandle feLoadShader(const char* name)
+	bgfx::ShaderHandle feLoadShader(const char* name, const char* prefix)
 	{
-		return loadShader(name);
+		return loadShader(name, prefix);
 	}
 
 

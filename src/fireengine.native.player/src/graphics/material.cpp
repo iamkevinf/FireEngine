@@ -1,11 +1,26 @@
 #include "material.h"
 #include "texture2d.h"
 
+#include "filesystem/FileSystem.h"
+
 namespace FireEngine
 {
-	std::shared_ptr<Material> Material::Create(const std::string& shadername)
+	std::shared_ptr<Material> Material::Create(const std::string& materialname)
 	{
 		std::shared_ptr<Material> material(new Material());
+
+		uint32_t size = 0;
+		void* data = nullptr;
+		data = FileSystem::getInstance()->load(
+			getFileReader(), getAllocator(), materialname.c_str(), &size);
+		if (!data)
+			return nullptr;
+
+		std::string shadername((const char*)data);
+		size_t idx = shadername.find('\r');
+		if (idx != shadername.npos)
+			shadername = shadername.substr(0, idx);
+
 		material->shader = Shader::Create(shadername);
 		ObjectManager::Register(material, ObjectType::Asset);
 		return material;
