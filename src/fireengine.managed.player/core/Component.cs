@@ -9,11 +9,6 @@ namespace FireEngine
 {
     public class Component
     {
-        protected ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags.DefaultOpen;
-        Vector3 pos = Vector3.Zero;
-        Vector3 rot = Vector3.Zero;
-        Vector3 scl = Vector3.One;
-
         protected IntPtr m_nativePtr = IntPtr.Zero;
         private Component()
         {
@@ -44,33 +39,6 @@ namespace FireEngine
             ComponentRegisterCallScriptable(native, ScriptableFuncType.LateUpdate, cbkLateUpdate);
             ComponentRegisterCallScriptable(native, ScriptableFuncType.OnEnable, cbkOnEnable);
             ComponentRegisterCallScriptable(native, ScriptableFuncType.OnDisable, cbkDisable);
-        }
-
-        public virtual void OnGUI_Inspector()
-        {
-            if (ImGui.CollapsingHeader("Transform##Inspector", treeNodeFlags))
-            {
-                float textWidth = Math.Min(ImGui.GetContentRegionAvail().X * 0.75f, 300);
-                ImGui.SetNextItemWidth(textWidth);
-                pos = gameObject.transform.position;
-                ImGui.DragFloat3("##Position##Component##Inspector", ref pos); ImGui.SameLine();
-                gameObject.transform.position = pos;
-                ImGui.Text("Position");
-
-                ImGui.SetNextItemWidth(textWidth);
-                rot = gameObject.transform.rotation.eulerAngles;
-                ImGui.DragFloat3("##Rotation#Component##Inspector", ref rot); ImGui.SameLine();
-                Quaternion quaternion = Quaternion.identity;
-                quaternion.eulerAngles = rot;
-                gameObject.transform.rotation = quaternion;
-                ImGui.Text("Rotation");
-
-                ImGui.SetNextItemWidth(textWidth);
-                scl = gameObject.transform.scale;
-                ImGui.DragFloat3("##Scale##Component##Inspector", ref scl); ImGui.SameLine();
-                gameObject.transform.scale = scl;
-                ImGui.Text("Scale");
-            }
         }
 
         #region Callback

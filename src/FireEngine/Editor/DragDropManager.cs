@@ -1,4 +1,5 @@
-﻿using ImGuiNET;
+﻿using FireEditor;
+using ImGuiNET;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -217,6 +218,11 @@ namespace FireEngine.Editor
             var root = SceneNative.SceneGetRoot(handleT);
 
             TransformNative.TransformMove(handleS, root);
+
+            SceneNode node = Scene.GetSceneNode(handleS);
+            Scene scene = Scene.GetScene(handleT);
+
+            node.Move(scene.root);
         }
 
         private static void OnDragDropFromHierarchyTransformToHierachyTransform(
@@ -227,6 +233,11 @@ namespace FireEngine.Editor
             TransformNative.TransformHandle handleT;
             handleT.idx = handleIdxT;
             TransformNative.TransformMove(handleS, handleT);
+
+            SceneNode nodeS = Scene.GetSceneNode(handleS);
+            SceneNode nodeT = Scene.GetSceneNode(handleT);
+
+            nodeS.Move(nodeT);
         }
     }
 }

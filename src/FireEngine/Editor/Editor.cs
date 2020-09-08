@@ -25,6 +25,8 @@ namespace FireEngine.Editor
         {
             Loading();
 
+            _OnRegisterInspector();
+
             _OnCreateWindow();
 
             _OnCreateMenu();
@@ -49,6 +51,11 @@ namespace FireEngine.Editor
                     bLoading = false;
                 });
             });
+        }
+
+        void _OnRegisterInspector()
+        {
+            InspectorManager.RegisterInspector(new InspectorComponent());
         }
 
         iWindowAttribute attr_about = null;

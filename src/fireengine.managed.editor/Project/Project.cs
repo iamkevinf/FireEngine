@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FireEngine;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -36,9 +37,21 @@ namespace FireEditor
                 for (int i = 0; i < files.Length; ++i)
                 {
                     var ele = files[i];
+                    if (ele.Extension.ToLower() == ".meta")
+                        continue;
+
                     File file = new File();
                     file.name = ele.Name;
                     _path.files[i] = file;
+
+                    string meta = string.Format("{0}.meta", ele.Name);
+                    if (!System.IO.File.Exists(meta))
+                    {
+                        using (var fs = System.IO.File.OpenWrite(meta))
+                        {
+                            fs.Close();
+                        }
+                    }
                 }
             }
 
@@ -77,8 +90,15 @@ namespace FireEditor
 
         public static void Open(string path)
         {
+            string assetsPath = string.Format("{0}\\Assets", path);
+            if (!Directory.Exists(assetsPath))
+            {
+                Debug.LogErrorFormat("{0} 不是有效的工程路径", path);
+                return;
+            }
+
             Project project = new Project();
-            project.path = path;
+            project.path = assetsPath;
 
             project.IterFile();
 

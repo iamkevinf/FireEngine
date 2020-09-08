@@ -15,14 +15,6 @@ namespace FireEngine.Editor
 
         public void OnGUI()
         {
-            // 暂时兼容没修改完的
-            var comp = WindowHierarchy.GetComponentSelected();
-            if (comp != null)
-            {
-                comp.OnGUI_Inspector();
-                return;
-            }
-
             var selectArr = Selector.GetSelected();
             if (selectArr == null || selectArr.Count == 0)
                 return;
@@ -31,13 +23,39 @@ namespace FireEngine.Editor
             if (selectable == null)
                 return;
 
-            if(selectable is Path)
+            if (selectable is Path)
             {
                 ImGui.Text(selectable.name);
                 return;
             }
 
-            ImGui.Text(string.Format("{0} Import Settings", selectable.name));
+            if(selectable is File)
+            {
+                File f = selectable as File;
+                OnGUI_File(f);
+            }
+            else if(selectable is SceneNode)
+            {
+                SceneNode node = selectable as SceneNode;
+                OnGUI_SceneNode(node);
+            }
+
+        }
+
+        void OnGUI_File(File f)
+        {
+            if (f == null)
+                return;
+
+            ImGui.Text(string.Format("{0} Import Settings", f.name));
+        }
+
+        void OnGUI_SceneNode(SceneNode node)
+        {
+            if (node == null)
+                return;
+
+            node.inspector.OnGUIInspector(node.component);
         }
 
         public void OnHide()

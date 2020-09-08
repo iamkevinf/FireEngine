@@ -14,6 +14,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\fireengine.managed.player\FireEngine.csproj" />
     <ProjectReference Include="..\fireengine.native.editor\fireengine.native.editor.vcxproj" />
   </ItemGroup>
 

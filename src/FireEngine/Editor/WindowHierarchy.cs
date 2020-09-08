@@ -13,33 +13,6 @@ namespace FireEngine.Editor
         ImGuiTreeNodeFlags flagsBase = ImGuiTreeNodeFlags.DefaultOpen
             | ImGuiTreeNodeFlags.OpenOnArrow;
 
-        private static Dictionary<TransformNative.TransformHandle, Component> s_pool = new Dictionary<TransformNative.TransformHandle, Component>();
-        public static void AddToPool(TransformNative.TransformHandle handle, Component component)
-        {
-            if (s_pool.ContainsKey(handle))
-                s_pool[handle] = component;
-            else
-                s_pool.Add(handle, component);
-        }
-
-        public static Component GetComponent(TransformNative.TransformHandle handle)
-        {
-            Component ret = null;
-            s_pool.TryGetValue(handle, out ret);
-            return ret;
-        }
-
-
-        public static Component GetComponentSelected()
-        {
-            if (!s_curSelectedTransform.IsValid())
-                return null;
-
-            Component ret = null;
-            s_pool.TryGetValue(s_curSelectedTransform, out ret);
-            return ret;
-        }
-
         public void Init()
         {
             int count = SceneNative.SceneCount();
@@ -50,23 +23,32 @@ namespace FireEngine.Editor
 
             SceneNative.SceneHandle handle = SceneNative.SceneFindByIndex(0);
 
-            var root = SceneNative.SceneGetRoot(handle);
+            Scene.Open(handle);
 
             System.Threading.Tasks.Task.Delay(100).ContinueWith(
-                t => OnDelayCallCreateComponent(root));
+                t => OnDelayCallCreateComponent());
         }
 
-        void OnDelayCallCreateComponent(TransformNative.TransformHandle root)
+        void OnDelayCallCreateComponent()
         {
-            var mainCamera = Camera.Inner_Create(root, "Main Camera");
-            AddToPool(mainCamera.transformHandle, mainCamera);
+            if (Scene.current == null)
+                return;
+
+            var mainCamera = Camera.Inner_Create(Scene.current.root.handle, "Main Camera");
+            SceneNode sceneCamera = new SceneNode();
+            sceneCamera.name = "Main Camera";
+            sceneCamera.handle = mainCamera.transformHandle;
+            sceneCamera.component = mainCamera;
+            sceneCamera.inspector = new InspectorCamera();
+            Scene.current.root.AddChild(sceneCamera);
 
             mainCamera.transform.position = new Vector3(0, 0, -10);
         }
 
-        void OnGUI_RightMenu(TransformNative.TransformHandle handle)
+        void OnGUI_RightMenu(SceneNode scene)
         {
-            if (ImGui.MenuItem("Create Scene", !handle.IsValid()))
+            // 暂时不支持创建多个场景
+            if (ImGui.MenuItem("Create Scene", false))//!handle.IsValid()))
             {
                 int count = SceneNative.SceneCount();
                 string _name = "Scene";
@@ -76,100 +58,105 @@ namespace FireEngine.Editor
             }
 
             ImGui.Separator();
-            if (ImGui.MenuItem("Rename", "F2", false, handle.IsValid()))
+            if (ImGui.MenuItem("Rename", "F2", false, scene != null))
             {
-                curSelectedTransform = handle;
+                //curSelectedTransform = handle;
                 renameing = true;
             }
 
             ImGui.Separator();
 
-            if (ImGui.MenuItem("Create Empty", handle.IsValid()))
+            if (ImGui.MenuItem("Create Empty", scene != null))
             {
-                int count = TransformNative.TransformChildCount(handle);
-                string _name = "Transform";
+                int count = TransformNative.TransformChildCount(scene.handle);
+                string _name = "GameObject";
                 if (count > 0)
-                    _name = string.Format("Transform ({0})", count);
-                GameObject.Inner_Create(handle, _name);
+                    _name = string.Format("GameObject ({0})", count);
+                var gameObject = GameObject.Inner_Create(scene.handle, _name);
+                SceneNode gameObjectNode = new SceneNode();
+                gameObjectNode.name = _name;
+                gameObjectNode.handle = gameObject.transform.transformHandle;
+                gameObjectNode.component = gameObject.transform;
+                gameObjectNode.inspector = new InspectorTransform();
+                Scene.current.root.AddChild(gameObjectNode);
             }
 
-            if(ImGui.BeginMenu("3D Object", handle.IsValid()))
+            if(ImGui.BeginMenu("3D Object", scene != null))
             {
                 if (ImGui.MenuItem("Cube"))
                 {
-                    IntPtr native = TransformNative.TransformGetNativeByHandle(handle);
-                    IntPtr gameObjectNative = AppNative.InnerGeoCreateCube(native, "Cube");
+                    string name = "Cube";
+                    IntPtr native = TransformNative.TransformGetNativeByHandle(scene.handle);
+                    IntPtr gameObjectNative = AppNative.InnerGeoCreateCube(native, name);
                     var gameObject = GameObject.CreateFromNative(gameObjectNative);
-                    AddToPool(gameObject.transform.transformHandle, gameObject.transform);
+                    SceneNode gameObjectNode = new SceneNode();
+                    gameObjectNode.name = name;
+                    gameObjectNode.handle = gameObject.transform.transformHandle;
+                    gameObjectNode.component = gameObject.transform;
+                    gameObjectNode.inspector = new InspectorTransform();
+                    Scene.current.root.AddChild(gameObjectNode);
                 }
 
                 ImGui.EndMenu();
             }
 
-            if (ImGui.MenuItem("Camera", handle.IsValid()))
+            if (ImGui.MenuItem("Camera", scene != null))
             {
-                Camera mainCamera = Camera.Inner_Create(handle, "Main Camera");
-                AddToPool(mainCamera.transformHandle, mainCamera);
+                Camera mainCamera = Camera.Inner_Create(scene.handle, "Main Camera");
+                SceneNode sceneCamera = new SceneNode();
+                sceneCamera.name = "Main Camera";
+                sceneCamera.handle = mainCamera.transformHandle;
+                sceneCamera.component = mainCamera;
+                sceneCamera.inspector = new InspectorCamera();
+                Scene.current.root.AddChild(sceneCamera);
             }
         }
 
-        void OnGUI_SceneMenu(SceneNative.SceneHandle handle, string label, bool active)
+        void OnGUI_SceneMenu(Scene scene, string label, bool active)
         {
             if (ImGui.BeginPopupContextItem(label))
             {
-                var root = SceneNative.SceneGetRoot(handle);
-                OnGUI_RightMenu(root);
+                OnGUI_RightMenu(scene.root);
                 ImGui.EndPopup();
             }
         }
 
-        void OnGUI_TransfromMenu(TransformNative.TransformHandle handle, string label)
+        void OnGUI_TransfromMenu(SceneNode scene, string label)
         {
             if (ImGui.BeginPopupContextItem(label))
             {
-                OnGUI_RightMenu(handle);
+                OnGUI_RightMenu(scene);
                 ImGui.EndPopup();
             }
         }
 
-        public static TransformNative.TransformHandle s_curSelectedTransform = TransformNative.TransformHandle.InValid;
-        private TransformNative.TransformHandle m_curSelectedTransform = TransformNative.TransformHandle.InValid;
-        private TransformNative.TransformHandle curSelectedTransform
+        bool OnGUI_TransformTree(SceneNode scene, int idx, ref bool selected)
         {
-            get
-            {
-                return m_curSelectedTransform;
-            }
-            set
-            {
-                m_curSelectedTransform = value;
-                s_curSelectedTransform = m_curSelectedTransform;
-            }
-        }
+            int count = scene.children.Count;
 
-        bool OnGUI_TransformTree(TransformNative.TransformHandle handle, int idx, ref bool selected)
-        {
-            int count = TransformNative.TransformChildCount(handle);
+            SceneNode curSelected = null;
+            var _selected = Selector.GetSelected();
+            if (_selected?.Count > 0)
+                curSelected = _selected[0] as SceneNode;
 
             for (var i = 0; i < count; i++)
             {
-                var item = TransformNative.TransformFindChildByIndex(handle, i);
-                string name = TransformNative.TransformGetName(item);
-                string label = string.Format("{0}##_Transform_{1}_{2}", name, idx, i);
+                SceneNode node = scene.children[i];
+                string label = string.Format("{0}##_Transform_{1}_{2}", node.name, idx, i);
 
-                int childCount = TransformNative.TransformChildCount(item);
+                int childCount = node.children.Count;
 
                 ImGuiTreeNodeFlags flags = flagsBase
                     | (childCount == 0 ? ImGuiTreeNodeFlags.Leaf : ImGuiTreeNodeFlags.None);
-                flags |= curSelectedTransform == item ? ImGuiTreeNodeFlags.Selected : ImGuiTreeNodeFlags.None;
+                flags |= curSelected == node ? ImGuiTreeNodeFlags.Selected : ImGuiTreeNodeFlags.None;
 
-                if (renameing && curSelectedTransform == item)
+                if (renameing && curSelected == node)
                     label = string.Format("###_{0}", label);
                 if (ImGui.TreeNodeEx(label, flags))
                 {
-                    if (renameing && curSelectedTransform == item)
+                    if (renameing && curSelected == node)
                     {
-                        neo_name = name;
+                        neo_name = node.name;
                         ImGuiInputTextFlags inputFlags = ImGuiInputTextFlags.EnterReturnsTrue
                             | ImGuiInputTextFlags.AutoSelectAll;
                         if (!ImGui.IsAnyItemActive() && !ImGui.IsMouseClicked(0))
@@ -181,16 +168,16 @@ namespace FireEngine.Editor
                         ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, padding);
 
                         if (ImGui.InputText(
-                            string.Format("##Transform_{0}_{1}", name, i),
+                            string.Format("##Transform_{0}_{1}", node.name, i),
                             ref neo_name, 64, inputFlags))
                         {
-                            TransformNative.TransformSetName(curSelectedTransform, neo_name);
+                            TransformNative.TransformSetName(curSelected.handle, neo_name);
                             renameing = false;
                         }
 
                         ImGui.PopStyleVar();
                     }
-                    if (DragDropManager.DragDrop(name, item.idx,
+                    if (DragDropManager.DragDrop(node.name, node.handle.idx,
                     DragDropWindow.Hierarchy, DragDropTree.Transforms,
                     "_DDTreeWindow", ImGuiDragDropFlags.None,
                     DragDropManager.OnDragDropAction))
@@ -199,13 +186,13 @@ namespace FireEngine.Editor
                         return false;
                     }
 
-                    OnGUI_TransfromMenu(item, label);
-                    OnGUI_TransformTree(item, i, ref selected);
+                    OnGUI_TransfromMenu(node, label);
+                    OnGUI_TransformTree(node, i, ref selected);
                     ImGui.TreePop();
                 }
                 else
                 {
-                    OnGUI_TransfromMenu(item, label);
+                    OnGUI_TransfromMenu(node, label);
                 }
 
                 if (!selected)
@@ -214,20 +201,20 @@ namespace FireEngine.Editor
                     //bool focused = childCount == 0 ? ImGui.IsItemFocused() : ImGui.IsItemHovered();
                     if (clicked)
                     {
-                        curSelectedTransform = item;
-                        curSelectedScene = SceneNative.SceneHandle.InValid;
+                        curSelected = node;
                         selected = true;
+                        Selector.Select(node);
                     }
                 }
             }
 
 
-            if (curSelectedTransform.IsValid())
+            if (curSelected != null)
             {
                 // F2
                 if (ImGui.GetIO().KeysDown[113])
                 {
-                    neo_name = TransformNative.TransformGetName(curSelectedTransform);
+                    neo_name = TransformNative.TransformGetName(curSelected.handle);
                     renameing = true;
                 }
             }
@@ -235,17 +222,20 @@ namespace FireEngine.Editor
             return true;
         }
 
-        private SceneNative.SceneHandle curSelectedScene = SceneNative.SceneHandle.InValid;
-
         bool renameing = false;
         string neo_name = "";
         public void OnGUI()
         {
+            Scene curSelected = null;
+            var _selected = Selector.GetSelected();
+            if (_selected?.Count > 0)
+                curSelected = _selected[0] as Scene;
+
             int count = SceneNative.SceneCount();
 
             if (ImGui.BeginPopupContextWindow("SceneMenu", ImGuiMouseButton.Right))
             {
-                OnGUI_RightMenu(TransformNative.TransformHandle.InValid);
+                OnGUI_RightMenu(null);
                 ImGui.EndPopup();
             }
 
@@ -259,20 +249,20 @@ namespace FireEngine.Editor
                     string label = string.Format("{0}##_Scene_{1}", name, i);
                     SceneNative.ActiveOption active = SceneNative.SceneGetActive(handle);
 
-                    var root = SceneNative.SceneGetRoot(handle);
+                    Scene.Open(handle);
 
-                    int childCount = TransformNative.TransformChildCount(root);
+                    int childCount = Scene.current.root.children.Count;
 
                     ImGuiTreeNodeFlags flags = flagsBase
-                        | (childCount == 0 ? ImGuiTreeNodeFlags.None : ImGuiTreeNodeFlags.None);
-                    flags |= curSelectedScene == handle ? ImGuiTreeNodeFlags.Selected : ImGuiTreeNodeFlags.None;
+                        | (childCount == 0 ? ImGuiTreeNodeFlags.Leaf : ImGuiTreeNodeFlags.None);
+                    flags |= curSelected == Scene.current ? ImGuiTreeNodeFlags.Selected : ImGuiTreeNodeFlags.None;
 
-                    if (renameing && curSelectedScene == handle)
+                    if (renameing && curSelected == Scene.current)
                         label = string.Format("###_{0}", label);
                     if (ImGui.CollapsingHeader(label, flags))
                     {
 
-                        if (renameing && curSelectedScene == handle)
+                        if (renameing && curSelected == Scene.current)
                         {
                             neo_name = name;
                             ImGuiInputTextFlags inputFlags = ImGuiInputTextFlags.EnterReturnsTrue
@@ -293,14 +283,14 @@ namespace FireEngine.Editor
                             ImGui.PopStyleVar();
                         }
 
-                        OnGUI_SceneMenu(handle, label, active == SceneNative.ActiveOption.Active);
+                        OnGUI_SceneMenu(Scene.current, label, active == SceneNative.ActiveOption.Active);
 
                         bool dragdroped = DragDropManager.DragDropTarget(handle.idx,
                             DragDropWindow.Hierarchy, DragDropTree.Scenes,
                             "_DDTreeWindow", ImGuiDragDropFlags.None,
                             DragDropManager.OnDragDropAction);
 
-                        bool breakif = !OnGUI_TransformTree(root, i, ref selected);
+                        bool breakif = !OnGUI_TransformTree(Scene.current.root, i, ref selected);
 
                         //ImGui.TreePop();
 
@@ -309,7 +299,7 @@ namespace FireEngine.Editor
                     }
                     else
                     {
-                        OnGUI_SceneMenu(handle, label, active == SceneNative.ActiveOption.Active);
+                        OnGUI_SceneMenu(Scene.current, label, active == SceneNative.ActiveOption.Active);
                     }
 
                     if (!selected)
@@ -318,18 +308,17 @@ namespace FireEngine.Editor
                         //bool focused = childCount == 0 ? ImGui.IsItemFocused() : ImGui.IsItemHovered();
                         if (clicked)
                         {
-                            curSelectedScene = handle;
-                            curSelectedTransform = TransformNative.TransformHandle.InValid;
+                            Selector.Select(Scene.current);
                             selected = true;
                         }
                     }
 
-                    if (curSelectedScene.IsValid())
+                    if (Scene.current != null)
                     {
                         // F2
                         if (ImGui.GetIO().KeysDown[113])
                         {
-                            neo_name = SceneNative.SceneGetName(curSelectedScene);
+                            neo_name = SceneNative.SceneGetName(Scene.current.handle);
                             renameing = true;
                         }
                     }
