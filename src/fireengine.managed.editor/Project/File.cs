@@ -11,6 +11,11 @@ namespace FireEditor
             get;
             set;
         }
+        public string fullname
+        {
+            get;
+            set;
+        }
     }
 
     public class Path : iSelectable

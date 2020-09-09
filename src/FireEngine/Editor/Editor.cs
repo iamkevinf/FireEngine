@@ -25,7 +25,7 @@ namespace FireEngine.Editor
         {
             Loading();
 
-            _OnRegisterInspector();
+            _OnRegisterAsset();
 
             _OnCreateWindow();
 
@@ -53,8 +53,10 @@ namespace FireEngine.Editor
             });
         }
 
-        void _OnRegisterInspector()
+        void _OnRegisterAsset()
         {
+            ImporterManager.AddImporter(new ImporterMaterial());
+
             InspectorManager.RegisterInspector(new InspectorComponent());
         }
 

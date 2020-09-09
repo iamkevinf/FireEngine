@@ -21,38 +21,80 @@ namespace FireEditor
             private set;
         }
 
-        void IterFile()
+        FileSystemWatcher watcher;
+
+        System.Collections.Concurrent.ConcurrentQueue<string> modifyFilePaths = new System.Collections.Concurrent.ConcurrentQueue<string>();
+        System.Collections.Concurrent.ConcurrentQueue<string> deleteFilePaths = new System.Collections.Concurrent.ConcurrentQueue<string>();
+        bool changed = false;
+        public bool Changed
         {
-            DirectoryInfo info = new DirectoryInfo(path);
-            CollectFile(info, ref root);
+            get
+            {
+                if(changed)
+                {
+                    changed = false;
+                    return true;
+                }
+
+                return false;
+            }
         }
 
-        void CollectFile(DirectoryInfo info, ref Path _path)
+
+
+        /// <summary>
+        /// 遍历资源
+        /// </summary>
+        /// <param name="addToModifyQueue">是否加入到文件已经改变的列表</param>
+        public void IterFile(bool addToModifyQueue = false)
+        {
+            string assetsPath = System.IO.Path.Combine(path, "Assets");
+            DirectoryInfo info = new DirectoryInfo(assetsPath);
+            CollectFile(info, ref root, addToModifyQueue);
+
+            while(modifyFilePaths.TryDequeue(out string fullname))
+                OnFileModify(fullname);
+
+            while (deleteFilePaths.TryDequeue(out string fullname))
+                OnFileDelete(fullname);
+
+            if (addToModifyQueue)
+                changed = true;
+        }
+
+        void OnFileModify(string fullname)
+        {
+            iImporter importer = ImporterManager.GetImporter(fullname);
+            if (importer == null)
+                return;
+
+            ImporterManager.Import(importer, fullname);
+        }
+
+        void OnFileDelete(string fullname)
+        {
+
+        }
+
+        void CollectFile(DirectoryInfo info, ref Path _path, bool addToModifyQueue)
         {
             var files = info.GetFiles();
             if (files.Length > 0)
             {
-                _path.files = new File[files.Length];
-                // file
+                List<File> tmp = new List<File>();
                 for (int i = 0; i < files.Length; ++i)
                 {
                     var ele = files[i];
                     if (ele.Extension.ToLower() == ".meta")
                         continue;
+                    tmp.Add(new File() { name = ele.Name, fullname = ele.FullName});
 
-                    File file = new File();
-                    file.name = ele.Name;
-                    _path.files[i] = file;
-
-                    string meta = string.Format("{0}.meta", ele.Name);
-                    if (!System.IO.File.Exists(meta))
-                    {
-                        using (var fs = System.IO.File.OpenWrite(meta))
-                        {
-                            fs.Close();
-                        }
-                    }
+                    if (addToModifyQueue)
+                        modifyFilePaths.Enqueue(ele.FullName);
                 }
+
+                // file
+                _path.files = tmp.ToArray();
             }
 
             var dirs = info.GetDirectories();
@@ -66,9 +108,48 @@ namespace FireEditor
                     Path path = new Path();
                     path.name = ele.Name;
                     _path.paths[i] = path;
-                    CollectFile(ele, ref path);
+                    CollectFile(ele, ref path, addToModifyQueue);
                 }
             }
+        }
+
+        void _ImportAsset(string name)
+        {
+
+        }
+
+        void WatchFile()
+        {
+            watcher = new FileSystemWatcher();
+            watcher.Path = System.IO.Path.Combine(path, "Assets");
+            watcher.IncludeSubdirectories = true;
+            watcher.Changed += (s, e) =>
+            {
+                // 这里只处理文件不处理路径
+                if (!Directory.Exists(e.FullPath))
+                {
+                    modifyFilePaths.Enqueue(e.FullPath);
+                    changed = true;
+                }
+
+            };
+            watcher.Created += (s, e) =>
+            {
+                modifyFilePaths.Enqueue(e.FullPath);
+                changed = true;
+            };
+            watcher.Deleted += (s, e) =>
+            {
+                deleteFilePaths.Enqueue(e.FullPath);
+                changed = true;
+            };
+            watcher.Renamed += (s, e) =>
+            {
+                deleteFilePaths.Enqueue(e.OldFullPath);
+                modifyFilePaths.Enqueue(e.FullPath);
+                changed = true;
+            };
+            watcher.EnableRaisingEvents = true;
         }
 
         public static ProjectCreateResult Create(string path)
@@ -98,9 +179,10 @@ namespace FireEditor
             }
 
             Project project = new Project();
-            project.path = assetsPath;
+            project.path = path;
 
-            project.IterFile();
+            project.IterFile(true);
+            project.WatchFile();
 
             current = project;
         }

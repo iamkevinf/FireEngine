@@ -8,7 +8,7 @@ using System.Text;
 
 namespace FireEngine.Editor
 {
-    public class InspectorComponent : IInspector
+    public class InspectorComponent : iInspector
     {
         public virtual InspectorType type
         {

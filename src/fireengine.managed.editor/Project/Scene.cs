@@ -15,7 +15,7 @@ namespace FireEditor
         }
 
         public Component component;
-        public IInspector inspector;
+        public iInspector inspector;
 
         public TransformNative.TransformHandle handle;
         private List<SceneNode> m_children = new List<SceneNode>();

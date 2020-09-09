@@ -75,6 +75,8 @@ namespace FireEngine.Editor
 
         public void OnTick()
         {
+            if (Project.current != null && Project.current.Changed)
+                Project.current.IterFile();
         }
 
         public void OnShow()

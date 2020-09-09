@@ -15,7 +15,7 @@ namespace FireEditor
         Shader,
     }
 
-    public interface IInspector
+    public interface iInspector
     {
         InspectorType type
         {
@@ -28,9 +28,9 @@ namespace FireEditor
 
     public static class InspectorManager
     {
-        static Dictionary<InspectorType, IInspector> pool = new Dictionary<InspectorType, IInspector>();
+        static Dictionary<InspectorType, iInspector> pool = new Dictionary<InspectorType, iInspector>();
 
-        public static void RegisterInspector(IInspector inspector)
+        public static void RegisterInspector(iInspector inspector)
         {
             if (pool.ContainsKey(inspector.type))
                 return;

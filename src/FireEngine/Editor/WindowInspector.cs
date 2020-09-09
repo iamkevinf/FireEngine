@@ -48,6 +48,11 @@ namespace FireEngine.Editor
                 return;
 
             ImGui.Text(string.Format("{0} Import Settings", f.name));
+            iImporter importer = ImporterManager.GetImporter(f.name);
+            if(importer != null)
+            {
+                importer.OnGUI();
+            }
         }
 
         void OnGUI_SceneNode(SceneNode node)
