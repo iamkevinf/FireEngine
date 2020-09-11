@@ -31,5 +31,11 @@ namespace FireEngine
 
         [DllImport(FireEngineNative.FireEngineDllName, CallingConvention = CallingConvention.Cdecl)]
         public static extern TransformNative.TransformHandle GameObjectGetTransformHandle(GameObjectHandle handle);
+
+        [DllImport(FireEngineNative.FireEngineDllName, CallingConvention = CallingConvention.Cdecl)]
+        public static extern int GameObjectGetComponentsCount(IntPtr native);
+        [DllImport(FireEngineNative.FireEngineDllName, CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr GameObjectGetComponent(IntPtr native, int index);
+
     }
 }

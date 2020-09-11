@@ -14,6 +14,10 @@ namespace FireEngine.Editor
             | ImGuiTreeNodeFlags.OpenOnArrow;
 
         bool createdDefault = false;
+
+        static int tmp_t = 0;
+        private Material[] mats;
+
         public void Init()
         {
             int count = SceneNative.SceneCount();
@@ -93,6 +97,17 @@ namespace FireEngine.Editor
                     gameObjectNode.component = gameObject.transform;
                     gameObjectNode.inspector = new InspectorTransform();
                     Scene.current.root.AddChild(gameObjectNode);
+
+                    var a = gameObject.GetComponents();
+                    foreach (var ele in a)
+                    {
+                        if (ele is MeshRenderer)
+                        {
+                            MeshRenderer mr = ele as MeshRenderer;
+                            mats = mr.GetMaterials();
+
+                        }
+                    }
                 }
 
                 ImGui.EndMenu();
@@ -332,6 +347,12 @@ namespace FireEngine.Editor
             {
                 OnCreateDefaultComponent();
                 createdDefault = true;
+            }
+
+            if(mats != null)
+            {
+                foreach (var mat in mats)
+                    mat.SetVector("u_time", new System.Numerics.Vector4(tmp_t++));
             }
         }
 

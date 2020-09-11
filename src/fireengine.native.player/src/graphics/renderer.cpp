@@ -329,4 +329,42 @@ namespace FireEngine
 		auto src = std::dynamic_pointer_cast<Renderer>(source);
 		SetSharedMaterials(src->GetSharedMaterials());
 	}
+
+	EXPORT_API int RendererGetMaterialsCount(Renderer* renderer)
+	{
+		if (!renderer)
+			return -1;
+
+		auto arr = renderer->GetSharedMaterials();
+		return (int)arr.size();
+	}
+
+	EXPORT_API Material* RendererGetMaterial(Renderer* renderer, int index)
+	{
+		if (!renderer)
+			return nullptr;
+
+		auto arr = renderer->GetSharedMaterials();
+		if (index >= (int)arr.size())
+			return nullptr;
+
+		return arr[index].get();
+	}
+
+	EXPORT_API void RendererSetMaterial(Renderer* renderer, Material* mat, int index)
+	{
+		if (!renderer)
+			return;
+
+		auto arr = renderer->GetSharedMaterials();
+		if (arr.empty())
+			return;
+
+		if (index >= (int)arr.size())
+			return;
+
+		arr[index] = std::shared_ptr<Material>(mat);
+
+		renderer->SetSharedMaterials(arr);
+	}
 }

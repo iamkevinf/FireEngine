@@ -162,4 +162,11 @@ namespace FireEngine
 
 		return native->GetGameObject().get();
 	}
+
+	EXPORT_API ComponentType ComponentGetComponentType(Component* native)
+	{
+		if (!native)
+			return ComponentType::None;
+		return native->GetComponentType();
+	}
 }

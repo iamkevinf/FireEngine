@@ -19,6 +19,15 @@ namespace FireEngine
 		OnDisable
 	};
 
+	enum class ComponentType
+	{
+		None = -1,
+		Transform,
+		Camera,
+		Renderer,
+		MeshRenderer,
+	};
+
 	typedef void (*ScriptableDelegate)();
 
 	class Component : public IObject
@@ -46,6 +55,9 @@ namespace FireEngine
 		bool IsStarted() const { return started; }
 		bool IsComponent(const std::string& type) const;
 
+		void SetComponentType(ComponentType _type) { type = _type; }
+		ComponentType GetComponentType()const { return type; }
+
 	protected:
 		virtual void Awake() { GComponentCallScriptable(this, ScriptableFuncType::Awake); }
 		virtual void Start() { GComponentCallScriptable(this, ScriptableFuncType::Start); }
@@ -72,6 +84,7 @@ namespace FireEngine
 	protected:
 		std::weak_ptr<GameObject> gameObject;
 		std::weak_ptr<Transform> transform;
+		ComponentType type;
 
 	private:
 		bool deleted = false;

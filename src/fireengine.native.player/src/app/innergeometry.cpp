@@ -102,6 +102,7 @@ namespace FireEngine
 
 		GameObjectPtr gameObject = GameObject::Create(transform, _name);
 		auto meshRenderer = gameObject->AddComponent<MeshRenderer>();
+		meshRenderer->SetComponentType(ComponentType::MeshRenderer);
 		ObjectManager::Register(meshRenderer, ObjectType::Component);
 
 		ByteBuffer buffer = ByteBuffer(92 * 16 + sizeof(s_cubeTriList) + sizeof(int) * 3 + sizeof(Mesh::SubMesh) * 2);

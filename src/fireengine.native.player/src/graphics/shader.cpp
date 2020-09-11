@@ -36,7 +36,7 @@ namespace FireEngine
 
 		std::string projectPath = Project::getInstance()->GetPath();
 		std::string shaderFullname = projectPath + "/Assets/" + shadername;
-		std::string name, nameVS, nameFS;
+		std::string nameVS, nameFS;
 		if (!ParseShader::CompileShader(shaderFullname, nameVS, nameFS))
 			return nullptr;
 
@@ -45,8 +45,8 @@ namespace FireEngine
 		shader->vs = loadShader(nameVS.c_str(), prefix.c_str());
 		shader->ps = loadShader(nameFS.c_str(), prefix.c_str());
 
-		shader->name = name;
-		shader->pass.name = name;
+		shader->name = shadername;
+		shader->pass.name = shadername;
 		shader->pass.program = bgfx::createProgram(shader->vs, shader->ps, true);
 		shader->pass.rs = RenderState::defaultRenderState;
 
@@ -79,6 +79,13 @@ namespace FireEngine
 		//	pass.program = BGFX_INVALID_HANDLE;
 		//}
 	}
+	EXPORT_API const char* ShaderGetName(Shader* shader, int& size)
+	{
+		if (!shader)
+			return nullptr;
+		size = shader->name.length();
+		return shader->name.c_str();
+	}
 
 	EXPORT_API Shader* ShaderCreate(const char16_t* name)
 	{
@@ -98,7 +105,7 @@ namespace FireEngine
 			if (i < pool.size() - 1)
 				tmpNameList = tmpNameList + ",";
 		}
-		size = tmpNameList.size();
+		size = tmpNameList.length();
 		return tmpNameList.c_str();
 	}
 }

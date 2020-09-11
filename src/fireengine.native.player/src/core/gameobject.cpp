@@ -21,11 +21,13 @@ namespace FireEngine
 		}
 
 		TransformPtr transform = TransformPtr((Transform*)Component::Create(Transform::ClassName()));
+		transform->SetComponentType(ComponentType::Transform);
 		ObjectManager::Register(transform, ObjectType::Transform);
 		transform->gameObject = obj;
 		transform->name = name;
 		obj->transform = transform;
 		obj->AddComponent(transform);
+		transform->SetComponentType(ComponentType::Transform);
 
 		parent.lock()->children.push_back(transform);
 		transform->parent = parent;
@@ -73,6 +75,7 @@ namespace FireEngine
 		{
 			auto class_name = com->GetTypeName();
 			auto* p_com = Component::Create(class_name);
+			p_com->SetComponentType(com->GetComponentType());
 			if (p_com != NULL)
 			{
 				AddComponent(std::shared_ptr<Component>(p_com));
@@ -384,5 +387,32 @@ namespace FireEngine
 			return nullptr;
 
 		return native->GetTransform().get();
+	}
+
+	EXPORT_API int GameObjectGetComponentsCount(GameObject* native)
+	{
+		if (!native)
+			return -1;
+
+		std::vector<std::shared_ptr<Component>> ret;
+		if (!native->GetComponents(ret))
+			return -1;
+
+		return (int)ret.size();
+	}
+
+	EXPORT_API Component* GameObjectGetComponent(GameObject* native, int index)
+	{
+		if (!native)
+			return nullptr;
+
+		std::vector<std::shared_ptr<Component>> ret;
+		if (!native->GetComponents(ret))
+			return nullptr;
+
+		if (index >= (int)ret.size())
+			return nullptr;
+
+		return ret[index].get();
 	}
 }

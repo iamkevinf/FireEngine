@@ -2,6 +2,9 @@
 #include "texture2d.h"
 
 #include "filesystem/FileSystem.h"
+#include "utils/string_tool.h"
+
+#include "exportapi.h"
 
 namespace FireEngine
 {
@@ -84,7 +87,6 @@ namespace FireEngine
 		}
 	}
 
-
 	void Material::UpdateUniforms(uint32_t pass_index)
 	{
 		for (auto& i : vec4s)
@@ -96,5 +98,85 @@ namespace FireEngine
 		{
 			SetUniformTexture(pass_index, i.first, i.second.idx, i.second.tex);
 		}
+	}
+	
+	EXPORT_API Shader* MaterialGetShader(Material* mat)
+	{
+		if (!mat)
+			return nullptr;
+		return mat->GetShader().get();
+	}
+
+	EXPORT_API Material* MaterialCreate(const char16_t* name)
+	{
+		std::string shadername = ToUtf8String(std::u16string(name));
+		auto ptr = Material::Create(shadername);
+		return ptr.get();
+	}
+
+	EXPORT_API void MaterialSetVector(Material* mat, const char16_t* name, const glm::vec4& v)
+	{
+		if (!mat)
+			return;
+
+		std::u16string _name(name);
+		std::string name8 = ToUtf8String(_name);
+
+		mat->SetVector(name8, v);
+	}
+
+	EXPORT_API const glm::vec4& MaterialGetVector(Material* mat, const char16_t* name)
+	{
+		if (!mat)
+			return {0,0,0,0};
+
+		std::u16string _name(name);
+		std::string name8 = ToUtf8String(_name);
+
+		return mat->GetVector(name8);
+	}
+
+	EXPORT_API bool MaterialHasVector(Material* mat, const char16_t* name)
+	{
+		if (!mat)
+			return false;
+
+		std::u16string _name(name);
+		std::string name8 = ToUtf8String(_name);
+
+		return mat->HasVector(name8);
+	}
+
+	EXPORT_API void MaterialSetTexture(Material* mat, const char16_t* name, const std::shared_ptr<Texture2D>& v)
+	{
+		if (!mat)
+			return;
+
+		std::u16string _name(name);
+		std::string name8 = ToUtf8String(_name);
+
+		mat->SetTexture(name8, v);
+	}
+
+	EXPORT_API const std::shared_ptr<Texture2D>& MaterialGetTexture(Material* mat, const char16_t* name)
+	{
+		if (!mat)
+			return nullptr;
+
+		std::u16string _name(name);
+		std::string name8 = ToUtf8String(_name);
+
+		return mat->GetTexture(name8);
+	}
+
+	EXPORT_API bool MaterialHasTexture(Material* mat, const char16_t* name)
+	{
+		if (!mat)
+			return false;
+
+		std::u16string _name(name);
+		std::string name8 = ToUtf8String(_name);
+
+		return mat->HasTexture(name8);
 	}
 }

@@ -221,6 +221,7 @@ namespace FireEngine
 		std::string _name = ToUtf8String(std::u16string(name));
 		TransformPtr parentPtr = ObjectManager::Get(parent);
 		CameraPtr camera = GameObject::Create(parentPtr, _name)->AddComponent<Camera>();
+		camera->SetComponentType(ComponentType::Camera);
 		camera->SetCullingMask(1 << 0);
 
 		ObjectManager::Register(camera, ObjectType::Component);
