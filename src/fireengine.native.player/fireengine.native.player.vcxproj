@@ -26,6 +26,7 @@
     <ClCompile Include="src\app\app.cpp" />
     <ClCompile Include="src\app\innergeometry.cpp" />
     <ClCompile Include="src\app\main_shared.cpp" />
+    <ClCompile Include="src\app\project.cpp" />
     <ClCompile Include="src\core\component.cpp" />
     <ClCompile Include="src\core\gameobject.cpp" />
     <ClCompile Include="src\core\object.cpp" />
@@ -73,6 +74,7 @@
   <ItemGroup>
     <ClInclude Include="src\app\app.h" />
     <ClInclude Include="src\app\main_shared.h" />
+    <ClInclude Include="src\app\project.h" />
     <ClInclude Include="src\core\component.h" />
     <ClInclude Include="src\core\gameobject.h" />
     <ClInclude Include="src\core\object.h" />
@@ -249,8 +251,8 @@
       <AdditionalDependencies>bgfxDebug.lib;bimgDebug.lib;bimg_decodeDebug.lib;bxDebug.lib;example-commonDebug.lib;opengl32.lib;assimp-vc141-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>./compile_shader.cmd
-</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

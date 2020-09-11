@@ -20,6 +20,8 @@
 #include "meshrenderer.h"
 #include "material.h"
 
+#include "utils/string_tool.h"
+
 namespace FireEngine
 {
 	DEFINE_COM_CLASS(Camera);
@@ -216,7 +218,7 @@ namespace FireEngine
 
 	EXPORT_API Camera* CameraCreate(TransformHandle parent, const char16_t* name)
 	{
-		std::string _name = toUTF8(std::u16string(name));
+		std::string _name = ToUtf8String(std::u16string(name));
 		TransformPtr parentPtr = ObjectManager::Get(parent);
 		CameraPtr camera = GameObject::Create(parentPtr, _name)->AddComponent<Camera>();
 		camera->SetCullingMask(1 << 0);

@@ -18,21 +18,21 @@ namespace FireEngine
             return base.GetHashCode();
         }
 
-        public override bool Equals(object other)
-        {
-            Object @object = other as Object;
-            return (!(@object == null) || other == null || other is Object);
-        }
+        //public override bool Equals(object other)
+        //{
+        //    Object @object = other as Object;
+        //    return (!(@object == null) || other == null || other is Object);
+        //}
 
-        public static bool operator ==(Object x, Object y)
-        {
-            return x == y;
-        }
+        //public static bool operator ==(Object x, Object y)
+        //{
+        //    return x == y;
+        //}
 
-        public static bool operator !=(Object x, Object y)
-        {
-            return x != y;
-        }
+        //public static bool operator !=(Object x, Object y)
+        //{
+        //    return x != y;
+        //}
 
         public static implicit operator bool(Object exists)
         {

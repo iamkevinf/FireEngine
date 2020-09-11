@@ -160,9 +160,7 @@ namespace FireEditor
             if (!Directory.Exists(path))
                 Directory.CreateDirectory(path);
 
-            string assetsPath = string.Format("{0}\\Assets", path);
-            if (!Directory.Exists(assetsPath))
-                Directory.CreateDirectory(assetsPath);
+            _CreateProjectFolder(path);
 
             Open(path);
 
@@ -171,12 +169,14 @@ namespace FireEditor
 
         public static void Open(string path)
         {
-            string assetsPath = string.Format("{0}\\Assets", path);
+            string assetsPath = System.IO.Path.Combine(path, "Assets");
             if (!Directory.Exists(assetsPath))
             {
                 Debug.LogErrorFormat("{0} 不是有效的工程路径", path);
                 return;
             }
+
+            _CreateProjectImmFolder(path);
 
             Project project = new Project();
             project.path = path;
@@ -185,6 +185,28 @@ namespace FireEditor
             project.WatchFile();
 
             current = project;
+        }
+
+        static void _CreateProjectFolder(string projectPath)
+        {
+            string assetsPath = System.IO.Path.Combine(projectPath, "Assets");
+            if (!Directory.Exists(assetsPath))
+                Directory.CreateDirectory(projectPath);
+
+            string settingPath = System.IO.Path.Combine(projectPath, "ProjectSettings");
+            if (!Directory.Exists(settingPath))
+                Directory.CreateDirectory(settingPath);
+        }
+
+        static void _CreateProjectImmFolder(string projectPath)
+        {
+            string libraryPath = System.IO.Path.Combine(projectPath, "Library");
+            if (!Directory.Exists(libraryPath))
+                Directory.CreateDirectory(libraryPath);
+
+            string tempPath = System.IO.Path.Combine(projectPath, "Temp");
+            if (!Directory.Exists(tempPath))
+                Directory.CreateDirectory(tempPath);
         }
     }
 }

@@ -13,6 +13,8 @@ namespace FireEditor
 
         void Import(string fullname);
 
+        bool HasGUI { get; }
+
         void OnGUI();
     }
 

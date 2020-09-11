@@ -59,6 +59,8 @@ namespace FireEngine
 		void* load(const char* _filePath, uint32_t* _size = NULL);
 		void unload(void* _ptr);
 
+		void createPath(const char* _filePath);
+
 		static FileSystem* getInstance();
 
 	private:

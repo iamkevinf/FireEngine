@@ -10,6 +10,7 @@
 #include "graphics/texture2d.h"
 
 #include "loader/loader.h"
+#include "utils/string_tool.h"
 
 namespace FireEngine
 {
@@ -97,7 +98,7 @@ namespace FireEngine
 		ObjectPtr objPtr = ObjectManager::GetRef(parent->objectID);
 		TransformPtr transform = std::static_pointer_cast<Transform>(objPtr);
 
-		std::string _name = toUTF8(std::u16string(name));
+		std::string _name = ToUtf8String(std::u16string(name));
 
 		GameObjectPtr gameObject = GameObject::Create(transform, _name);
 		auto meshRenderer = gameObject->AddComponent<MeshRenderer>();
@@ -136,10 +137,10 @@ namespace FireEngine
 
 		//auto mesh = Mesh::LoadFromMem(buffer, false);
 		auto mesh = Mesh::Create();
-		//loadMesh("mesh/Human.fbx", mesh, mats, mats);
-		//loadMesh("mesh/untitled.obj", mesh, mats);
-		loadMesh("mesh/nanosuit/nanosuit.obj", mesh, mats);
-		//loadMesh("mesh/cube/cube.obj", mesh, mats);
+		//loadMesh("Assets/mesh/Human.fbx", mesh, mats, mats);
+		//loadMesh("Assets/mesh/untitled.obj", mesh, mats);
+		loadMesh("Assets/mesh/nanosuit/nanosuit.obj", mesh, mats);
+		//loadMesh("Assets/mesh/cube/cube.obj", mesh, mats);
 
 		meshRenderer->SetSharedMesh(mesh);
 		meshRenderer->SetSharedMaterials(mats);

@@ -4,6 +4,7 @@
 
 #include "exportapi.h"
 #include "scene/scene.h"
+#include "utils/string_tool.h"
 
 #include <glm/gtc/quaternion.hpp>
 
@@ -276,7 +277,7 @@ namespace FireEngine
 		TransformPtr parentPtr = ObjectManager::Get(parent);
 
 		Transform* transform = new Transform();
-		transform->name = toUTF8(std::u16string(name));
+		transform->name = ToUtf8String(std::u16string(name));
 		TransformPtr transformPtr = TransformPtr(transform);
 		parentPtr->children.push_back(transformPtr);
 
@@ -333,7 +334,7 @@ namespace FireEngine
 	{
 		auto object = ObjectManager::Get(handle);
 		Transform* pTransform = (Transform*)object.get();
-		pTransform->name = toUTF8(std::u16string(name));
+		pTransform->name = ToUtf8String(std::u16string(name));
 	}
 
 	EXPORT_API const char* TransformGetName(TransformHandle handle)

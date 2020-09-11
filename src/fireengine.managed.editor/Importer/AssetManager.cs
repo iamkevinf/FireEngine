@@ -4,31 +4,17 @@ using System.Text;
 
 namespace FireEditor
 {
-    public enum AssetType
-    {
-        Texture,
-        Shader,
-        Material,
-        Mesh
-    }
-
-    public interface iAsset
-    {
-        AssetType type { get; }
-
-        void Import();
-    }
 
     public static class AssetManager
     {
-        static Dictionary<AssetType, iAsset> pool = new Dictionary<AssetType, iAsset>();
+        static Dictionary<string, object> pool = new Dictionary<string, object>();
 
-        public static void RegisterAsset(iAsset asset)
+        public static void AddOrUpAsset(string fullname, object asset)
         {
-            if (pool.ContainsKey(asset.type))
-                return;
-
-            pool.Add(asset.type, asset);
+            if (pool.ContainsKey(fullname))
+                pool[fullname] = asset;
+            else
+                pool.Add(fullname, asset);
         }
     }
 }

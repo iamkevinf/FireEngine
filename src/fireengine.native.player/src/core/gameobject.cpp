@@ -4,6 +4,7 @@
 #include "world.h"
 #include "graphics/renderer.h"
 #include "graphics/layer.h"
+#include "utils/string_tool.h"
 
 namespace FireEngine
 {
@@ -355,7 +356,7 @@ namespace FireEngine
 	EXPORT_API GameObjectHandle GameObjectCreate(TransformHandle parent, const char16_t* name)
 	{
 		TransformPtr parentPtr = ObjectManager::Get(parent);
-		auto go = GameObject::Create(parentPtr, toUTF8(std::u16string(name)));
+		auto go = GameObject::Create(parentPtr, ToUtf8String(std::u16string(name)));
 
 
 		return { go->objectID };

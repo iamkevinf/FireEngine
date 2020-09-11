@@ -7,7 +7,7 @@ using System.Text;
 
 namespace FireEngine
 {
-    public class Component
+    public class Component : Object
     {
         protected IntPtr m_nativePtr = IntPtr.Zero;
         private Component()

@@ -1,5 +1,19 @@
 #include "FileSystem.h"
 
+#if __cplusplus < 201703L // If the version of C++ is less than 17
+#define _SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING
+#include <experimental/filesystem>
+#else
+#include <filesystem>
+#endif
+
+#if __cplusplus < 201703L // If the version of C++ is less than 17
+// It was still in the experimental:: namespace
+namespace fs = std::experimental::filesystem;
+#else
+namespace fs = std::filesystem;
+#endif
+
 namespace FireEngine
 {
 	FileSystem FileSystem::s_instance;
@@ -84,6 +98,12 @@ namespace FireEngine
 	void FileSystem::unload(void* _ptr)
 	{
 		BX_FREE(getAllocator(), _ptr);
+	}
+
+	void FileSystem::createPath(const char* _filePath)
+	{
+		if(!fs::exists(_filePath))
+			fs::create_directories(_filePath);
 	}
 
 	FileSystem* FileSystem::getInstance()

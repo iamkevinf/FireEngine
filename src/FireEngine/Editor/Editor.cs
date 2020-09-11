@@ -41,7 +41,7 @@ namespace FireEngine.Editor
             {
                 var io = ImGui.GetIO();
                 ImFontPtr font = io.Fonts.AddFontFromFileTTF(
-                                "fonts/AlibabaPH-Regular.otf", 16f, null, io.Fonts.GetGlyphRangesChineseFull());
+                                "Assets/fonts/AlibabaPH-Regular.otf", 16f, null, io.Fonts.GetGlyphRangesChineseFull());
 
                 mainthreadAction.Enqueue(() =>
                 {
@@ -192,9 +192,14 @@ namespace FireEngine.Editor
             var rt = nfdnative.NFD_PickFolder(curPath, ref path);
             if (rt == nfdnative.nfdresult.NFD_OKAY)
             {
+                ProjectNative.SetProjectPath(path);
                 var ret = Project.Create(path);
                 if (ret == Project.ProjectCreateResult.NotEmpty)
+                {
                     Debug.LogError("directory is not empty");
+                    return;
+                }
+
             }
 
         }
@@ -208,6 +213,7 @@ namespace FireEngine.Editor
             var rt = nfdnative.NFD_PickFolder(curPath, ref path);
             if (rt == nfdnative.nfdresult.NFD_OKAY)
             {
+                ProjectNative.SetProjectPath(path);
                 try
                 {
                     Project.Open(path);
@@ -215,6 +221,7 @@ namespace FireEngine.Editor
                 catch (Exception e)
                 {
                     Debug.LogErrorFormat("打开项目失败 {0}", e.ToString());
+                    return;
                 }
 
             }
@@ -267,7 +274,7 @@ namespace FireEngine.Editor
             ImGui.SetNextWindowViewport(viewport.ID);
             ImGui.PushStyleVar(ImGuiStyleVar.WindowRounding, 0.0f);
             ImGui.PushStyleVar(ImGuiStyleVar.WindowBorderSize, 0.0f);
-            ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, System.Numerics.Vector2.Zero);
+            ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, Vector2.Zero);
             ImGuiWindowFlags window_flags = ImGuiWindowFlags.MenuBar | ImGuiWindowFlags.NoDocking;
             window_flags |= ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove;
             window_flags |= ImGuiWindowFlags.NoBringToFrontOnFocus | ImGuiWindowFlags.NoNavFocus;
@@ -275,7 +282,7 @@ namespace FireEngine.Editor
             if (ImGui.Begin("DockWindow", window_flags))
             {
                 uint rootdockid = ImGui.GetID("rootdock");
-                ImGui.DockSpace(rootdockid, System.Numerics.Vector2.Zero, ImGuiDockNodeFlags.PassthruCentralNode);
+                ImGui.DockSpace(rootdockid, Vector2.Zero, ImGuiDockNodeFlags.PassthruCentralNode);
                 ImGui.PopStyleVar();
                 ImGui.PopStyleVar();
                 ImGui.PopStyleVar();

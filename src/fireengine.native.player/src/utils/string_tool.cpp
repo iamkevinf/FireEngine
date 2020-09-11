@@ -268,6 +268,27 @@ namespace FireEngine
 		return ret.size() > 0;
 	}
 
+	std::wstring_convert<std::codecvt_utf8_utf16<char16_t>, char16_t> _converter;
+
+	std::u16string ToUtf16String(char* strAnsiOrUtf8)
+	{
+		return _converter.from_bytes(strAnsiOrUtf8);
+	}
+
+	std::string ToUtf8String(char16_t* strUtf16)
+	{
+		return _converter.to_bytes(strUtf16);
+	}
+	
+	std::u16string ToUtf16String(std::string strAnsiOrUtf8)
+	{
+		return _converter.from_bytes(strAnsiOrUtf8);
+	}
+	
+	std::string ToUtf8String(std::u16string strUtf16)
+	{
+		return _converter.to_bytes(strUtf16);
+	}
 
 	OutputNChar::OutputNChar(char ch, int nRepeat)
 		: _ch(ch)

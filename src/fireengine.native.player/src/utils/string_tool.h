@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <codecvt>
 
 namespace FireEngine
 {
@@ -41,6 +42,12 @@ namespace FireEngine
 
 	// 返回值包含'.'
 	std::string GetFileExt(const std::string& name);
+
+	std::u16string ToUtf16String(char* strAnsiOrUtf8);
+	std::string ToUtf8String(char16_t* strUtf16);
+	std::u16string ToUtf16String(std::string strAnsiOrUtf8);
+	std::string ToUtf8String(std::u16string strUtf16);
+
 
 	class OutputNChar
 	{

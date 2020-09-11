@@ -13,6 +13,7 @@ namespace FireEngine.Editor
         ImGuiTreeNodeFlags flagsBase = ImGuiTreeNodeFlags.DefaultOpen
             | ImGuiTreeNodeFlags.OpenOnArrow;
 
+        bool createdDefault = false;
         public void Init()
         {
             int count = SceneNative.SceneCount();
@@ -24,12 +25,9 @@ namespace FireEngine.Editor
             SceneNative.SceneHandle handle = SceneNative.SceneFindByIndex(0);
 
             Scene.Open(handle);
-
-            System.Threading.Tasks.Task.Delay(100).ContinueWith(
-                t => OnDelayCallCreateComponent());
         }
 
-        void OnDelayCallCreateComponent()
+        void OnCreateDefaultComponent()
         {
             if (Scene.current == null)
                 return;
@@ -330,6 +328,11 @@ namespace FireEngine.Editor
 
         public void OnTick()
         {
+            if(!createdDefault)
+            {
+                OnCreateDefaultComponent();
+                createdDefault = true;
+            }
         }
 
         public void OnShow()
