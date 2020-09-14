@@ -25,3 +25,9 @@
  - [ ] 导出现有的gameobject transform camera
  - [ ] editor窗口怎么接受鼠标拖拽framebuffer中渲染出来的gizmos？
  - [ ] mesh material
+
+## todo list
+ - [ ] 从材质中读取renderstate渲染
+ - [ ] 材质属性增加 float
+ - [ ] 材质属性增加 color
+ - [ ] 材质属性增加 texture

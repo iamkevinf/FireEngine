@@ -10,6 +10,7 @@ namespace FireEditor
         Component,
         Transform,
         Camera,
+        Renderer,
         // assert
         Material,
         Shader,
@@ -23,6 +24,7 @@ namespace FireEditor
         }
 
         void OnGUIInspector(object userData);
+        void OnGUIInspectorEnd(object userData);
     }
 
 

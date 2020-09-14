@@ -13,6 +13,13 @@ namespace FireEngine
 	class Material : public IObject
 	{
 	public:
+		struct MaterialPropertyNodeVec4
+		{
+			std::string name;
+			std::string desc;
+			glm::vec4 value;
+		};
+
 		static std::shared_ptr<Material> Create(const std::string& shadername);
 
 		const std::shared_ptr<Shader>& GetShader()const { return shader; }
@@ -27,11 +34,17 @@ namespace FireEngine
 
 		void UpdateUniforms(uint32_t pass_index);
 
+		const std::vector<std::shared_ptr<MaterialPropertyNodeVec4>> GetPropertiesVec4()const { return properties_vec4; }
+
 	private:
 		void SetUniform(uint32_t pass_index, const std::string& name, void* data);
 		void SetUniformTexture(uint32_t pass_index, const std::string& name, uint8_t idx, const std::shared_ptr<Texture2D>& data);
 
+		static bool _LoadFromFile(std::shared_ptr<Material> ptr, const std::string& path);
+
 	private:
+		std::vector<std::shared_ptr<MaterialPropertyNodeVec4>> properties_vec4;
+
 		std::shared_ptr<Shader> shader;
 		std::map<std::string, glm::vec4> vec4s;
 		struct _Texture2DNode

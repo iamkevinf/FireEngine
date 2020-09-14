@@ -210,10 +210,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>..\..\3rdparty\bx\include\compat\msvc;..\..\3rdparty\bgfx\include;..\..\3rdparty\bimg\include;..\..\3rdparty\bgfx\examples\common;..\..\3rdparty\bx\include;..\..\3rdparty\imgui_docking;..\..\3rdparty\imgui_docking\examples;..\..\3rdparty\imgui_docking\examples\libs\gl3w;..\..\3rdparty\imgui_docking\examples\libs\glfw\include;..\..\3rdparty\glm;..\..\3rdparty\assimp\BINARIES\x64\include;..\..\3rdparty\Assimp\include;..\..\src\fireengine.native.player\src;..\..\3rdparty\yaml\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>..\..\libs\glfw\lib-vc2019-64;..\..\3rdparty\bgfx\.build\win64_vs2019\bin;..\..\libs;..\..\3rdparty\yaml\build\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>bgfxDebug.lib;bimgDebug.lib;bimg_decodeDebug.lib;bxDebug.lib;example-commonDebug.lib;opengl32.lib;assimp-vc141-mt.lib;yaml-cppd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -224,12 +227,15 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>..\..\3rdparty\bx\include\compat\msvc;..\..\3rdparty\bgfx\include;..\..\3rdparty\bimg\include;..\..\3rdparty\bgfx\examples\common;..\..\3rdparty\bx\include;..\..\3rdparty\imgui_docking;..\..\3rdparty\imgui_docking\examples;..\..\3rdparty\imgui_docking\examples\libs\gl3w;..\..\3rdparty\imgui_docking\examples\libs\glfw\include;..\..\3rdparty\glm;..\..\3rdparty\assimp\BINARIES\x64\include;..\..\3rdparty\Assimp\include;..\..\src\fireengine.native.player\src;..\..\3rdparty\yaml\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>..\..\libs\glfw\lib-vc2019-64;..\..\3rdparty\bgfx\.build\win64_vs2019\bin;..\..\libs;..\..\3rdparty\yaml\build\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>bgfxRelease.lib;bimgRelease.lib;bimg_decodeRelease.lib;bxRelease.lib;example-commonRelease.lib;opengl32.lib;assimp-vc141-mt.lib;yaml-cpp.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -238,7 +244,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\..\3rdparty\bx\include\compat\msvc;..\..\3rdparty\bgfx\include;..\..\3rdparty\bimg\include;..\..\3rdparty\bgfx\examples\common;..\..\3rdparty\bx\include;..\..\3rdparty\imgui_docking;..\..\3rdparty\imgui_docking\examples;..\..\3rdparty\imgui_docking\examples\libs\gl3w;..\..\3rdparty\imgui_docking\examples\libs\glfw\include;..\..\3rdparty\glm;..\..\3rdparty\assimp\BINARIES\x64\include;..\..\3rdparty\Assimp\include;..\..\src\fireengine.native.player\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\3rdparty\bx\include\compat\msvc;..\..\3rdparty\bgfx\include;..\..\3rdparty\bimg\include;..\..\3rdparty\bgfx\examples\common;..\..\3rdparty\bx\include;..\..\3rdparty\imgui_docking;..\..\3rdparty\imgui_docking\examples;..\..\3rdparty\imgui_docking\examples\libs\gl3w;..\..\3rdparty\imgui_docking\examples\libs\glfw\include;..\..\3rdparty\glm;..\..\3rdparty\assimp\BINARIES\x64\include;..\..\3rdparty\Assimp\include;..\..\src\fireengine.native.player\src;..\..\3rdparty\yaml\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <PreprocessToFile>false</PreprocessToFile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
@@ -247,8 +253,8 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\..\libs\glfw\lib-vc2019-64;..\..\3rdparty\bgfx\.build\win64_vs2019\bin;..\..\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>bgfxDebug.lib;bimgDebug.lib;bimg_decodeDebug.lib;bxDebug.lib;example-commonDebug.lib;opengl32.lib;assimp-vc141-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\libs\glfw\lib-vc2019-64;..\..\3rdparty\bgfx\.build\win64_vs2019\bin;..\..\libs;..\..\3rdparty\yaml\build\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>bgfxDebug.lib;bimgDebug.lib;bimg_decodeDebug.lib;bxDebug.lib;example-commonDebug.lib;opengl32.lib;assimp-vc141-mt.lib;yaml-cppd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>
@@ -263,7 +269,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\..\3rdparty\bx\include\compat\msvc;..\..\3rdparty\bgfx\include;..\..\3rdparty\bimg\include;..\..\3rdparty\bgfx\examples\common;..\..\3rdparty\bx\include;..\..\3rdparty\imgui_docking;..\..\3rdparty\imgui_docking\examples;..\..\3rdparty\imgui_docking\examples\libs\gl3w;..\..\3rdparty\imgui_docking\examples\libs\glfw\include;..\..\3rdparty\glm;..\..\3rdparty\assimp\BINARIES\x64\include;..\..\3rdparty\Assimp\include;..\..\src\fireengine.native.player\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\3rdparty\bx\include\compat\msvc;..\..\3rdparty\bgfx\include;..\..\3rdparty\bimg\include;..\..\3rdparty\bgfx\examples\common;..\..\3rdparty\bx\include;..\..\3rdparty\imgui_docking;..\..\3rdparty\imgui_docking\examples;..\..\3rdparty\imgui_docking\examples\libs\gl3w;..\..\3rdparty\imgui_docking\examples\libs\glfw\include;..\..\3rdparty\glm;..\..\3rdparty\assimp\BINARIES\x64\include;..\..\3rdparty\Assimp\include;..\..\src\fireengine.native.player\src;..\..\3rdparty\yaml\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/D IMGUI_USER_CONFIG=&lt;imgui/imgui_config.h&gt; /D GLM_FORCE_LEFT_HANDED %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
@@ -271,8 +277,8 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\..\libs\glfw\lib-vc2019-64;..\..\3rdparty\bgfx\.build\win64_vs2019\bin;..\..\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>bgfxRelease.lib;bimgRelease.lib;bimg_decodeRelease.lib;bxRelease.lib;example-commonRelease.lib;opengl32.lib;assimp-vc141-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\libs\glfw\lib-vc2019-64;..\..\3rdparty\bgfx\.build\win64_vs2019\bin;..\..\libs;..\..\3rdparty\yaml\build\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>bgfxRelease.lib;bimgRelease.lib;bimg_decodeRelease.lib;bxRelease.lib;example-commonRelease.lib;opengl32.lib;assimp-vc141-mt.lib;yaml-cpp.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

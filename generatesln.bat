@@ -4,3 +4,8 @@ pause
 cd ..\assimp
 BUILDBINARIES_EXAMPLE.bat
 pause
+cd ..\yaml
+if not exist "build" mkdir "build"
+cd build
+cmake -G "Visual Studio 16 2019" ../
+pause

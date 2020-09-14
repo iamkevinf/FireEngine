@@ -2,6 +2,7 @@
 using ImGuiNET;
 using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Text;
 
 namespace FireEngine.Editor
@@ -54,7 +55,6 @@ namespace FireEngine.Editor
         public bool HasGUI => true;
 
         Material curMat = null;
-        string curShaderName;
         public void Import(string fullname)
         {
             string metaPath = string.Format("{0}.meta", fullname);
@@ -72,7 +72,6 @@ namespace FireEngine.Editor
             int idx = txt.IndexOf('\r');
             if (idx >= 0)
                 txt = txt.Substring(0, idx);
-            curShaderName = txt;
             Shader shader = Shader.Find(txt);
             curMat = new Material(shader);
 
@@ -81,19 +80,23 @@ namespace FireEngine.Editor
 
         public void OnGUI()
         {
-            ImGui.Text("Shader");
-            ImGui.SameLine();
+            OnGUI(curMat);
+        }
 
-            string shaderName = curShaderName;
+        public static int mat_count = 0;
+
+        static void OnGUI_SelectShader(Material mat)
+        {
+            string shaderName = mat.shader.name;
             int idx = shaderName.LastIndexOf('/');
             if (idx >= 0)
-                shaderName = shaderName.Substring(idx+1);
+                shaderName = shaderName.Substring(idx + 1);
 
             string nameList = ShaderNative.ShaderGetNameList();
             string[] arr = nameList.Split(',');
 
             List<ShaderNameNode> nameNode = new List<ShaderNameNode>();
-            if (ImGui.BeginCombo("##Combo#ShaderName#ImporterMaterial", shaderName))
+            if (ImGui.BeginCombo($"Shader##Combo#ShaderName#ImporterMaterial#{mat_count++}", shaderName))
             {
                 for (int i = 0; i < arr.Length; ++i)
                 {
@@ -105,15 +108,45 @@ namespace FireEngine.Editor
 
                 foreach (var node in nameNode)
                 {
-                    IterNode(node);
+                    IterNode(node, mat.shader.name, ref mat);
                 }
 
                 ImGui.EndCombo();
             }
-
         }
 
-        void DeepSplitName(ref ShaderNameNode parent, string name)
+        public static void OnGUI(Material mat)
+        {
+            if (!mat)
+                return;
+
+            if (!mat.shader)
+                return;
+
+
+            if (ImGui.TreeNodeEx($"{mat.name}##DragFloat4#SImporterMaterial#OnGUI#{mat_count}", ImGuiTreeNodeFlags.None))
+            {
+                OnGUI_SelectShader(mat);
+
+                int propertiesCount = MaterialNative.MaterialGetPropertyVec4Count(mat.native);
+                for (int i = 0; i < propertiesCount; ++i)
+                {
+                    IntPtr n = MaterialNative.MaterialGetPropertyVec4(mat.native, i);
+                    string name = MaterialNative.MaterialGetPropertyVec4NameStr(n);
+                    string desc = MaterialNative.MaterialGetPropertyVec4DescStr(n);
+                    Vector4 value = MaterialNative.MaterialGetPropertyVec4Value(n);
+                    if (ImGui.DragFloat4($"{desc}##DragFloat4#SImporterMaterial#OnGUI#{mat_count}", ref value))
+                    {
+                        mat.SetVector(name, value);
+                    }
+
+                }
+                ImGui.TreePop();
+            }
+        }
+
+
+        static void DeepSplitName(ref ShaderNameNode parent, string name)
         {
             int idx = name.IndexOf('/');
             if (idx < 0)
@@ -135,64 +168,38 @@ namespace FireEngine.Editor
             }
         }
 
-        void IterNode(ShaderNameNode node)
+        static void IterNode(ShaderNameNode node, string oriName, ref Material curMat)
         {
             if (node.name == null || node.name == "")
             {
                 if (node.child != null)
-                    IterNode(node.child);
+                    IterNode(node.child, oriName, ref curMat);
             }
             else
             {
                 if (node.child == null)
                 {
-                    if (ImGui.MenuItem(node.name, "", node.fullname == curShaderName))
-                        OnSelectShader(node);
+                    if (ImGui.MenuItem(node.name, "", node.fullname == oriName))
+                        OnSelectShader(node, oriName, ref curMat);
                 }
                 else
                 {
                     if (ImGui.BeginMenu(node.name))
                     {
-                        IterNode(node.child);
+                        IterNode(node.child, oriName, ref curMat);
                         ImGui.EndMenu();
                     }
                 }
             }
         }
 
-        void OnSelectShader(ShaderNameNode node)
+        static void OnSelectShader(ShaderNameNode node, string oriName, ref Material curMat)
         {
-            ShaderNameNode tmp = node;
-            tmp.child = null;
-            string name = "";
-            while (tmp.parent != null)
-                tmp = tmp.parent;
-
-            while(tmp.child != null)
-            {
-                if (tmp.name != null && tmp.name != "")
-                {
-                    name += tmp.name;
-                    name += "/";
-
-                    tmp = tmp.child;
-                }
-                else
-                {
-                    tmp = tmp.child;
-                }
-            }
-
-            if(tmp.name != null && tmp.name != "")
-                name = name + tmp.name;
-
-            if(node.fullname != curShaderName)
+            if (node.fullname != oriName)
             {
                 curMat.shader = Shader.Find(node.fullname);
                 Debug.LogFormat("切换了shader {0}", node.fullname);
-                curShaderName = node.fullname;
             }
-
         }
     }
 }

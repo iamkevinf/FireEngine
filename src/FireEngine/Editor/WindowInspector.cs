@@ -60,6 +60,7 @@ namespace FireEngine.Editor
                 return;
 
             node.inspector.OnGUIInspector(node.component);
+            node.inspector.OnGUIInspectorEnd(node.component);
         }
 
         public void OnHide()

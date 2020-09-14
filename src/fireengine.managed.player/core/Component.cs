@@ -33,12 +33,12 @@ namespace FireEngine
             cbkOnEnable = new ScriptableCallback(OnEnable);
             cbkDisable = new ScriptableCallback(OnDisable);
 
-            ComponentRegisterCallScriptable(native, ScriptableFuncType.Awake, cbkAwake);
-            ComponentRegisterCallScriptable(native, ScriptableFuncType.Start, cbkStart);
-            ComponentRegisterCallScriptable(native, ScriptableFuncType.Update, cbkUpdate);
-            ComponentRegisterCallScriptable(native, ScriptableFuncType.LateUpdate, cbkLateUpdate);
-            ComponentRegisterCallScriptable(native, ScriptableFuncType.OnEnable, cbkOnEnable);
-            ComponentRegisterCallScriptable(native, ScriptableFuncType.OnDisable, cbkDisable);
+            //ComponentRegisterCallScriptable(native, ScriptableFuncType.Awake, cbkAwake);
+            //ComponentRegisterCallScriptable(native, ScriptableFuncType.Start, cbkStart);
+            //ComponentRegisterCallScriptable(native, ScriptableFuncType.Update, cbkUpdate);
+            //ComponentRegisterCallScriptable(native, ScriptableFuncType.LateUpdate, cbkLateUpdate);
+            //ComponentRegisterCallScriptable(native, ScriptableFuncType.OnEnable, cbkOnEnable);
+            //ComponentRegisterCallScriptable(native, ScriptableFuncType.OnDisable, cbkDisable);
         }
 
         #region Callback
@@ -56,7 +56,6 @@ namespace FireEngine
         public virtual void LateUpdate()
         {
         }
-
 
         public virtual void OnEnable()
         {

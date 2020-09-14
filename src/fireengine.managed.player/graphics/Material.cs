@@ -7,19 +7,41 @@ namespace FireEngine
 {
     public class Material : Object
     {
-        IntPtr native = IntPtr.Zero;
+        IntPtr m_nativePtr = IntPtr.Zero;
+        public string fullname
+        {
+            get;
+            private set;
+        }
+        public IntPtr native
+        {
+            get => m_nativePtr;
+        }
+
         public Material(IntPtr native)
         {
-            this.native = native;
+            m_nativePtr = native;
             IntPtr shaderNative = MaterialNative.MaterialGetShader(native);
             shader = new Shader(shaderNative);
+            SetName();
         }
 
         public Material(Shader shader)
         {
             this.shader = shader;
-            native = MaterialNative.MaterialCreate(shader.name);
-            name = shader.name;
+            m_nativePtr = MaterialNative.MaterialCreate(shader.name);
+            SetName();
+        }
+
+        void SetName()
+        {
+            fullname = MaterialNative.MaterialGetName(native);
+            int idxDot = fullname.LastIndexOf('.');
+            if (idxDot >= 0)
+                name = fullname.Substring(0, idxDot);
+            int idxG = fullname.LastIndexOf('/');
+            if (idxG >= 0)
+                name = name.Substring(idxG + 1, idxDot - idxG - 1);
         }
 
         public Shader shader
@@ -30,7 +52,7 @@ namespace FireEngine
 
         public void SetVector(string name, Vector4 v)
         {
-            MaterialNative.MaterialSetVector(native, name, v);
+            MaterialNative.MaterialSetVector(m_nativePtr, name, v);
         }
     }
 }

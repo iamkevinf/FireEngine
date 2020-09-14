@@ -336,7 +336,7 @@ namespace FireEngine
 		for (uint32_t i = 0; i < node->mNumMeshes; ++i)
 		{
 			aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-			auto myMat = Material::Create("Assets/default-mat.mat");
+			auto myMat = Material::Create("Assets/default.mat");
 			_processMesh(directory, mesh, scene, childrenIdx + i, myMesh, myMat);
 			myMats.push_back(myMat);
 		}

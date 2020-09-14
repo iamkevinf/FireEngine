@@ -2,7 +2,7 @@
 
 namespace FireEngine
 {
-    public class Mathf
+    public static class Mathf
     {
         public const float PI = (float)Math.PI;
 
@@ -17,6 +17,11 @@ namespace FireEngine
 
         // Radians-to-degrees conversion constant (RO).
         public const float Rad2Deg = 1F / Deg2Rad;
+
+        public static int Max(int a, int b)
+        {
+            return Math.Max(a, b);
+        }
 
     }
 }

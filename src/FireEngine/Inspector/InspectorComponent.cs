@@ -29,7 +29,7 @@ namespace FireEngine.Editor
             if (component == null)
                 return;
 
-            if (ImGui.CollapsingHeader("Transform##Inspector", treeNodeFlags))
+            if (ImGui.CollapsingHeader("Component##Inspector", treeNodeFlags))
             {
                 float textWidth = Math.Min(ImGui.GetContentRegionAvail().X * 0.75f, 300);
                 ImGui.SetNextItemWidth(textWidth);
@@ -52,6 +52,11 @@ namespace FireEngine.Editor
                 component.gameObject.transform.scale = scl;
                 ImGui.Text("Scale");
             }
+        }
+
+        public virtual void OnGUIInspectorEnd(object userData)
+        {
+
         }
     }
 }

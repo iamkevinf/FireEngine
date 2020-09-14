@@ -47,6 +47,9 @@ namespace FireEngine
         public Component[] GetComponents()
         {
             int size = GameObjectGetComponentsCount(m_nativePtr);
+            if (size <= 0)
+                return null;
+
             Component[] ret = new Component[size];
             for(int i = 0; i < size; ++i)
             {
@@ -68,6 +71,41 @@ namespace FireEngine
                 ret[i] = comp;
             }
             return ret;
+        }
+
+        public Component GetComponent()
+        {
+            Component[] comps = GetComponents();
+            if (comps == null)
+                return null;
+            
+            return comps[0];
+        }
+
+        public T[] GetComponents<T>() where T : Component
+        {
+            var comps = GetComponents();
+            if (comps ==  null)
+                return null;
+
+            List<T> ret = new List<T>();
+            foreach (Component comp in comps)
+            {
+                if (comp is T)
+                    ret.Add(comp as T);
+
+            }
+
+            return ret.ToArray();
+        }
+
+        public T GetComponent<T>() where T : Component
+        {
+            var comps = GetComponents<T>();
+            if (comps == null)
+                return null;
+
+            return comps[0];
         }
 
         #region Native
