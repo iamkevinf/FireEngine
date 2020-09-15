@@ -51,6 +51,8 @@ namespace FireEngine
 		void SetLayer(uint32_t layer);
 		uint32_t GetLayer() const { return layer; }
 
+		void Destroy();
+
 	private:
 		GameObject(const std::string& name);
 

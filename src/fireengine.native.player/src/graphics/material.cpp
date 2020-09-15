@@ -44,6 +44,8 @@ namespace YAML
 namespace FireEngine
 {
 
+	std::vector<std::shared_ptr<Material>> Material::s_mats;
+
 	bool Material::_LoadFromFile(std::shared_ptr<Material> ptr, const std::string& path)
 	{
 		if (!ptr)
@@ -115,6 +117,9 @@ namespace FireEngine
 
 		ObjectManager::Register(material, ObjectType::Asset);
 		material->SetName(materialname);
+
+		s_mats.push_back(material);
+
 		return material;
 	}
 
@@ -211,8 +216,8 @@ namespace FireEngine
 
 	EXPORT_API Material* MaterialCreate(const char16_t* name)
 	{
-		std::string shadername = ToUtf8String(std::u16string(name));
-		auto ptr = Material::Create(shadername);
+		std::string u8name = ToUtf8String(std::u16string(name));
+		auto ptr = Material::Create(u8name);
 		return ptr.get();
 	}
 

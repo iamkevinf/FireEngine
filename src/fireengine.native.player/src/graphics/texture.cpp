@@ -7,15 +7,27 @@
 
 #include <bgfx/bgfx.h>
 #include <imgui.h>
+#include "utils/log.h"
+
+#include "app/app.h"
 
 namespace FireEngine
 {
 	Texture::~Texture()
 	{
-		if (bgfx::isValid(texture_handle))
+		if (IsExited())
 		{
-			bgfx::destroy(texture_handle);
-			texture_handle = BGFX_INVALID_HANDLE;
+			FIREENGINE_LOG_INFO(u"don't need destroy, bgfx is exited");
+		}
+		else
+		{
+			if (bgfx::isValid(texture_handle))
+			{
+				FIREENGINE_LOG_INFO(u"destroy texture handle %d", texture_handle.idx);
+				bgfx::destroy(texture_handle);
+				texture_handle = BGFX_INVALID_HANDLE;
+
+			}
 		}
 	}
 

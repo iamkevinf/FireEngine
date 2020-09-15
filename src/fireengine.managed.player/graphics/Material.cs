@@ -26,10 +26,11 @@ namespace FireEngine
             SetName();
         }
 
-        public Material(Shader shader)
+        public Material(string path)
         {
-            this.shader = shader;
-            m_nativePtr = MaterialNative.MaterialCreate(shader.name);
+            m_nativePtr = MaterialNative.MaterialCreate(path);
+            IntPtr shaderNative = MaterialNative.MaterialGetShader(native);
+            shader = new Shader(shaderNative);
             SetName();
         }
 
@@ -40,6 +41,8 @@ namespace FireEngine
             if (idxDot >= 0)
                 name = fullname.Substring(0, idxDot);
             int idxG = fullname.LastIndexOf('/');
+            if(idxG < 0)
+                idxG = fullname.LastIndexOf('\\');
             if (idxG >= 0)
                 name = name.Substring(idxG + 1, idxDot - idxG - 1);
         }

@@ -54,6 +54,11 @@ namespace FireEngine
 			level = 0;
 		LOG_AFFECT_CS(msg.c_str(), level);
 
+#if _DEBUG
+		std::wstring_convert<std::codecvt_utf8<char16_t>, char16_t> cv;
+		std::cout << cv.to_bytes(msg) << std::endl;
+#endif
+
 		if (lvl >= FIREENGINE_LOG_LVL_FATAL)
 		{
 			abort();

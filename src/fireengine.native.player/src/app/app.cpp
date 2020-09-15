@@ -861,6 +861,7 @@ static void ImGui_ImplWin32_ShutdownPlatformInterface()
 //---------------------------------------------------------------------------------------------------------
 LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 HWND gHwnd = nullptr;
+bool gExited = false;
 int WindowMain(const char16_t* title, void(*OnInit)(), void(*OnGUI)(), void(*OnTick)(), void(*OnExit)())
 {
     ImGui_ImplWin32_EnableDpiAwareness();
@@ -870,6 +871,7 @@ int WindowMain(const char16_t* title, void(*OnInit)(), void(*OnGUI)(), void(*OnT
     ::RegisterClassEx(&wc);
     HWND hwnd = ::CreateWindow(wc.lpszClassName, (const wchar_t*)title, WS_OVERLAPPEDWINDOW, 100, 100, 1280, 800, NULL, NULL, wc.hInstance, NULL);
     gHwnd = hwnd;
+    gExited = false;
 
     RECT rect;
     GetWindowRect(hwnd, &rect);
@@ -881,7 +883,6 @@ int WindowMain(const char16_t* title, void(*OnInit)(), void(*OnGUI)(), void(*OnT
     // Show the window
     ::ShowWindow(hwnd, SW_SHOWDEFAULT);
     ::UpdateWindow(hwnd);
-
 
     // Main loop
     MSG msg;
@@ -920,6 +921,7 @@ int WindowMain(const char16_t* title, void(*OnInit)(), void(*OnGUI)(), void(*OnT
     FireEngine::GameView::OnExit();
     OnExit();
     PlatformFinalize();
+    gExited = true;
 
     ::DestroyWindow(hwnd);
     ::UnregisterClass(wc.lpszClassName, wc.hInstance);
@@ -973,4 +975,9 @@ LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
         break;
     }
     return ::DefWindowProc(hWnd, msg, wParam, lParam);
+}
+
+bool IsExited()
+{
+    return gExited;
 }

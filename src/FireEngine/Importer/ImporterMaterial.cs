@@ -66,14 +66,14 @@ namespace FireEngine.Editor
                 }
             }
 
-            var content = System.IO.File.ReadAllBytes(fullname);
-            // 这里临时存的是string
-            string txt = Encoding.UTF8.GetString(content, 0, content.Length);
-            int idx = txt.IndexOf('\r');
-            if (idx >= 0)
-                txt = txt.Substring(0, idx);
-            Shader shader = Shader.Find(txt);
-            curMat = new Material(shader);
+            //var content = System.IO.File.ReadAllBytes(fullname);
+            //// 这里临时存的是string
+            //string txt = Encoding.UTF8.GetString(content, 0, content.Length);
+            //int idx = txt.IndexOf('\r');
+            //if (idx >= 0)
+            //    txt = txt.Substring(0, idx);
+            //Shader shader = Shader.Find(txt);
+            curMat = new Material(fullname);
 
             AssetManager.AddOrUpAsset(fullname, curMat);
         }
@@ -83,7 +83,7 @@ namespace FireEngine.Editor
             OnGUI(curMat);
         }
 
-        public static int mat_count = 0;
+        public static int s_mat_count = 0;
 
         static void OnGUI_SelectShader(Material mat)
         {
@@ -96,7 +96,7 @@ namespace FireEngine.Editor
             string[] arr = nameList.Split(',');
 
             List<ShaderNameNode> nameNode = new List<ShaderNameNode>();
-            if (ImGui.BeginCombo($"Shader##Combo#ShaderName#ImporterMaterial#{mat_count++}", shaderName))
+            if (ImGui.BeginCombo($"Shader##Combo#ShaderName#ImporterMaterial#{s_mat_count++}", shaderName))
             {
                 for (int i = 0; i < arr.Length; ++i)
                 {
@@ -124,7 +124,7 @@ namespace FireEngine.Editor
                 return;
 
 
-            if (ImGui.TreeNodeEx($"{mat.name}##DragFloat4#SImporterMaterial#OnGUI#{mat_count}", ImGuiTreeNodeFlags.None))
+            if (ImGui.TreeNodeEx($"{mat.name}##DragFloat4#SImporterMaterial#OnGUI#{s_mat_count}", ImGuiTreeNodeFlags.None))
             {
                 OnGUI_SelectShader(mat);
 
@@ -135,7 +135,7 @@ namespace FireEngine.Editor
                     string name = MaterialNative.MaterialGetPropertyVec4NameStr(n);
                     string desc = MaterialNative.MaterialGetPropertyVec4DescStr(n);
                     Vector4 value = MaterialNative.MaterialGetPropertyVec4Value(n);
-                    if (ImGui.DragFloat4($"{desc}##DragFloat4#SImporterMaterial#OnGUI#{mat_count}", ref value))
+                    if (ImGui.DragFloat4($"{desc}{s_mat_count}##DragFloat4#SImporterMaterial#OnGUI#{s_mat_count}", ref value))
                     {
                         mat.SetVector(name, value);
                     }

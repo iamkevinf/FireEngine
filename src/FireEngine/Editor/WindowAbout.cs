@@ -3,7 +3,7 @@ using FireEditor;
 
 namespace FireEngine.Editor
 {
-    class WindowAbout : FireEditor.iWindow
+    class WindowAbout : iWindow
     {
         public void Init()
         {
@@ -37,6 +37,11 @@ namespace FireEngine.Editor
         }
         public void OnHide()
         {
+        }
+
+        public void OnDestroy()
+        {
+
         }
     }
 }

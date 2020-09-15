@@ -31,3 +31,4 @@
  - [ ] 材质属性增加 float
  - [ ] 材质属性增加 color
  - [ ] 材质属性增加 texture
+ - [ ] 尝试用createEmbeddedShader加载内建的shader

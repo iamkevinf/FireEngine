@@ -15,3 +15,5 @@ float ImGui_ImplWin32_GetDpiScaleForHwnd(void* hwnd);
 int WindowMain(const char16_t* title, void(*OnInit)(), void(*OnGUI)(), void(*OnTick)(), void(*OnExit)());
 bool SetWindowTitle(const char16_t* title);
 
+bool IsExited();
+

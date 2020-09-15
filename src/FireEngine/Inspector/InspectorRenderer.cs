@@ -87,7 +87,7 @@ namespace FireEngine.Editor
             if (mats.Length <= 0)
                 return;
 
-            ImporterMaterial.mat_count = 0;
+            ImporterMaterial.s_mat_count = 0;
             foreach (var mat in mats)
                 ImporterMaterial.OnGUI(mat);
         }

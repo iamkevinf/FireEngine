@@ -180,7 +180,10 @@ namespace FireEngine.Editor
 
         void OnExit()
         {
-
+            foreach (var win in WindowManager.GetAllWindowAttributes())
+            {
+                win.window.OnDestroy();
+            }
         }
 
         void FileCreateProject()

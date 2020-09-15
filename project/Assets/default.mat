@@ -1,0 +1,12 @@
+Material:
+  m_ShaderPath: shaders/default.shader
+  m_SavedProperties:
+    m_Vec4s:
+      - m_Name: u_time
+        m_Desc: time
+        m_Value:
+          - 1
+          - 2
+          - 3
+          - 4
+

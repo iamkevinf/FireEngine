@@ -67,7 +67,7 @@ namespace FireEditor
         {
             if (Scene.current == null)
                 Scene.current = new Scene();
-            
+
             var root = SceneNative.SceneGetRoot(handle);
 
             Scene.current.root.handle = root;
@@ -92,7 +92,7 @@ namespace FireEditor
             if (node.handle == handle)
                 return node;
 
-            foreach(SceneNode child in node.children)
+            foreach (SceneNode child in node.children)
             {
                 SceneNode ret = _GetSceneNode(child, handle);
                 if (ret != null)
@@ -100,6 +100,40 @@ namespace FireEditor
             }
 
             return null;
+        }
+
+        public void IterScene(Action<SceneNode> cbk)
+        {
+            _IterSceneNode(root, cbk);
+        }
+
+        void _IterSceneNode(SceneNode node, Action<SceneNode> cbk)
+        {
+            if (node != null)
+                cbk(node);
+
+            foreach (var ele in node.children)
+            {
+                if (ele != null)
+                {
+                    _IterSceneNode(ele, cbk);
+                }
+            }
+        }
+
+        public void Destroy()
+        {
+            //IterScene((node) =>
+            //{
+            //    Component comp = node.component;
+            //    if(!comp)
+            //        return;
+
+            //    if (comp.gameObject == null)
+            //        return;
+
+            //    GameObject.Destroy(comp.gameObject);
+            //});
         }
     }
 }

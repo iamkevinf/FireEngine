@@ -3,10 +3,6 @@
 #include "graphics/camera.h"
 #include "graphics/renderer.h"
 
-#include <fstream>
-#include <yaml-cpp/yaml.h>
-
-
 namespace FireEngine
 {
 	std::list<GameObjectPtr> World::gameObjects;
@@ -33,16 +29,6 @@ namespace FireEngine
 	bool World::Init()
 	{
 		Component::RegisterComponents();
-
-		YAML::Node node = YAML::LoadFile("ExampleMaterial.mat");
-		if (node["Material"])
-		{
-			int serializedVersion = node["Material"]["serializedVersion"].as<int>();
-			serializedVersion++;
-
-			std::ofstream fout("ExampleMaterial.mat.yaml");
-			fout << node;
-		}
 
 		if (!Camera::Init())
 			return false;

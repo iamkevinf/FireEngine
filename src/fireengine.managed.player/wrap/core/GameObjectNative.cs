@@ -25,17 +25,19 @@ namespace FireEngine
                 return lhs.idx != rhs.idx;
             }
         }
+        [DllImport(FireEngineNative.FireEngineDllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+        public static extern IntPtr GameObjectGetTransform(IntPtr native);
+        [DllImport(FireEngineNative.FireEngineDllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+        public static extern int GameObjectGetComponentsCount(IntPtr native);
+        [DllImport(FireEngineNative.FireEngineDllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+        public static extern IntPtr GameObjectGetComponent(IntPtr native, int index);
 
         [DllImport(FireEngineNative.FireEngineDllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         public static extern GameObjectHandle GameObjectCreate(TransformNative.TransformHandle parent, string name);
+        [DllImport(FireEngineNative.FireEngineDllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+        public static extern void GameObjectDestroy(IntPtr native);
 
         [DllImport(FireEngineNative.FireEngineDllName, CallingConvention = CallingConvention.Cdecl)]
         public static extern TransformNative.TransformHandle GameObjectGetTransformHandle(GameObjectHandle handle);
-
-        [DllImport(FireEngineNative.FireEngineDllName, CallingConvention = CallingConvention.Cdecl)]
-        public static extern int GameObjectGetComponentsCount(IntPtr native);
-        [DllImport(FireEngineNative.FireEngineDllName, CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr GameObjectGetComponent(IntPtr native, int index);
-
     }
 }

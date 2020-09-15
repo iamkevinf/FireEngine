@@ -40,8 +40,7 @@ namespace FireEngine
 		if (!obj)
 			return;
 
-		obj->GetTransform()->SetParent(std::weak_ptr<Transform>());
-		obj->Delete();
+		obj->Destroy();
 	}
 
 	std::shared_ptr<GameObject> GameObject::Instantiate(const std::shared_ptr<GameObject>& source)
@@ -268,6 +267,11 @@ namespace FireEngine
 			World::AddGameObject(GetTransform()->GetGameObject());
 	}
 
+	void GameObject::Destroy()
+	{
+		GetTransform()->SetParent(std::weak_ptr<Transform>());
+		Delete();
+	}
 
 	void GameObject::Delete()
 	{
@@ -414,5 +418,13 @@ namespace FireEngine
 			return nullptr;
 
 		return ret[index].get();
+	}
+
+	EXPORT_API void GameObjectDestroy(GameObject* native)
+	{
+		if (!native)
+			return;
+
+		native->Destroy();
 	}
 }

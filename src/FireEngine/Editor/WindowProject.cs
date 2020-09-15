@@ -85,5 +85,10 @@ namespace FireEngine.Editor
         public void OnHide()
         {
         }
+
+        public void OnDestroy()
+        {
+
+        }
     }
 }

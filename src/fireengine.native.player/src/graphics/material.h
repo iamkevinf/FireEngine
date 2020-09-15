@@ -53,6 +53,8 @@ namespace FireEngine
 			std::shared_ptr<Texture2D> tex;
 		};
 		std::map<std::string, _Texture2DNode> texs;
+	
+		static std::vector<std::shared_ptr<Material>> s_mats;
 	};
 }
 

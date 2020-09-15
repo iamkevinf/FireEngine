@@ -66,5 +66,10 @@ namespace FireEngine.Editor
         public void OnTick()
         {
         }
+
+        public void OnDestroy()
+        {
+
+        }
     }
 }

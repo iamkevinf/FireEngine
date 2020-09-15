@@ -128,15 +128,6 @@
     <ClInclude Include="src\utils\time.h" />
     <ClInclude Include="src\wrapper\wrapper.h" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="compile_shader.cmd" />
-    <None Include="shaders\fbo_varying.def.sc" />
-    <None Include="shaders\fs_buildin.sc" />
-    <None Include="shaders\fs_fbo.sc" />
-    <None Include="shaders\varying.def.sc" />
-    <None Include="shaders\vs_buildin.sc" />
-    <None Include="shaders\vs_fbo.sc" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>

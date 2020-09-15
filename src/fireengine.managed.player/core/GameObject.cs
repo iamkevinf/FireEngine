@@ -14,10 +14,24 @@ namespace FireEngine
         private GameObject(IntPtr native)
         {
             m_nativePtr = native;
+            IsDestroy = false;
+        }
+        ~GameObject()
+        {
+            if (m_nativePtr != IntPtr.Zero)
+            {
+                GameObject.Destroy(this);
+                m_nativePtr = IntPtr.Zero;
+            }
         }
 
 
         #endregion
+        public bool IsDestroy
+        {
+            get;
+            private set;
+        }
 
         public static GameObject Inner_Create(TransformNative.TransformHandle parent, string name)
         {
@@ -108,14 +122,16 @@ namespace FireEngine
             return comps[0];
         }
 
-        #region Native
-        [DllImport(FireEngineNative.FireEngineDllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
-        public static extern IntPtr GameObjectGetTransform(IntPtr native);
-        [DllImport(FireEngineNative.FireEngineDllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
-        public static extern int GameObjectGetComponentsCount(IntPtr native);
-        [DllImport(FireEngineNative.FireEngineDllName, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
-        public static extern IntPtr GameObjectGetComponent(IntPtr native, int index);
+        public static void Destroy(GameObject gameObject)
+        {
+            if(gameObject.IsDestroy)
+            {
+                Debug.LogErrorFormat($"{gameObject.transform.name} is already destroy!");
+                return;
+            }
 
-        #endregion
+            GameObjectNative.GameObjectDestroy(gameObject.m_nativePtr);
+            gameObject.IsDestroy = true;
+        }
     }
 }

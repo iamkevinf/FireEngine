@@ -11,6 +11,7 @@ namespace FireEditor
         void OnTick();
         void OnShow();
         void OnHide();
+        void OnDestroy();
     }
 
     public interface iWindowAttribute

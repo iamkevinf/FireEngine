@@ -16,9 +16,6 @@
     <Filter Include="gameview">
       <UniqueIdentifier>{f50a68ca-675a-4df9-8ccd-2bf179c402d8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="buildin_shader">
-      <UniqueIdentifier>{e66d9338-6b38-469e-bb19-f17b539fa8da}</UniqueIdentifier>
-    </Filter>
     <Filter Include="scene">
       <UniqueIdentifier>{1b1d6d83-3fe9-4de3-ac6a-29e3414d52f9}</UniqueIdentifier>
     </Filter>
@@ -360,28 +357,5 @@
     <ClInclude Include="src\app\project.h">
       <Filter>app</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="shaders\varying.def.sc">
-      <Filter>buildin_shader</Filter>
-    </None>
-    <None Include="shaders\vs_buildin.sc">
-      <Filter>buildin_shader</Filter>
-    </None>
-    <None Include="shaders\vs_fbo.sc">
-      <Filter>buildin_shader</Filter>
-    </None>
-    <None Include="shaders\fbo_varying.def.sc">
-      <Filter>buildin_shader</Filter>
-    </None>
-    <None Include="shaders\fs_buildin.sc">
-      <Filter>buildin_shader</Filter>
-    </None>
-    <None Include="shaders\fs_fbo.sc">
-      <Filter>buildin_shader</Filter>
-    </None>
-    <None Include="compile_shader.cmd">
-      <Filter>buildin_shader</Filter>
-    </None>
   </ItemGroup>
 </Project>
